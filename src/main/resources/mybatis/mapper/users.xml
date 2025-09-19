@@ -12,33 +12,49 @@
   </insert>
 
   <!-- 식별자 ID로 조회 -->
-  <select id="selectUserById" resultType="Users" parameterType="String"> SELECT * FROM users WHERE
-    user_id= #{user_id} </select>
+  <select id="selectUserById" resultType="Users" parameterType="String"> 
+    SELECT * FROM users WHERE
+    user_id= #{user_id} 
+  </select>
 
   <!-- 로그인 ID로 조회 -->
-  <select id="selectUserByuserloginId" resultType="Users" parameterType="String"> SELECT * FROM users
-    WHERE userLoginId= #{userLoginId} </select>
+  <select id="selectUserByuserloginId" resultType="Users" parameterType="String"> 
+    SELECT * FROM users
+    WHERE userLoginId= #{userLoginId} 
+  </select>
 
   <!-- 이메일로 조회 -->
-  <select id="selectUserByEmail" resultType="Users" parameterType="String"> SELECT * FROM users WHERE
-    userEmail= #{userEmail} </select>
+  <select id="selectUserByEmail" resultType="Users" parameterType="String"> 
+    SELECT * FROM users WHERE
+    userEmail= #{userEmail} 
+  </select>
 
   <!-- 전체 사용자 조회 -->
-  <select id="selectAllUsers" resultType="Users"> SELECT user_id, userLoginId, userPassword,
+  <select id="selectAllUsers" resultType="Users"> 
+    SELECT user_id, userLoginId, userPassword,
     userName, userEmail, userIntro,ufAttachoname, ufAttachsname, ufAttachtype ,ufAttachdata FROM
-    users ORDER BY userCreatedAt desc </select>
+    users ORDER BY userCreatedAt desc 
+  </select>
 
   <!-- 사용자 정보 수정 -->
-  <update id="updateUser" parameterType="Users"> UPDATE users SET userName = #{userName}, userEmail =
-    #{userEmail}, userIntro = #{userIntro} <if test="ufAttachoname !=null"> ,ufAttachoname
-    =#{ufAttachoname} ,ufAttachsname=#{ufAttachsname} ,ufAttachtype=#{ufAttachtype}
-    ,ufAttachdata=#{ufAttachdata} </if> WHERE user_id = #{userId} </update>
+  <update id="updateUser" parameterType="Users"> 
+    UPDATE users SET userName = #{userName}, userEmail =
+    #{userEmail}, userIntro = #{userIntro} 
+    <if test="ufAttachoname !=null"> 
+      ,ufAttachoname = #{ufAttachoname} 
+      ,ufAttachsname = #{ufAttachsname} 
+      ,ufAttachtype=#{ufAttachtype}
+      ,ufAttachdata=#{ufAttachdata} 
+    </if> WHERE user_id = #{userId} 
+  </update>
 
   <!-- 사용자 프로필 이미지 정보 수정(위에거로 같이 가능) -->
 
 
   <!-- 사용자 삭제 -->
-  <delete id="deleteUser" parameterType="int"> DELETE FROM users WHERE user_id = #{userId} </delete>
+  <delete id="deleteUser" parameterType="int"> 
+    DELETE FROM users WHERE user_id = #{userId} 
+  </delete>
 
   <!-- 사용자 프로필 이미지 삭제 -->
   <update id="deleteUserProfileImg" parameterType="int"> UPDATE users SET ufAttachoname = NULL,
