@@ -5,4 +5,41 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.ProjectActivityDao">
+  <insert id="insertActivity" parameterType="ProjectActivity">
+    <selectKey keyProperty="activityId" resultType="int" order="BEFORE"> 
+      SELECT seq_projectActivity.nextval from dual 
+    </selectKey> 
+    INSERT INTO projectActivity (activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt)
+    VALUES (#{activityId}, #{paType}, #{senderId}, #{receiverId}, #{projectId}, #{paMessage}, #{paStatus}, #{paIsRead}, #{paCreatedAt}, #{paUpdatedAt})
+  </insert>
+
+  <select id="selectById" parameterType="int" resultType="ProjectActivity">
+    SELECT activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt
+    FROM projectActivity
+    WHERE activity_id = #{activityId}
+  </select>
+
+  <!-- 사용자가 받은 알림 조회 -->
+  <select id="selectByReceiver" parameterType="int" resultType="ProjectActivity">
+    SELECT activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt
+    FROM projectActivity
+    WHERE receiver_id = #{value}
+  </select>
+
+  <update id="updateActivityStatus" parameterType="string">
+    UPDATE projectActivity 
+    SET paStatus = #{paStatus},
+    WHERE activity_id = #{activityId}
+  </update>
+
+  <update id="chageToRead">
+    UPDATE projectActivity 
+    SET paStatus = 'READ',
+    WHERE activity_id = #{activityId}
+  </update>
+
+  <delete id="delete">
+    DELETE FROM projectActivity
+    WHERE activity_id = #{activityId}
+  </delete>
 </mapper>
