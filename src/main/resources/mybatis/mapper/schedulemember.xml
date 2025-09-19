@@ -12,7 +12,7 @@
   </insert>
 
   <!-- 일정을 수행하는 사용자 조회 -->
-  <select id="findUsers" parameterMap="int" resultType="ScheduleMember">
+  <select id="findUsers" parameterType="int" resultType="ScheduleMember">
     SELECT schedule_id, user_id FROM scheduleMember
     WHERE schedule_id = #{scheduleId}
   </select>
