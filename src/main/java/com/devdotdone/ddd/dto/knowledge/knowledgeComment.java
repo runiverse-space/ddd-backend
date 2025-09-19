@@ -1,5 +1,5 @@
 package com.devdotdone.ddd.dto.knowledge;
 
-public class knowledgeComment {
+public class KnowledgeComment {
 
 }
