@@ -5,4 +5,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.ScheduleMemberDao">
+  <!-- 일정을 수행할 멤버 지정/추가 -->
+  <insert id="chargeUsers" parameterType="ScheduleMember">
+    INSERT INTO scheduleMember (schedule_id, user_id)
+    VALUES (#{scheduleId}, #{userId})
+  </insert>
+
+  <!-- 일정을 수행하는 사용자 조회 -->
+  <select id="findUsers" parameterMap="int" resultType="ScheduleMember">
+    SELECT schedule_id, user_id FROM scheduleMember
+    WHERE schedule_id = #{scheduleId}
+  </select>
+
+  <!-- 일정을 할당받은 멤버 해제 -->
+  <delete id="dischargeUsers">
+    DELETE FROM scheduleMember WHERE user_id = #{userId}
+  </delete>
 </mapper>

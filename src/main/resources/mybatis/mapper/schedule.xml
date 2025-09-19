@@ -1,8 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.SchduleDao">
+  <!-- 일정 생성 -->
+  <insert id="insert" parameterType="Schedule"> INSERT INTO schedule ( schedule_id, project_id,
+    user_id, scheduleTitle, scheduleContent, scheduleStartDate, scheduleEndDate, scheduleStatus,
+    scheduleCreatedAt ) VALUES ( seq_userProjectRole.NEXTVAL, #{projectId}, #{userId},
+    #{scheduleTitle}, #{scheduleContent}, #{scheduleStartDate}, #{scheduleEndDate},
+    #{scheduleStatus}, #{scheduleCreatedAt} ) 
+  </insert>
+
+  <!-- 일정 아이디로 일정 조회 -->
+  <select id="selectScheduleById" resultType="Schedule"> 
+    SELECT schedule_id, project_id, user_id,
+    scheduleTitle, scheduleContent, scheduleStartDate, scheduleEndDate, scheduleStatus,
+    scheduleCreatedAt 
+    FROM schedule 
+    WHERE schedule_id = #{scheduleId} 
+  </select>
+
+  <!-- 일정 수정 -->
+  <update id="update">
+    UPDATE schedule
+    SET user_id = #{userId}, scheduleTitle = #{scheduleTitle}, scheduleContent = {scheduleContent},
+        scheduleStartDate = #{scheduleStartDate}, scheduleEndDate = #{scheduleEndDate}, scheduleStatus = #{scheduleStatus}
+    WHERE schedule_id = #{scheduleId}
+  </update>
+
+  <!-- 일정 삭제 -->
+  <delete id="delete">
+    DELETE FROM users WHERE schedule_id = #{scheduleId}
+  </delete>
+
+  <!-- Schedule + Members -->
+  <!-- 특정 일정에 참여한 사용자 조회 -->
+  <!-- 1. scheduleMember 테이블에서 사용자 id를 조회한다 -->
+  <!-- 2. 조회된 id를 매개변수로 사용하여 users 테이블에서 selectUserById 실행한다 -->
+
 </mapper>
