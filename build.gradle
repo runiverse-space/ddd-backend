@@ -32,6 +32,31 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml: 리턴 객체를 ->xml로 변환시켜주기 위해서 추가함
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.19.2'
+
+  	//spring-boot-starter-validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.8'
+
+	//MyBatis
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.5'
+	
+	//dbms와 연결
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+
+	// json
+	implementation 'org.json:json:20250517'
+
+	//암호화spring-boot-starter-security
+	implementation 'org.springframework.security:spring-security-crypto:6.3.8'
+
+	// jjwt-api 인터페이스 구현체 
+	implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+	// jjwt-impl 구현체
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
+	// jjwt-jackson
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
 }
 
 tasks.named('test') {

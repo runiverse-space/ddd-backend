@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <settings> <!-- 카멜타입으로 변경-->
+    <setting name="mapUnderscoreToCamelCase" value="true"/>
+    <setting name="jdbcTypeForNull" value="NULL"/>
+  </settings>
+  
+  <typeAliases>
+    <typeAlias type="com.example.demo.dto.Users" alias="Users"/>
+    <typeAlias type="com.example.demo.dto.Project" alias="Project"/>
+    <typeAlias type="com.example.demo.dto.Schedule" alias="Schedule"/>
+    <typeAlias type="com.example.demo.dto.Knowledge" alias="Knowledge"/>
+    <typeAlias type="com.example.demo.dto.Retrospec" alias="Retrospec"/>
+    <typeAlias type="com.example.demo.dto.Tag" alias="Tag"/>
+  </typeAliases>
+
+</configuration>
