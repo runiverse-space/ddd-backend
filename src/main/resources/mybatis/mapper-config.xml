@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
@@ -9,13 +10,15 @@
   </settings>
   
   <typeAliases>
-    <typeAlias type="com.example.demo.dto.Users" alias="Users"/>
-    <typeAlias type="com.example.demo.dto.project.Project" alias="Project"/>
-    <typeAlias type="com.example.demo.dto.project.ProjectMilestone" alias="ProjectMilestone"/>
-    <typeAlias type="com.example.demo.dto.Schedule" alias="Schedule"/>
-    <typeAlias type="com.example.demo.dto.Knowledge" alias="Knowledge"/>
-    <typeAlias type="com.example.demo.dto.Retrospec" alias="Retrospec"/>
-    <typeAlias type="com.example.demo.dto.Tag" alias="Tag"/>
+    <typeAlias type="com.devdotdone.ddd.dto.knowledge.Knowledge" alias="Knowledge"/>
+    <typeAlias type="com.devdotdone.ddd.dto.knowledge.KnowledgeComment" alias="KnowledgeComment"/>
+    <typeAlias type="com.devdotdone.ddd.dto.project.Project" alias="Project"/>
+    <typeAlias type="com.devdotdone.ddd.dto.project.ProjectMilestone" alias="ProjectMilestone"/>
+    <typeAlias type="com.devdotdone.ddd.dto.retrospec.Retrospec" alias="Retrospec"/>
+    <typeAlias type="com.devdotdone.ddd.dto.schedule.Schedule" alias="Schedule"/>
+    <typeAlias type="com.devdotdone.ddd.dto.tag.KnowledgeTag" alias="KnowledgeTag"/>
+    <typeAlias type="com.devdotdone.ddd.dto.users.Users" alias="Users"/>
+    <!-- <typeAlias type="com.devdotdone.ddd.dto.tag.Tag" alias="Tag"/> -->
   </typeAliases>
 
 </configuration>

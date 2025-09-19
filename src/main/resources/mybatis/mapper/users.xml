@@ -4,12 +4,12 @@
 <mapper namespace="com.devdotdone.ddd.dao.UsersDao">
   <!-- 사용자 생성 -->
   <insert id="insertUser" parameterType="Users">
-    <selectKey keyProperty="userId" resultType="int" order="BEFORE"> select
-    seq_users_user_id.nextval from dual </selectKey> INSERT INTO users ( user_id, userLoginId,
-    userPassword, userName, userEmail, userIntro, userCreatedAt,ufAttachoname, ufAttachsname,
-    ufAttachtype ,ufAttachdata ) VALUES ( #{userId}, #{userLoginId}, #{userPassword}, #{userName},
-    #{userEmail}, #{userIntro}, , SYSTIMESTAMP ,#{ufAttachoname}, #{ufAttachsname}, #{ufAttachtype
-    }, #{ufAttachdata} ) </insert>
+    <selectKey keyProperty="userId" resultType="int" order="BEFORE"> 
+      select seq_users_user_id.nextval from dual 
+    </selectKey> 
+    INSERT INTO users ( user_id, userLoginId, userPassword, userName, userEmail, userIntro, userCreatedAt,ufAttachoname, ufAttachsname, ufAttachtype ,ufAttachdata ) 
+    VALUES ( #{userId}, #{userLoginId}, #{userPassword}, #{userName}, #{userEmail}, #{userIntro}, SYSTIMESTAMP , #{ufAttachoname}, #{ufAttachsname}, #{ufAttachtype}, #{ufAttachdata} ) 
+  </insert>
 
   <!-- 식별자 ID로 조회 -->
   <select id="selectUserById" resultType="Users" parameterType="String"> SELECT * FROM users WHERE

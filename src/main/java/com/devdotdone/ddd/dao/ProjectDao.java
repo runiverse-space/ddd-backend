@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.devdotdone.ddd.dto.project.Project;
 
+
 /*
 CREATE TABLE project (
     project_id    NUMBER PRIMARY KEY, -- 프로젝트 ID (고유 ID)
@@ -17,11 +18,8 @@ CREATE TABLE project (
 );
  */
 
-
-
-
 @Mapper
-public interface ProjectDao {
+public interface ProjectDao{
 
   public int insertProject(Project project);
 
