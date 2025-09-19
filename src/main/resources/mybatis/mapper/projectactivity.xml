@@ -38,8 +38,8 @@
     WHERE activity_id = #{activityId}
   </update>
 
-  <delete id="delete">
+  <delete id="delete" parameterType="int">
     DELETE FROM projectActivity
-    WHERE activity_id = #{activityId}
+    WHERE activity_id = #{value}
   </delete>
 </mapper>
