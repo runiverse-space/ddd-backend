@@ -1,0 +1,17 @@
+package com.devdotdone.ddd.dao;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.devdotdone.ddd.dto.users.Users;
+
+@Mapper
+public interface UsersDao {
+  public int insertUser(Users users);
+  public Users selectUserById(int userId);
+  public Users selectUserByuserloginId(String userLoginId);
+  public Users selectUserByEmail(String userEmail);
+  public Users[] selectAllUsers();
+  public int updateUser(Users users);
+  public int deleteUser(int userId);
+  public int deleteUserProfileImg(int userId);
+}
