@@ -2,7 +2,6 @@ package com.devdotdone.ddd.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.project.ProjectMilestone;
 
 /*
@@ -14,8 +13,6 @@ CREATE TABLE projectMilestone (
     CONSTRAINT fk_milestone_project FOREIGN KEY (project_id) REFERENCES project(project_id)
 );
  */
-
-
 
 
 @Mapper
