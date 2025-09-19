@@ -8,7 +8,7 @@ import lombok.Data;
 public class Project {
   
   private int projectId;
-  private int userId;
+  private int userId; // 만든 사람
 
   private String projectTitle;
   private String projectContent;
