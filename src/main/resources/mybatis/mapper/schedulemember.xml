@@ -18,7 +18,7 @@
   </select>
 
   <!-- 일정을 할당받은 멤버 해제 -->
-  <delete id="dischargeUsers">
+  <delete id="dischargeUsers" parameterType="int">
     DELETE FROM scheduleMember WHERE user_id = #{userId}
   </delete>
 </mapper>
