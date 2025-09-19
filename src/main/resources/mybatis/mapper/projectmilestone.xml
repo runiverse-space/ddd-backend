@@ -5,4 +5,30 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demo.dao.ProjectMileStoneDao">
+  <insert id="insertMilestone" parameterType="ProjectMilestone">
+	  insert into projectMilestone( milestone_id, project_id, milestoneTitle, milestoneDate,
+	   milestoneSortOrder) 
+	  values(seq_projectMileStone.NEXTVAL, #{projectId},#{milestoneTitle},
+	  #{milestoneDate},#{milestoneSortOrder})
+  </insert>
+
+  <select id="selectMilestonesByProject" resultType="ProjectMilestone">
+	  SELECT milestone_id, project_id, milestoneTitle,milestoneDate, milestoneSortOrder
+    FROM projectMilestone
+    WHERE project_id = #{projectId}
+    ORDER BY milestoneSortOrder ASC
+  </select>
+  
+  <update id="updateMilestone" parameterType="ProjectMilestone">
+		  UPDATE projectMilestone
+		  SET  milestoneTitle= #{milestoneTitle}, 
+		  milestoneDate= #{milestoneDate},
+		  WHERE milestone_id=#{milestoneId}
+  </update>
+  
+  <delete id="deleteMilestone" parameterType="int">
+	  DELETE FROM projectMilestone
+    WHERE milestone_id = #{milestoneId}
+  </delete>
+
 </mapper>

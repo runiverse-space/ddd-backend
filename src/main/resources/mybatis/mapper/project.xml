@@ -5,4 +5,68 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.ProjectDao">
+  <insert id="insertProject" parameterType="Project">
+    <selectKey keyProperty="projectId" resultType="int" order="BEFORE">
+      select  seq_project_projectId.nextval from dual
+    </selectKey>
+  INSERT INTO project (
+    project_id, user_id, projectTitle, projectContent, projectStartDate
+    , projectEndDate ,projectCreatedAt) 
+  VALUES (
+    #{projectId}, #{userId}, #{projectTitle},
+    #{projectContent}, #{projectStartDate}, #{projectEndDate}, sysstamp)
+  </insert> 
+
+
+  <select id="selectProjectById" parameterType="int" resultType="Project">
+    SELECT 
+    projectId,userId,projectTitle,projectContent,
+    projectStartDate,projectEndDate,projectCreatedAt
+    
+    FROM project 
+    WHERE project_id = #{projectId}
+  </select>
+
+  <!-- 프로젝트 수정 -->
+  <update id="updateProject" parameterType="Project">
+    UPDATE project
+    SET projectTitle = #{projectTitle},
+        projectContent = #{projectContent},
+        projectStartDate = #{projectStartDate},
+        projectEndDate = #{projectEndDate}
+    WHERE project_id = #{projectId}
+  </update>
+
+  <!-- 프로젝트 삭제 -->
+  <delete id="deleteProject">
+    DELETE FROM project WHERE project_id = #{projectId}
+  </delete>
+
+  <!-- 프로젝트 + 참여 멤버 조회 -->
+  <select id="selectProjectWithMembers" resultMap="ProjectWithMembers">
+    SELECT p.project_id, p.projectTitle, p.projectContent,
+           u.user_id, u.userName, upr.role
+    FROM project p
+    JOIN userProjectRole upr ON p.project_id = upr.project_id
+    JOIN users u ON upr.user_id = u.user_id
+    WHERE p.project_id = #{projectId}
+  </select>
+
+     <!-- 프로젝트 마일스톤-->
+  <insert id="insertMilestone" parameterType="Milestone">
+    INSERT INTO projectMilestone (
+    milestone_id, project_id, milestoneTitle, milestoneDate, milestoneSortOrder) 
+    VALUES (
+    seq_projectMilestone.NEXTVAL, #{projectId}, 
+    #{milestoneTitle}, #{milestoneDate}, #{milestoneSortOrder})
+  </insert>
+
+  <select id="selectMilestonesByProject" resultType="Milestone">
+    SELECT * FROM projectMilestone WHERE project_id = #{projectId} ORDER BY milestoneSortOrder
+  </select>
+
+
+
+
+
 </mapper>
