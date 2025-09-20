@@ -5,4 +5,47 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.KnowledgeCommentDao">
+  <!-- 코멘트 생성-->
+  <insert id="insertKnowledgeComment" parameterType="KnowledgeComment">
+    <selectKey keyProperty="knowledgeCommentId" resultType="int" order="BEFORE">
+      select seq_knowledgecomment_knowledgeCommentId.nextval from dual
+    </selectKey>
+      insert into knowledgeComment(
+        knowledgeComment_id, knowledge_id, user_id,
+        knowledgeCommentContent, knowledgeCommentCreatedAt
+      )
+      values (#{knowledgeCommentId},#{knowledgeId},#{userId}
+      ,#{knowledgeCommentContent},sysstamp)
+
+  </insert>
+ 
+  <!-- 코멘트 조회-->
+  <select id="selectKnowledgeCommentByKnowledgeCommentId" parameterType="KnowledgeComment">
+    select
+       knowledgeCommentId, knowledge_id, user_id, knowledgeCommentContent,
+       knowledgeCommentCreatedAt
+    from knowledgecomment
+    where knowledgeCommentId= #{knowledgeCommentId}
+  </select>
+
+  <!-- 코멘트 수정-->
+  <update id="updateKnowledgeCommentByKnowledgeCommentId" parameterType="KnowledgeComment">
+	  update knowledgecomment
+	  set  
+        knowledgeCommentContent=#{knowledgeCommentContent}
+	  where knowledgeCommentId=#{knowledgeCommentId}
+	  
+  </update>
+
+  <!-- 코멘트 삭제-->
+  <delete id="deleteKnowledgeComment" parameterType="int">
+    delete from knowledgecomment
+    where knowledgeCommentId=#{value}
+  </delete>
+ 
+  <!--count all 코멘트 -->
+  <select id="countAllKnowledgeComment" resultType="int">
+      select count(*) from knowledgecomment
+  </select>
+  
 </mapper>
