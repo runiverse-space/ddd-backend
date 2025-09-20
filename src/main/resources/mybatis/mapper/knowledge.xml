@@ -5,4 +5,92 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.KnowledgeDao">
+  <!--insert문 -->
+  <insert id="insertKnowledge" parameterType="Knowledge">
+
+    <selectKey keyProperty="knowledgeId" resultType="int" order="BEFORE">
+      select seq_knowledge_knowledgeId.nextval from dual
+    </selectKey>
+    insert into knowledge(
+      knowledge_id,project_id, user_id, knowledgeTitle,knowledgeContent, knowledgeUrl,
+      kfattachoname, kfattachsname, kfattachtype, kfattachdata, 
+      knowledgeCreatedAt
+    )
+    values(#{knowledgeId},
+    #{projectId},#{userId},#{knowledgeTitle},#{knowledgeContent},
+    #{knowledgeUrl},#{kfattachoname},#{kfattachsname},#{kfattachtype}
+    sysstamp)
+  </insert>
+
+<!--  knowledgeId별 조회-->
+  <select id="selectKnowledgeByKnowledgeId" resultType="Knowledge">
+    select
+      knowledge_id, project_id, user_id, knowledgeTitle, 
+      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
+      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+      from knowledge
+    where knowledge_id = #{knowledgeId}
+    order by knowledgeCreatedAt desc
+  </select>
+
+  <!-- 글쓴 유저별 조회-->
+  <select id="selectKnowledgeByUserId" resultType="Knowledge">
+    select
+      knowledge_id, project_id, user_id, knowledgeTitle, 
+      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
+      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+      from knowledge
+
+    where user_id =#{userId}
+    order by knowledgeCreatedAt desc
+  </select>
+
+  
+
+  <!-- 프로젝트별 조회-->
+  <select id="selectKnowledgeByProjectId" resultType="Knowledge">
+    select
+      knowledge_id, project_id, user_id, knowledgeTitle, 
+      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
+      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+    from knowledge
+    where project_id=#{projectId}
+    order by knowledgeCreatedAt desc
+  </select>  
+
+  <!-- 전체 조회-->
+   <select id="selectKnowledge" resultType="Knowledge">
+    select
+      knowledge_id, project_id, user_id, knowledgeTitle, 
+      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
+      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+    from knowledge
+    order by knowledgeCreatedAt desc
+  </select>
+
+  <!-- update 문-->
+  <update id="updateKnowledge" parameterType="Knowledge">
+    update knowledge
+    set knowledgeTitle =#{},
+        knowledgeContent=#{},
+        knoledgeUrl=#{},
+        <if test="kfattachoname=!null">
+        ,kfattachoname=#{kfattachoname}
+        ,kfattachsname=#{kfattachsname}
+        ,kfattachtype=#{kfattachtype}
+        ,kfattachdate=#{kfattachdate}
+        </if>
+      where knowledge_id=#{knowledgeId}
+
+  </update>
+
+  <delete id="deleteKnowledge" parameterType="int">
+    delete from knowledge
+    where knowledge_id=#{value}
+  </delete>
+
+  <select id="countAllKnowledge" resultType="int">
+    select count(*) from knowledge
+  </select>
+
 </mapper>
