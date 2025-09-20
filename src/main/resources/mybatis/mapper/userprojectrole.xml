@@ -5,4 +5,53 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demo.dao.UserProjectRoleDao">
+  <!-- 프로젝트생성자= admin으로 설정-->
+  <insert id="insertUsersProjectRoleAsAdmin" parameterType="UserProjectRole">
+    insert into UserProjectRole(
+      upr_id, user_id, project_id,uprRole
+    )
+    values(seq_userProjectRole.NEXTVAL, #{userId}, #{projectId}, 'ADMIN')
+
+  </insert>
+
+  <!-- 일반 멤버 등록-->
+  <insert id="insertUsersProjectRoleAsMember" parameterType="UserProjectRole">
+    insert into UserProjectRole(
+      upr_id, user_id, project_id, uprRole
+    )
+    values(
+      seq_userProjectRole.NEXTVAL, #{userId}, #{projectId}, 'MEMBER'
+    )
+  </insert>
+  
+  <!-- 특정 프로젝트의 멤버 조회-->
+  <select id="selectUsersByProjectId" resultType="UserProjectRole">
+    select 
+    from users u
+    join userprojectrole upr ON u.user_id = upr.user_id
+    where upr.project_id = #{projectId}
+  </select>
+
+  <!--특정 유저의 프로젝트 목록 조회 -->
+  <select id="selectUsersByUserId" resultType="UserProjectRole">
+    select 
+    p.project_id, p.projectTitle,p.projectContent,p.projectStartDate,
+    p.projectEndDate, p.projectCreatedAt 
+    from project p
+    join userprojectrole upr on p.project_id = upr.project_id
+    where upr.user_id=#{userID}
+  </select>
+
+  <!--유저 권한 확인-->
+  <select id="selectUserRoleInProject" parameterType="UserProjectRole" resultType="string">
+    select uprRole
+    from userprojectrole
+    where user_id=#{userId} and project_id=#{projectId}
+  </select>
+  <!--프로젝트에서 유저 제거-->
+  <delete id="deleteUserFromProject">
+    delete from UserProjectRole
+    where user_id=#{userId} and project_id=#{projectId}
+  </delete>
+
 </mapper>
