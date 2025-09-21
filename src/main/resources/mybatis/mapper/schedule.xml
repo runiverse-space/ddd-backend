@@ -11,7 +11,7 @@
   </insert>
 
   <!-- 일정 아이디로 일정 조회 -->
-  <select id="selectScheduleById" resultType="Schedule"> 
+  <select id="selectScheduleById" resultType="Schedule" parameterType="int"> 
     SELECT schedule_id, project_id, user_id,
     scheduleTitle, scheduleContent, scheduleStartDate, scheduleEndDate, scheduleStatus,
     scheduleCreatedAt 
@@ -20,7 +20,7 @@
   </select>
 
   <!-- 일정 수정 -->
-  <update id="update">
+  <update id="update" parameterType="Schedule">
     UPDATE schedule
     SET user_id = #{userId}, scheduleTitle = #{scheduleTitle}, scheduleContent = {scheduleContent},
         scheduleStartDate = #{scheduleStartDate}, scheduleEndDate = #{scheduleEndDate}, scheduleStatus = #{scheduleStatus}
@@ -28,7 +28,7 @@
   </update>
 
   <!-- 일정 삭제 -->
-  <delete id="delete">
+  <delete id="delete" parameterType="int">
     DELETE FROM users WHERE schedule_id = #{scheduleId}
   </delete>
 
