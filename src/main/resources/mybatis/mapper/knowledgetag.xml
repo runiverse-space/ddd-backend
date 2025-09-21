@@ -12,13 +12,13 @@
   </insert>
 
   <!-- 지식에 포함된 태그 조회 -->
-  <select id="findUsers" parameterType="int" resultType="KnowledgeTag">
+  <select id="findTags" parameterType="int" resultType="KnowledgeTag">
     SELECT knowledge_id, tag_id FROM knowledgeTag
     WHERE knowledge_id = #{knowledgeId}
   </select>
 
   <!-- 지식의 태그 제거 -->
-  <delete id="dischargeUsers" parameterType="int">
+  <delete id="deleteTag" parameterType="int">
     DELETE FROM knowledgeTag WHERE tag_id = #{tagId}
   </delete>
 </mapper>
