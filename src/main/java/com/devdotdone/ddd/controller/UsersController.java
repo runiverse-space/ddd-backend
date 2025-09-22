@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.devdotdone.ddd.dto.users.Users;
 import com.devdotdone.ddd.service.UsersService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -25,7 +26,7 @@ public class UsersController {
   private UsersService usersService;
 
   @PostMapping("/create")
-  public Map<String, Object> create(Users users) throws IOException {
+  public Map<String, Object> create(@Valid Users users) throws IOException {
     log.info(users.toString());
 
     MultipartFile mf = users.getUfAttach();
