@@ -15,7 +15,7 @@
         knowledgeCommentContent, knowledgeCommentCreatedAt
       )
       values (#{knowledgeCommentId},#{knowledgeId},#{userId}
-      ,#{knowledgeCommentContent},sysstamp)
+      ,#{knowledgeCommentContent},SYSTIMESTAMP)
 
   </insert>
  

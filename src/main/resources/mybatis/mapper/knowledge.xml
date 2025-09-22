@@ -19,7 +19,7 @@
     values(#{knowledgeId},
     #{projectId},#{userId},#{knowledgeTitle},#{knowledgeContent},
     #{knowledgeUrl},#{kfattachoname},#{kfattachsname},#{kfattachtype}
-    sysstamp)
+    SYSTIMESTAMP)
   </insert>
 
 <!--  knowledgeId별 조회-->
