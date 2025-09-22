@@ -24,6 +24,7 @@ import com.devdotdone.ddd.service.UsersService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -121,7 +122,7 @@ public class UsersController {
 
   }
 
-  @Delete("/delete")
+  @DeleteMapping("/delete")
   public String delete(@RequestParam("userId")int userId){
     usersService.deleteUser(userId);
     JSONObject jsonObject = new JSONObject();
