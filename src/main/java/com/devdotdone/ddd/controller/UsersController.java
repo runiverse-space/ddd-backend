@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +23,10 @@ import com.devdotdone.ddd.service.UsersService;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -80,5 +87,51 @@ public class UsersController {
     return map;
   }
   
+  @GetMapping("/detail")
+  public Map<String,Object> detail(@RequestParam("userId") int userId){
+    Map<String, Object> resultMap= new HashMap<>();
+    Users users= usersService.getUsers(userId);
+    resultMap.put("result", "success");
+    resultMap.put("data",users);
+    return resultMap;
+  }
+
+
+
+  @PutMapping("/update")
+  public Map<String, Object> update(@RequestBody Users users) throws Exception{
+    log.info(users.toString());
+    
+    MultipartFile mf= users.getUfAttach();
+    if(mf!=null && !mf.isEmpty()){
+      users.setUfAttachoname(mf.getOriginalFilename());
+      users.setUfAttachtype(mf.getContentType());
+      users.setUfAttachdata(mf.getBytes());
+    }
+    Users dbUsers= usersService.update(users);
+
+    Map<String, Object> map = new HashMap<>();
+    if(map==null){
+      map.put("result","fail");
+    }else{
+      map.put("result","success");
+      map.put("users","dbUsers");
+    }
+    return map;
+
+  }
+
+  @Delete("/delete")
+  public String delete(@RequestParam("userId")int userId){
+    usersService.deleteUser(userId);
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("result","success");
+
+    return jsonObject.toString();
+
+  }
+
+
+
   
 }
