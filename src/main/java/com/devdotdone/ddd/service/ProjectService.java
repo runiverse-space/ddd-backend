@@ -18,9 +18,11 @@ public class ProjectService {
     projectDao.insertProject(project);
   }
 
-
   public Project getProject(int projectId){
     Project project = projectDao.selectProjectById(projectId);
     return project;
   }
+
+  
+
 }
