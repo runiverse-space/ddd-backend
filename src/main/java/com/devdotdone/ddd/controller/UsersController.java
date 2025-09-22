@@ -99,7 +99,7 @@ public class UsersController {
 
 
   @PutMapping("/update")
-  public Map<String, Object> update(@RequestBody Users users) throws Exception{
+  public Map<String, Object> update(Users users) throws Exception{
     log.info(users.toString());
     
     MultipartFile mf= users.getUfAttach();
@@ -108,8 +108,9 @@ public class UsersController {
       users.setUfAttachtype(mf.getContentType());
       users.setUfAttachdata(mf.getBytes());
     }
+    log.info("----------파일 업데이트 시작");
     Users dbUsers= usersService.update(users);
-
+log.info("----------파일 업데이트 실행 완료");
     Map<String, Object> map = new HashMap<>();
     if(map==null){
       map.put("result","fail");
