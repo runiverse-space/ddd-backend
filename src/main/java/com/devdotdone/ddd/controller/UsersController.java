@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.devdotdone.ddd.dto.users.LoginForm;
 import com.devdotdone.ddd.dto.users.Users;
+import com.devdotdone.ddd.service.JwtService;
 import com.devdotdone.ddd.service.UsersService;
 
 import jakarta.validation.Valid;
@@ -27,6 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 public class UsersController {
   @Autowired
   private UsersService usersService;
+
+  @Autowired
+  private JwtService jwtService;
 
   @PostMapping("/create")
   public Map<String, Object> create(@Valid Users users) throws IOException {
@@ -53,11 +57,28 @@ public class UsersController {
     return map;
   }
 
-  // @PostMapping("/login")
-  // public Map<String, Object> login(@RequestBody LoginForm loginForm) {
-  //   Map<String, Object> map = new HashMap<>();
-
-  // }
+  @PostMapping("/login")
+  public Map<String, Object> login(@RequestBody LoginForm loginForm) {
+    Map<String, Object> map = new HashMap<>();
+    
+    Users users = usersService.getUser(loginForm.getUserLoginId());
+    if (users == null) {
+      map.put("result", "fail");
+      map.put("message", "아이디가 없음");
+    } else {
+      PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+      if (passwordEncoder.matches(loginForm.getUserPassword(), users.getUserPassword())) {
+        String jwt = jwtService.createJwt(users.getUserLoginId(), users.getUserEmail());
+        map.put("result", "success");
+        map.put("userId", users.getUserLoginId());
+        map.put("jwt", jwt);
+      } else {
+        map.put("result", "fail");
+        map.put("message", "암호가 틀림");
+      }
+    }
+    return map;
+  }
   
   
 }

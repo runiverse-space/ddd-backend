@@ -14,4 +14,8 @@ public class UsersService {
   public void insertUser(Users users) {
     usersDao.insertUser(users);
   }
+
+  public Users getUser(String userLoginId) {
+    return usersDao.selectUserByuserloginId(userLoginId);
+  }
 }
