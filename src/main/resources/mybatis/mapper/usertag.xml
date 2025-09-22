@@ -5,4 +5,29 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.UserTagDao">
+  <!-- 여러 개 태그 추가 -->
+  <insert id="insertUserTag">
+    INSERT INTO userTag(user_id, tag_id)
+    <foreach collection="tagIds" item="tagId" separator="union all">
+      SELECT #{userId}, #{tagId} FROM dual
+    </foreach>
+  </insert>
+
+  <!-- userId로 태그 전체 조회 -->
+   <select id="selectByUserTag" resultType="userTag">
+    SELECT ut.user_id, t.tag_id, t.tagName, t.tagType
+    FROM tag t
+    INNER JOIN userTag ut ON t.tag_id = ut.tag_id
+    WHERE ut.user_id = #{userId}
+   </select>
+   
+  <!-- 여러 개 태그 삭제 -->
+  <delete id="deleteUserTag">
+    DELETE FROM userTag
+    WHERE user_id = #{userId}
+    AND tag_id IN
+    <foreach collection="tagIds" item="tagId" open="(" separator="," close=")">
+      #{tagId}
+    </foreach>
+  </delete>
 </mapper>
