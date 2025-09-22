@@ -4,7 +4,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.devdotdone.ddd.dao.ProjectMileStoneDao">
+<mapper namespace="com.devdotdone.ddd.dao.ProjectMilestoneDao">
   <insert id="insertMilestone" parameterType="ProjectMilestone">
 	  insert into projectMilestone( milestone_id, project_id, milestoneTitle, milestoneDate,
 	   milestoneSortOrder) 

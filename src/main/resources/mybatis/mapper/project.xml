@@ -43,17 +43,17 @@
   </delete>
 
   <!-- 프로젝트 + 참여 멤버 조회 -->
-  <select id="selectProjectWithMembers" resultMap="ProjectWithMembers">
+  <!-- <select id="selectProjectWithMembers" resultMap="ProjectWithMembers">
     SELECT p.project_id, p.projectTitle, p.projectContent,
            u.user_id, u.userName, upr.role
     FROM project p
     JOIN userProjectRole upr ON p.project_id = upr.project_id
     JOIN users u ON upr.user_id = u.user_id
     WHERE p.project_id = #{projectId}
-  </select>
+  </select> -->
 
      <!-- 프로젝트 마일스톤-->
-  <insert id="insertMilestone" parameterType="Milestone">
+  <insert id="insertMilestone" parameterType="ProjectMilestone">
     INSERT INTO projectMilestone (
     milestone_id, project_id, milestoneTitle, milestoneDate, milestoneSortOrder) 
     VALUES (
@@ -61,7 +61,7 @@
     #{milestoneTitle}, #{milestoneDate}, #{milestoneSortOrder})
   </insert>
 
-  <select id="selectMilestonesByProject" resultType="Milestone">
+  <select id="selectMilestonesByProject" resultType="ProjectMilestone">
     SELECT * FROM projectMilestone WHERE project_id = #{projectId} ORDER BY milestoneSortOrder
   </select>
 
