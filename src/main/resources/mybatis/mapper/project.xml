@@ -14,13 +14,13 @@
     , projectEndDate ,projectCreatedAt) 
   VALUES (
     #{projectId}, #{userId}, #{projectTitle},
-    #{projectContent}, #{projectStartDate}, #{projectEndDate}, sysstamp)
+    #{projectContent}, #{projectStartDate}, #{projectEndDate}, SYSTIMESTAMP)
   </insert> 
 
 
   <select id="selectProjectById" parameterType="int" resultType="Project">
     SELECT 
-    projectId,userId,projectTitle,projectContent,
+    project_id,user_id,projectTitle,projectContent,
     projectStartDate,projectEndDate,projectCreatedAt
     
     FROM project 
@@ -52,18 +52,7 @@
     WHERE p.project_id = #{projectId}
   </select> -->
 
-     <!-- 프로젝트 마일스톤-->
-  <insert id="insertMilestone" parameterType="ProjectMilestone">
-    INSERT INTO projectMilestone (
-    milestone_id, project_id, milestoneTitle, milestoneDate, milestoneSortOrder) 
-    VALUES (
-    seq_projectMilestone.NEXTVAL, #{projectId}, 
-    #{milestoneTitle}, #{milestoneDate}, #{milestoneSortOrder})
-  </insert>
-
-  <select id="selectMilestonesByProject" resultType="ProjectMilestone">
-    SELECT * FROM projectMilestone WHERE project_id = #{projectId} ORDER BY milestoneSortOrder
-  </select>
+  
 
 
 
