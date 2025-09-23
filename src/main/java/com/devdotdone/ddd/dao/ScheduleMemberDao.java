@@ -9,6 +9,8 @@ import com.devdotdone.ddd.dto.schedule.ScheduleMember;
 @Mapper
 public interface ScheduleMemberDao {
   public void chargeUsers(ScheduleMember scheduleMember);
+  public ScheduleMember selectOne(ScheduleMember scheduleMember);
   public List<ScheduleMember> findUsers(int scheduleId);
-  public int dischargeUsers(int userId);
+  public int dischargeUsers(ScheduleMember scheduleMember);
+  public int dischargeAll(int scheduleId);
 }

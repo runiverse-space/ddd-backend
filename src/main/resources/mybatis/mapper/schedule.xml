@@ -35,14 +35,14 @@
   <!-- 일정 수정 -->
   <update id="update" parameterType="Schedule">
     UPDATE schedule
-    SET user_id = #{userId}, scheduleTitle = #{scheduleTitle}, scheduleContent = {scheduleContent},
+    SET user_id = #{userId}, scheduleTitle = #{scheduleTitle}, scheduleContent = #{scheduleContent},
         scheduleStartDate = #{scheduleStartDate}, scheduleEndDate = #{scheduleEndDate}, scheduleStatus = #{scheduleStatus}
     WHERE schedule_id = #{scheduleId}
   </update>
 
   <!-- 일정 삭제 -->
   <delete id="delete" parameterType="int">
-    DELETE FROM users WHERE schedule_id = #{scheduleId}
+    DELETE FROM schedule WHERE schedule_id = #{scheduleId}
   </delete>
 
   <!-- Schedule + Members -->
