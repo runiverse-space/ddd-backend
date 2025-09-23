@@ -22,7 +22,7 @@ public interface UserProjectRoleDao {
   int countProjectAdmins(@Param("projectId") int projectId);
 
   // selectUserProjectRole
-  UserProjectRole selecUserProjectRole(@Param("projectId") int projectId, @Param("userId") int userId);
+  UserProjectRole selectUserProjectRole(@Param("projectId") int projectId, @Param("userId") int userId);
 
   // updateUserProjectRole
   int updateUserProjectRole(UserProjectRole userProjectRole);

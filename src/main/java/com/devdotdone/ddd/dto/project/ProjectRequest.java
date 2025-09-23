@@ -2,6 +2,9 @@ package com.devdotdone.ddd.dto.project;
 
 import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class ProjectRequest {
     private int uprId;
     private int userId;
