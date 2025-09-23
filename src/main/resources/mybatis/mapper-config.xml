@@ -22,7 +22,7 @@
     <typeAlias type="com.devdotdone.ddd.dto.tag.KnowledgeTag" alias="KnowledgeTag"/>
     <typeAlias type="com.devdotdone.ddd.dto.tag.ProjectTag" alias="ProjectTag"/>
     <typeAlias type="com.devdotdone.ddd.dto.tag.UserTag" alias="UserTag"/>
-    <typeAlias type="com.devdotdone.ddd.dto.users.UserProjectRole" alias="UserProjectRole"/>
+    <typeAlias type="com.devdotdone.ddd.dto.userProjectRole.UserProjectRole" alias="UserProjectRole"/>
     <typeAlias type="com.devdotdone.ddd.dto.users.Users" alias="Users"/>
   </typeAliases>
 
