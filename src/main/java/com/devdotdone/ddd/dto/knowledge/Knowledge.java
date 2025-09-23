@@ -6,13 +6,14 @@ import lombok.Data;
 
 @Data
 public class Knowledge {
+  private int knowledgeId;
   private int projectId;
   private int userId;
   private String knowledgeTitle;
-  private String knoledgeContent;
+  private String knowledgeContent;
   private String knowledgeUrl;
 
-  private MultipartFile battach;
+  private MultipartFile kfattach;
   private String kfattachoname;
   private String kfattachsname;
   private String kfattachtype;
