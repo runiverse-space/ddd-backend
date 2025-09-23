@@ -73,7 +73,7 @@ public class ScheduleService {
 
   // 일정 수정
   @Transactional
-  public Schedule modify(ScheduleRequest request) {
+  public Schedule update(ScheduleRequest request) {
     Schedule schedule = scheduleDao.selectScheduleById(request.getScheduleId());
     if (schedule == null) {
       return null;
