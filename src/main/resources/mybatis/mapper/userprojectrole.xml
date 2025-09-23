@@ -15,11 +15,10 @@
       upr_id, user_id, project_id,uprRole
     )
     values(seq_userProjectRole.NEXTVAL, #{userId}, #{projectId},#{uprRole})
-
   </insert>
 
   <!-- 특정 프로젝트의 멤버 조회-->
-  <select id="selectProjectMembers" resultType="UserProjectRole" parameterType="int">
+  <select id="selectProjectMembers" parameterType="int" resultType="UserProjectRole">
     select upr_id, user_id, project_id, uprrole
     from userprojectrole
     where project_id=#{projectId}
@@ -27,14 +26,14 @@
   </select>
 
   <!-- 카운트 멤버수-->
-  <select id="countProjectMembers" parameterType="int" resultType="int">
+  <select id="countProjectMembers" parameterType="int">
     select count(*) 
     from userprojectrole 
     where project_id=#{projectId} 
   </select>
 
   <!-- 특정 프로젝트의 관리자 수 찾기-->
-  <select id="countProjectAdmins" parameterType="int" resultType="int">
+  <select id="countProjectAdmins" parameterType="int">
     select count(*)
     from userProjectRole
     where project_id=#{projectId}
@@ -42,19 +41,11 @@
 
   </select>
 
-
   <!--특정 사용자의 프로젝트 역할 조회 -->
-  <select id="selectUserProjectRole" parameterType="" resultType="userroleproject">
+  <select id="selectUserProjectRole" parameterType="map" resultType="userroleproject">
     select uprrole
     from userprojectrole
     where project_id = #{projectId} AND user_id = #{userId}
-  </select>
-
-  <!--유저 권한 확인-->
-  <select id="selectUserRoleInProject" parameterType="UserProjectRole" resultType="string">
-    select uprRole
-    from userprojectrole
-    where user_id=#{userId} and project_id=#{projectId}
   </select>
 
   <!-- 사용자 역할변경  -->
@@ -66,9 +57,8 @@
   </update>
 
   <!--프로젝트에서 유저 제거-->
-  <delete id="deleteUserProjectRole">
+  <delete id="deleteUserProjectRole" parameterType="map">
     delete from UserProjectRole
     where user_id=#{userId} and project_id=#{projectId}
   </delete>
-
 </mapper>
