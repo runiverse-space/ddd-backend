@@ -5,6 +5,16 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.UserTagDao">
+
+  <resultMap id="userTagMap" type="UserTag">
+    <id property="userId" column="user_id"/>
+    <association property="tag" javaType="Tag">
+        <id property="tagId" column="tag_id"/>
+        <result property="tagName" column="tagName"/>
+        <result property="tagType" column="tagType"/>
+    </association>
+</resultMap>
+
   <!-- 여러 개 태그 추가 -->
   <insert id="insertUserTag">
     INSERT INTO userTag(user_id, tag_id)
@@ -14,7 +24,7 @@
   </insert>
 
   <!-- userId로 태그 전체 조회 -->
-   <select id="selectByUserTag" resultType="userTag">
+   <select id="selectByUserTag" resultMap="userTagMap">
     SELECT ut.user_id, t.tag_id, t.tagName, t.tagType
     FROM tag t
     INNER JOIN userTag ut ON t.tag_id = ut.tag_id
@@ -30,4 +40,10 @@
       #{tagId}
     </foreach>
   </delete>
+
+  <select id="countByUserTag">
+    SELECT COUNT(*)
+    FROM userTag
+    WHERE user_id = #{userId}
+  </select>
 </mapper>

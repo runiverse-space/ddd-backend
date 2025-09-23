@@ -18,4 +18,6 @@ public interface UserTagDao {
     // deleteUserTags
     int deleteUserTag(@Param("userId") int userId, @Param("tagIds") List<Integer> tagIds);
 
+    // countByUserTag
+    int countByUserTag(int userId);    
 }

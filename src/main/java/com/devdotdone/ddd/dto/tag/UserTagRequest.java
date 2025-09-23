@@ -1,9 +1,11 @@
 package com.devdotdone.ddd.dto.tag;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
-public class UserTag {
+public class UserTagRequest {
     private int userId;
-    private Tag tag;
+    private List<Integer> tagIds;
 }
