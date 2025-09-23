@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.devdotdone.ddd.dto.users.UserProjectRole;
+import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
 
 @Mapper
 public interface UserProjectRoleDao {
@@ -19,5 +19,22 @@ public interface UserProjectRoleDao {
   public String selectUserRoleInProject(UserProjectRole userProjectRole);
   //프로젝트에서 유저 제거
   public int deleteUserFromProject(@Param("userId")int userId,@Param("projectId") int projectId);
+
+
+  // insertUsersProjectRole
+
+  // selectProjectMembers
+
+  // countProjectMembers
+
+  // countProjectAdmins
+
+  // selectUserProjectRole
+
+  // selectUserRoleInProject
+
+  // updateUserProjectRole
+
+  // deleteUserProjectRole
 
 }
