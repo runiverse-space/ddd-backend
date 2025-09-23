@@ -78,10 +78,10 @@ public class ScheduleController {
   public Map<String, Object> update(@RequestBody ScheduleRequest request) {
     Map<String, Object> map = new HashMap<>();
 
-    Schedule schedule = scheduleService.modify(request);
+    Schedule schedule = scheduleService.update(request);
 
     try {
-      scheduleService.modify(request);
+      scheduleService.update(request);
       map.put("result", "success");
       map.put("data", schedule);
     } catch (Exception e) {
