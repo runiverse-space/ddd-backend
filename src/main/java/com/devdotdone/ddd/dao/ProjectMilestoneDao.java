@@ -1,5 +1,7 @@
 package com.devdotdone.ddd.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.devdotdone.ddd.dto.project.ProjectMilestone;
@@ -17,12 +19,9 @@ CREATE TABLE projectMilestone (
 
 @Mapper
 public interface ProjectMilestoneDao {
-
-  public int insertMilestone(ProjectMilestone projectMilestone );
-  public ProjectMilestone selectMilestonesByProject(int projectMilestoneId);
-  public int updateMilestone();
-  public int deleteMilestone();
-  
- 
-
+  public int insertMilestone(ProjectMilestone projectMilestone);
+  public ProjectMilestone selectByProject(int milestoneId);
+  public List<ProjectMilestone> selectMilestonesByProject(int projectId);
+  public int updateMilestone(ProjectMilestone projectMilestone);
+  public int deleteMilestone(int milestoneId);
 }
