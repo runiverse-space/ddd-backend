@@ -13,10 +13,10 @@ public class Knowledge {
   private String knowledgeContent;
   private String knowledgeUrl;
 
-  private MultipartFile kfattach;
-  private String kfattachoname;
-  private String kfattachsname;
-  private String kfattachtype;
-  private byte[] kfattachdata;
+  private MultipartFile kfAttach;
+  private String kfAttachoname;
+  private String kfAttachsname;
+  private String kfAttachtype;
+  private byte[] kfAttachdata;
 
 }

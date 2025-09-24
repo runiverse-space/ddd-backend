@@ -30,12 +30,6 @@ CREATE TABLE knowledge (
 
  */
 
-
-
-
-
-
-
 @Mapper
 public interface KnowledgeDao {
   //생성
