@@ -11,6 +11,7 @@ public interface ScheduleMemberDao {
   public void chargeUsers(ScheduleMember scheduleMember);
   public ScheduleMember selectOne(ScheduleMember scheduleMember);
   public List<ScheduleMember> findUsers(int scheduleId);
+  public List<ScheduleMember> findSchedulesOfUsers(int userId);
   public int dischargeUsers(ScheduleMember scheduleMember);
   public int dischargeAll(int scheduleId);
 }

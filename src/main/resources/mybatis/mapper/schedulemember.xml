@@ -24,7 +24,7 @@
   </select>
 
   <!-- 특정 사용자가 배정받은 일정 조회 -->
-  <select id="findUsers" parameterType="int" resultType="ScheduleMember">
+  <select id="findSchedulesOfUsers" parameterType="int" resultType="ScheduleMember">
     SELECT schedule_id, user_id FROM scheduleMember
     WHERE user_id = #{userId}
   </select>
