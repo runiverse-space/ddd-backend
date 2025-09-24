@@ -3,7 +3,7 @@
 
 <mapper namespace="com.devdotdone.ddd.dao.ScheduleDao">
   <!-- 일정 생성 -->
-  <insert id="insert" parameterType="Schedule"> 
+  <insert id="insertSchedule" parameterType="Schedule"> 
     <selectKey keyProperty="scheduleId" resultType="int" order="BEFORE">
       select  seq_project_projectId.nextval from dual
     </selectKey>
@@ -25,7 +25,7 @@
   </select>
 
   <!-- 프로젝트의 일정 목록 조회 -->
-  <select id="selectByProject" resultType="Schedule" parameterType="int">
+  <select id="selectScheduleByProjectId" resultType="Schedule" parameterType="int">
     SELECT schedule_id, project_id, user_id, scheduleTitle, scheduleContent, 
       scheduleStartDate, scheduleEndDate, scheduleStatus, scheduleCreatedAt
     FROM schedule
@@ -33,7 +33,7 @@
   </select>
 
   <!-- 일정 수정 -->
-  <update id="update" parameterType="Schedule">
+  <update id="updateSchedule" parameterType="Schedule">
     UPDATE schedule
     SET user_id = #{userId}, scheduleTitle = #{scheduleTitle}, scheduleContent = #{scheduleContent},
         scheduleStartDate = #{scheduleStartDate}, scheduleEndDate = #{scheduleEndDate}, scheduleStatus = #{scheduleStatus}
@@ -41,7 +41,7 @@
   </update>
 
   <!-- 일정 삭제 -->
-  <delete id="delete" parameterType="int">
+  <delete id="deleteSchedule" parameterType="int">
     DELETE FROM schedule WHERE schedule_id = #{scheduleId}
   </delete>
 

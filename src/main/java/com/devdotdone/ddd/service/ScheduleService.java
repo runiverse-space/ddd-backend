@@ -16,6 +16,7 @@ import com.devdotdone.ddd.dto.schedule.Schedule;
 import com.devdotdone.ddd.dto.schedule.ScheduleMember;
 import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
 import com.devdotdone.ddd.dto.users.Users;
+import com.devdotdone.ddd.dto.users.UsersResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,7 +46,7 @@ public class ScheduleService {
     schedule.setScheduleStatus(request.getScheduleStatus());
 
     log.info(schedule.toString());
-    scheduleDao.insert(schedule);
+    scheduleDao.insertSchedule(schedule);
 
     assignUsers(schedule.getScheduleId(), request.getUserIds());
   }
@@ -57,18 +58,32 @@ public class ScheduleService {
 
   // 프로젝트에 속한 일정 조회
   public List<Schedule> getListByProject(int projectId) {
-    return scheduleDao.selectByProject(projectId);
+    return scheduleDao.selectScheduleByProjectId(projectId);
   }
 
   // 일정을 배정받은 사용자 조회
-  public List<Users> getAssignedUsers(int scheduleId) {
-    List<Users> usersList = new ArrayList<>();
+  public List<UsersResponse> getAssignedUsers(int scheduleId) {
+    List<UsersResponse> usersResponseList = new ArrayList<>();
     List<ScheduleMember> smList = scheduleMemberDao.findUsers(scheduleId);
     for (ScheduleMember sm : smList) {
       int userId = sm.getUserId();
-      usersList.add(usersDao.selectUserById(userId));
+      Users users = usersDao.selectUserById(userId);
+
+      UsersResponse usersResponse = new UsersResponse();
+
+      usersResponse.setUserId(users.getUserId());
+      usersResponse.setUserLoginId(users.getUserLoginId());
+      usersResponse.setUserName(users.getUserName());
+      usersResponse.setUserEmail(users.getUserEmail());
+      usersResponse.setUserIntro(users.getUserIntro());
+      usersResponse.setUfAttach(users.getUfAttach());
+      usersResponse.setUfAttachoname(users.getUfAttachoname());
+      usersResponse.setUfAttachtype(users.getUfAttachtype());
+      usersResponse.setUfAttachdata(users.getUfAttachdata());
+
+      usersResponseList.add(usersResponse);
     }
-    return usersList;
+    return usersResponseList;
   }
 
   // 일정 수정
@@ -88,7 +103,7 @@ public class ScheduleService {
     schedule.setScheduleStatus(request.getScheduleStatus());
 
     log.info(schedule.toString());
-    scheduleDao.update(schedule);
+    scheduleDao.updateSchedule(schedule);
 
     log.info("업데이트됨");
 
@@ -103,7 +118,7 @@ public class ScheduleService {
   // 일정 삭제
   public int remove(int scheduleId) {
     scheduleMemberDao.dischargeAll(scheduleId);
-    return scheduleDao.delete(scheduleId);
+    return scheduleDao.deleteSchedule(scheduleId);
   }
 
   // 일정 할당

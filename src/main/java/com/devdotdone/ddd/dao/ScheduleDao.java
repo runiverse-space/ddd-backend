@@ -8,9 +8,9 @@ import com.devdotdone.ddd.dto.schedule.Schedule;
 
 @Mapper
 public interface ScheduleDao {
-  public int insert(Schedule schedule);
+  public int insertSchedule(Schedule schedule);
   public Schedule selectScheduleById(int scheduleId);
-  public List<Schedule> selectByProject(int projectId);
-  public int update(Schedule schedule);
-  public int delete(int scheduleId);
+  public List<Schedule> selectScheduleByProjectId(int projectId);
+  public int updateSchedule(Schedule schedule);
+  public int deleteSchedule(int scheduleId);
 }
