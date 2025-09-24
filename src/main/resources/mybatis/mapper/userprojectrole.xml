@@ -11,16 +11,16 @@
        SELECT seq_userprojectrole_uprid.NEXTVAL FROM dual
     </selectKey>
 
-    insert into UserProjectRole(
-      upr_id, user_id, project_id,uprRole
+    insert into userProjectRole(
+      upr_id, user_id, project_id, uprRole
     )
-    values(seq_userProjectRole.NEXTVAL, #{userId}, #{projectId},#{uprRole})
+    values(#{uprId}, #{userId}, #{projectId},#{uprRole})
   </insert>
 
   <!-- 특정 프로젝트의 멤버 조회-->
   <select id="selectProjectMembers" parameterType="int" resultType="UserProjectRole">
-    select upr_id, user_id, project_id, uprrole
-    from userprojectrole
+    select upr_id, user_id, project_id, uprRole
+    from userProjectRole
     where project_id=#{projectId}
     order by upr_id
   </select>
@@ -28,7 +28,7 @@
   <!-- 카운트 멤버수-->
   <select id="countProjectMembers" parameterType="int">
     select count(*) 
-    from userprojectrole 
+    from userProjectRole 
     where project_id=#{projectId} 
   </select>
 
@@ -43,8 +43,8 @@
 
   <!--특정 사용자의 프로젝트 역할 조회 -->
   <select id="selectUserProjectRole" parameterType="map" resultType="UserProjectRole">
-    select uprrole
-    from userprojectrole
+    select uprRole
+    from userProjectRole
     where project_id = #{projectId} AND user_id = #{userId}
   </select>
 
@@ -58,7 +58,7 @@
 
   <!--프로젝트에서 유저 제거-->
   <delete id="deleteUserProjectRole" parameterType="map">
-    delete from UserProjectRole
+    delete from userProjectRole
     where user_id=#{userId} and project_id=#{projectId}
   </delete>
 </mapper>
