@@ -16,7 +16,8 @@
       kfAttachoname, kfAttachsname, kfAttachtype, kfAttachdata, 
       knowledgeCreatedAt
     )
-    values(#{knowledgeId},
+    values(
+    #{knowledgeId},
     #{projectId},#{userId},#{knowledgeTitle},#{knowledgeContent},
     #{knowledgeUrl},#{kfAttachoname},#{kfAttachsname},#{kfAttachtype},#{kfAttachdata},
     SYSTIMESTAMP)
@@ -73,14 +74,14 @@
     update knowledge
     set knowledgeTitle =#{knowledgeTitle},
         knowledgeContent=#{knowledgeContent},
-        knoledgeUrl=#{knoledgeUrl},
-        <if test="kfattachoname!=null">
+        knowledgeUrl=#{knowledgeUrl}
+        <if test="kfAttachoname!=null">
         ,kfAttachoname=#{kfAttachoname}
         ,kfAttachsname=#{kfAttachsname}
         ,kfAttachtype=#{kfAttachtype}
         ,kfAttachdata=#{kfAttachdata}
         </if>
-      where knowledge_id=#{knowledgeId}
+    where knowledge_id=#{knowledgeId}
 
   </update>
 

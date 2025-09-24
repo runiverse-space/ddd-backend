@@ -26,6 +26,14 @@ public class KnowledgeService {
     return knowledge;
   }
 
-  
+  public int update(Knowledge knowledge){
+    int rows =knowledgeDao.updateKnowledge(knowledge);
+    return rows;
+  }
+
+  public int delete(int knowledgeId){
+    int rows= knowledgeDao.deleteKnowledge(knowledgeId);
+    return rows;
+  }
 
 }
