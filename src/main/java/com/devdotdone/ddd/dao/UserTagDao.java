@@ -9,15 +9,12 @@ import com.devdotdone.ddd.dto.tag.Tag;
 
 @Mapper
 public interface UserTagDao {
-    // insertUserTags
-    int insertUserTag(@Param("userId") int userId, @Param("tagIds") List<Integer> tagIds);
+    // insertUserTag
+    void insertUserTag(@Param("userId") int userId, @Param("tagId") int tagId);
 
-    // selectTagsByUser
-    List<Tag> selectByUserTag(int userId);
+    // selectTagByUserId
+    List<Tag> selectTagByUserId(int userId);
 
-    // deleteUserTags
-    int deleteUserTag(@Param("userId") int userId, @Param("tagIds") List<Integer> tagIds);
-
-    // countByUserTag
-    int countByUserTag(int userId);    
+    //deleteUserTag
+    void deleteTagById(@Param("userId") int userId, @Param("tagId") int tagId);
 }

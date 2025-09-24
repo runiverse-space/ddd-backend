@@ -5,35 +5,27 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.TagDao">
-  <!-- 태그생성 -->
-  <insert id="insertTag" parameterType="Tag">
-    <selectKey keyProperty="tagId" resultType="int" order="BEFORE"> 
-      select seq_tag_tag_id.nextval from dual 
-    </selectKey> 
-    INSERT INTO tag (tag_id, tagName, tagType) 
-    VALUES (#{tagId}, #{tagName}, #{tagType}) 
+  <!-- Tag 생성 -->
+  <insert id="insertTag" useGeneratedKeys="true" keyProperty="tagId" parameterType="Tag">
+    <selectKey keyProperty="tagId" resultType="int" order="BEFORE">
+      SELECT seq_tag_tagId.NEXTVAL FROM dual
+    </selectKey>
+    INSERT INTO tag (tag_id, tagName, tagType)
+    VALUES (#{tagId}, #{tagName}, #{tagType})
   </insert>
 
-  <!-- 전체 태그 조회 -->
-  <select id="selectAllTags" resultType="Tag"> 
+  <!-- Tag 조회 -->
+  <select id="selectTagById" resultType="Tag">
+    SELECT tag_id, tagName, tagType
+    FROM tag
+    WHERE tag_id IN
+    <foreach collection="tagIds" item="tagId" open="(" separator="," close=")">
+      #{tagId}
+    </foreach>
+  </select>
+
+  <!-- 모든 Tag 조회 -->
+   <select id="selectAllTag" resultType="Tag">
     SELECT tag_id, tagName, tagType FROM tag
-  </select>
-
-  <!-- 태그 타입 조회 selectTagByTagType('USER/PROJECT') 기술 스택 목록 가져오기 -->
-  <select id="selectByTagType" resultType="Tag" parameterType="String"> 
-    SELECT tag_id, tagName, tagType FROM tag 
-    WHERE tagType= #{tagType}
-    ORDER BY tagName
-  </select>
-
-  <!-- 태그 수정 -->
-  <update id="updateTag" parameterType="Tag"> 
-    UPDATE tag SET tagName = #{tagName}, tagType = #{tagType}
-    WHERE tag_id = #{tagId} 
-  </update>
-
-  <!-- 태그 삭제 -->
-  <delete id="deleteTag" parameterType="int"> 
-    DELETE FROM tag WHERE tag_id = #{tagId} 
-  </delete>
+   </select>
 </mapper>

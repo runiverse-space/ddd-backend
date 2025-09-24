@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class UserTagRequest {
+public class UserTagResponse {
     private int userId;
-    private List<Integer> tagIds; // 태그 선택 ID
+    private List<Tag> tags; // 태그 정보
 }
