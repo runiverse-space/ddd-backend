@@ -24,4 +24,5 @@ public interface ProjectMilestoneDao {
   public List<ProjectMilestone> selectMilestonesByProject(int projectId);
   public int updateMilestone(ProjectMilestone projectMilestone);
   public int deleteMilestone(int milestoneId);
+  public int deleteAll(int projectId);
 }
