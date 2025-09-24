@@ -10,7 +10,7 @@
     <selectKey keyProperty="knowledgeCommentId" resultType="int" order="BEFORE">
       select seq_knowledgecomment_knowledgeCommentId.nextval from dual
     </selectKey>
-      insert into knowledgeComment(
+      insert into knowledgecomment(
         knowledgeComment_id, knowledge_id, user_id,
         knowledgeCommentContent, knowledgeCommentCreatedAt
       )
@@ -20,32 +20,55 @@
   </insert>
  
   <!-- 코멘트 조회-->
-  <select id="selectKnowledgeCommentByKnowledgeCommentId" parameterType="KnowledgeComment">
+  <select id="selectKnowledgeCommentByKnowledgeCommentId" parameterType="int" resultType="KnowledgeComment" >
+    
     select
-       knowledgeCommentId, knowledge_id, user_id, knowledgeCommentContent,
-       knowledgeCommentCreatedAt
+       knowledgeComment_id, knowledge_id, user_id, knowledgeCommentContent,
+       knowledgeCommentCreatedAt, knowledgeCommentUpdatedAt
     from knowledgecomment
-    where knowledgeCommentId= #{knowledgeCommentId}
+    where knowledgeComment_id= #{knowledgeCommentId}
+    
+  </select>
+  <!-- 댓글 목록 조회-->
+   <select id="selectKnowledgeCommentByKnowledgeId" parameterType="int" resultType="KnowledgeComment" >
+    
+    select
+       knowledgeComment_id, knowledge_id, user_id, knowledgeCommentContent,
+       knowledgeCommentCreatedAt, knowledgeCommentUpdatedAt
+    from knowledgecomment
+    where knowledge_id = #{knowledgeId}
+    order by knowledgeCommentCreatedAt ASC
+    
   </select>
 
   <!-- 코멘트 수정-->
   <update id="updateKnowledgeCommentByKnowledgeCommentId" parameterType="KnowledgeComment">
 	  update knowledgecomment
 	  set  
-        knowledgeCommentContent=#{knowledgeCommentContent}
-	  where knowledgeCommentId=#{knowledgeCommentId}
+        knowledgeCommentContent=#{knowledgeCommentContent},
+        knowledgeCommentUpdatedAt =#{knowledgeCommentUpdatedAt}
+
+	  where knowledgeComment_id=#{knowledgeCommentId}
 	  
   </update>
 
   <!-- 코멘트 삭제-->
   <delete id="deleteKnowledgeComment" parameterType="int">
     delete from knowledgecomment
-    where knowledgeCommentId=#{value}
+    where knowledgeComment_id=#{value}
   </delete>
  
   <!--count all 코멘트 -->
   <select id="countAllKnowledgeComment" resultType="int">
       select count(*) from knowledgecomment
   </select>
-  
+
+  <!--특정 지식글의 댓글 수 조회-->
+  <select id="countKnowledgeCommentsByKnowledgeId" parameterType="int" resultType="int">
+    select count(*) 
+    from  knowledgecomment
+    where knowledge_id = #{knowledgeId}
+  </select>
+
+
 </mapper>

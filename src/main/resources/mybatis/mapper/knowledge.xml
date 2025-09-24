@@ -13,12 +13,12 @@
     </selectKey>
     insert into knowledge(
       knowledge_id,project_id, user_id, knowledgeTitle,knowledgeContent, knowledgeUrl,
-      kfattachoname, kfattachsname, kfattachtype, kfattachdata, 
+      kfAttachoname, kfAttachsname, kfAttachtype, kfAttachdata, 
       knowledgeCreatedAt
     )
     values(#{knowledgeId},
     #{projectId},#{userId},#{knowledgeTitle},#{knowledgeContent},
-    #{knowledgeUrl},#{kfattachoname},#{kfattachsname},#{kfattachtype},#{kfattachdata},
+    #{knowledgeUrl},#{kfAttachoname},#{kfAttachsname},#{kfAttachtype},#{kfAttachdata},
     SYSTIMESTAMP)
   </insert>
 
@@ -27,7 +27,7 @@
     select
       knowledge_id, project_id, user_id, knowledgeTitle, 
       knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
       from knowledge
     where knowledge_id = #{knowledgeId}
     order by knowledgeCreatedAt desc
@@ -38,7 +38,7 @@
     select
       knowledge_id, project_id, user_id, knowledgeTitle, 
       knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
       from knowledge
 
     where user_id =#{userId}
@@ -52,7 +52,7 @@
     select
       knowledge_id, project_id, user_id, knowledgeTitle, 
       knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
     from knowledge
     where project_id=#{projectId}
     order by knowledgeCreatedAt desc
@@ -63,7 +63,7 @@
     select
       knowledge_id, project_id, user_id, knowledgeTitle, 
       knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfattachoname, kfattachsname, kfattachtype,kfattachdata
+      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
     from knowledge
     order by knowledgeCreatedAt desc
   </select>
@@ -71,14 +71,14 @@
   <!-- update 문-->
   <update id="updateKnowledge" parameterType="Knowledge">
     update knowledge
-    set knowledgeTitle =#{},
-        knowledgeContent=#{},
-        knoledgeUrl=#{},
-        <if test="kfattachoname=!null">
-        ,kfattachoname=#{kfattachoname}
-        ,kfattachsname=#{kfattachsname}
-        ,kfattachtype=#{kfattachtype}
-        ,kfattachdate=#{kfattachdate}
+    set knowledgeTitle =#{knowledgeTitle},
+        knowledgeContent=#{knowledgeContent},
+        knoledgeUrl=#{knoledgeUrl},
+        <if test="kfattachoname!=null">
+        ,kfAttachoname=#{kfAttachoname}
+        ,kfAttachsname=#{kfAttachsname}
+        ,kfAttachtype=#{kfAttachtype}
+        ,kfAttachdata=#{kfAttachdata}
         </if>
       where knowledge_id=#{knowledgeId}
 
