@@ -11,7 +11,7 @@
       SELECT seq_projectMilestone_projectMilestoneId.nextval from dual
     </selectKey>
 	  INSERT INTO projectMilestone(milestone_id, project_id, milestoneTitle, milestoneDate) 
-	  VALUES (#{projectMilestoneId}, #{projectId},#{milestoneTitle}, #{sysdate})
+	  VALUES (#{projectMilestoneId}, #{projectId},#{milestoneTitle}, #{milestoneDate})
   </insert>
 
   <!-- 개별 마일스톤 조회 -->
