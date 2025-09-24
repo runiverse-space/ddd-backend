@@ -24,7 +24,7 @@
     
     select
        knowledgeComment_id, knowledge_id, user_id, knowledgeCommentContent,
-       knowledgeCommentCreatedAt, knowledgeCommentUpdatedAt
+       knowledgeCommentCreatedAt, knowledgeCommentUpdatedAt , knowledgeCommentUpdatedAt
     from knowledgecomment
     where knowledgeComment_id= #{knowledgeCommentId}
     
@@ -46,7 +46,7 @@
 	  update knowledgecomment
 	  set  
         knowledgeCommentContent=#{knowledgeCommentContent},
-        knowledgeCommentUpdatedAt =#{knowledgeCommentUpdatedAt}
+        knowledgeCommentUpdatedAt = SYSTIMESTAMP
 
 	  where knowledgeComment_id=#{knowledgeCommentId}
 	  

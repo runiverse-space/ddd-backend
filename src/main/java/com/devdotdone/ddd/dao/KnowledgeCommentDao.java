@@ -31,19 +31,20 @@ alter table KNOWLEDGECOMMENT
 public interface KnowledgeCommentDao {
     //댓글 작성
     public int insertKnowledgeComment(KnowledgeComment knowledgeComment);
+    //코멘트 수정
+    public int updateKnowledgeCommentByKnowledgeCommentId(KnowledgeComment knowledgeComment);
+
 
    //특정 지식창고의 댓글 목록 조회
     public List<KnowledgeComment> selectKnowledgeCommentByKnowledgeId(int knowledgeId);
    //댓글 상세 조회
-  public KnowledgeComment selectKnowledgeCommentByKnowledgeCommentId(int knowledgeCommentId);
+    public KnowledgeComment selectKnowledgeCommentByKnowledgeCommentId(int knowledgeCommentId);
 
   //public List<KnowledgeComment> selectByPage(Pager pager);
 
   
   //특정 지식글의 댓글 수 조회
   public int countKnowledgeCommentsByKnowledgeId(int knowledgeId);
-  
-  public int updateKnowledgeCommentByKnowledgeCommentId(KnowledgeComment knowledgeComment);
 
   public int deleteKnowledgeComment(int knowledgeCommentId);
 
