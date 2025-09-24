@@ -7,11 +7,11 @@
 <mapper namespace="com.devdotdone.ddd.dao.ProjectMilestoneDao">
   <!-- 마일스톤 추가 -->
   <insert id="insertMilestone" parameterType="ProjectMilestone">
-    <selectKey keyProperty="projectMilestoneId" resultType="int" order="BEFORE">
+    <selectKey keyProperty="MilestoneId" resultType="int" order="BEFORE">
       SELECT seq_projectMilestone_projectMilestoneId.nextval from dual
     </selectKey>
 	  INSERT INTO projectMilestone(milestone_id, project_id, milestoneTitle, milestoneDate) 
-	  VALUES (#{projectMilestoneId}, #{projectId},#{milestoneTitle}, #{milestoneDate})
+	  VALUES (#{MilestoneId}, #{projectId},#{milestoneTitle}, #{milestoneDate})
   </insert>
 
   <!-- 개별 마일스톤 조회 -->

@@ -16,10 +16,10 @@ CREATE TABLE projectMilestone (
 
 @Data
 public class ProjectMilestone {
-  private int projectMilestoneId;
+  private int MilestoneId;
   private int projectId;
-  private String projectMilestoneTitle;
-  private Date projectMilestoneDate ;
+  private String MilestoneTitle;
+  private Date MilestoneDate ;
   //private int milestoneSortOrder;
 
 }
