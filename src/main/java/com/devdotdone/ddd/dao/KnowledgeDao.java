@@ -42,10 +42,10 @@ public interface KnowledgeDao {
   public Knowledge selectKnowledgeByProjectId(int projectId);
 
   //수정
-  public int update(Knowledge knowledge);
+  public int updateKnowledge(Knowledge knowledge);
 
   //삭제
-  public int delete(int knowledgeId);
+  public int deleteKnowledge(int knowledgeId);
 
   public int countAll();
 
