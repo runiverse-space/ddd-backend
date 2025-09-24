@@ -42,4 +42,10 @@
     WHERE milestone_id = #{milestoneId}
   </delete>
 
+  <!-- 프로젝트의 모든 마일스톤 삭제(프로젝트 삭제 시 실행) -->
+   <delete id="deleteAll" parameterType="int">
+    DELETE FROM projectMilestone
+    WHERE project_id = #{projectId}
+   </delete>
+
 </mapper>
