@@ -5,6 +5,21 @@ import java.sql.Timestamp;
 
 import lombok.Data;
 
+/*
+ -- [지식 댓글]
+CREATE TABLE knowledgeComment (
+    knowledgeComment_id    NUMBER PRIMARY KEY,
+    knowledge_id  NUMBER NOT NULL,
+    user_id     NUMBER NOT NULL, 
+    knowledgeCommentContent       CLOB NOT NULL,
+    knowledgeCommentCreatedAt    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_kc_knowledge FOREIGN KEY (knowledge_id) REFERENCES knowledge(knowledge_id),
+    CONSTRAINT fk_kc_user FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+ */
+
+
+
 @Data
 public class KnowledgeComment {
     private int knowledgeCommentId;
