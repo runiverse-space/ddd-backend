@@ -5,4 +5,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.KnowledgeTagDao">
+    <insert id="insertKnowledgeTag">
+    INSERT INTO knowledgeTag (knowledge_id, tag_id) 
+    VALUES (#{knowledgeId}, #{tagId})
+  </insert>
+
+  <select id="selectTagByKnowledgeId" resultType="Tag">
+    SELECT t.tag_id AS tagId, t.tagName, t.tagType
+    FROM knowledgeTag kt
+    JOIN tag t ON kt.tag_id = t.tag_id
+    WHERE kt.knowledge_id=#{knowledgeId}
+  </select>
+
+  <delete id="deleteKnowledgeTag">
+    DELETE FROM knowledgeTag
+    WHERE knowledge_id=#{knowledgeId} AND tag_id=#{tagId}
+  </delete>
 </mapper>
