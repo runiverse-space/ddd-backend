@@ -5,7 +5,7 @@
   <!-- 일정 생성 -->
   <insert id="insertSchedule" parameterType="Schedule"> 
     <selectKey keyProperty="scheduleId" resultType="int" order="BEFORE">
-      select  seq_project_projectId.nextval from dual
+      select  SEQ_SCHEDULE_SCHEDULEID.nextval from dual
     </selectKey>
     INSERT INTO schedule ( schedule_id, project_id, user_id,
     scheduleTitle, scheduleContent, scheduleStartDate, scheduleEndDate, scheduleStatus,
