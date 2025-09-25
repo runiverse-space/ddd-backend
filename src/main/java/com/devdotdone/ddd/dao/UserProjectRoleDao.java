@@ -23,6 +23,7 @@ public interface UserProjectRoleDao {
 
   // selectUserProjectRole
   UserProjectRole selectUserProjectRole(@Param("projectId") int projectId, @Param("userId") int userId);
+ 
 
   // updateUserProjectRole
   int updateUserProjectRole(UserProjectRole userProjectRole);

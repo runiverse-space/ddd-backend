@@ -42,8 +42,8 @@
   </select>
 
   <!--특정 사용자의 프로젝트 역할 조회 -->
-  <select id="selectUserProjectRole"  resultType="UserProjectRole">
-    select upr_id,user_id,project_id,uprRole
+  <select id="selectUserProjectRole" parameterType="UserProjectRole" resultType="UserProjectRole">
+    select uprRole
     from userProjectRole
     where project_id = #{projectId} AND user_id = #{userId}
   </select>
@@ -57,7 +57,7 @@
   </update>
 
   <!--프로젝트에서 유저 제거-->
-  <delete id="deleteUserProjectRole" parameterType="UserProjectRole">
+  <delete id="deleteUserProjectRole" parameterType="int">
     delete from userProjectRole
     where user_id=#{userId} and project_id=#{projectId}
   </delete>
