@@ -1,16 +1,15 @@
 package com.devdotdone.ddd.dto.tag;
 
 import lombok.Data;
-/*
-CREATE TABLE tag (
-    tag_id        NUMBER PRIMARY KEY,
-    tagName          VARCHAR2(50) NOT NULL,
-    tagType          VARCHAR2(20)
-); 
-*/
+
+/**
+ * 태그 DTO
+ * - DB tag 테이블과 매핑됨
+ */
+
 @Data
 public class Tag {
-  private int tagId;
-  private String tagName;
+  private int tagId;       // PK
+  private String tagName;  // 태그명
   private TagType tagType; // Enum
 }
