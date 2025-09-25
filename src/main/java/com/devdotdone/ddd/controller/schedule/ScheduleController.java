@@ -1,10 +1,9 @@
-package com.devdotdone.ddd.controller;
+package com.devdotdone.ddd.controller.schedule;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +18,13 @@ import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
 import com.devdotdone.ddd.dto.users.UsersResponse;
 import com.devdotdone.ddd.service.ScheduleService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/schedule")
-public class ScheduleController {
-
-  @Autowired
-  private ScheduleService scheduleService;
+@RequiredArgsConstructor
+public class ScheduleController implements ScheduleControllerDocs {
+  private final ScheduleService scheduleService;
 
   @PostMapping("/create")
   public Map<String, Object> create(@RequestBody ScheduleRequest request) {
@@ -74,9 +74,6 @@ public class ScheduleController {
   @PutMapping("/update")
   public Map<String, Object> update(@RequestBody ScheduleRequest request) {
     Map<String, Object> map = new HashMap<>();
-
-    // Schedule schedule = scheduleService.update(request);
-
     try {
       Schedule schedule = scheduleService.update(request);
       if (schedule == null) {
