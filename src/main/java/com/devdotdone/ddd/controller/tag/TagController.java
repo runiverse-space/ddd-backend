@@ -27,7 +27,7 @@ public class TagController implements TagControllerDocs{
         tagService.insertTag(tag);
     }
 
-    @GetMapping("/tagType")
+    @GetMapping("/{tagType}")
     public List<Tag> getTagByType(@PathVariable("tagType") TagType tagType) {
         return tagService.getTagByType(tagType);
     }
