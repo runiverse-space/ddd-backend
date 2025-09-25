@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @RestController
 @RequestMapping("/api/users")
 @Slf4j
@@ -67,7 +65,7 @@ public class UsersController {
   @PostMapping("/login")
   public Map<String, Object> login(@RequestBody LoginForm loginForm) {
     Map<String, Object> map = new HashMap<>();
-    
+
     Users users = usersService.getUsers(loginForm.getUserLoginId());
     if (users == null) {
       map.put("result", "fail");
@@ -86,53 +84,62 @@ public class UsersController {
     }
     return map;
   }
-  
+
   @GetMapping("/detail")
-  public Map<String,Object> detail(@RequestParam("userId") int userId){
-    Map<String, Object> resultMap= new HashMap<>();
-    Users users= usersService.getUsers(userId);
+  public Map<String, Object> detail(@RequestParam("userId") int userId) {
+    Map<String, Object> resultMap = new HashMap<>();
+    Users users = usersService.getUsers(userId);
     resultMap.put("result", "success");
-    resultMap.put("data",users);
+    resultMap.put("data", users);
     return resultMap;
   }
 
-
-
   @PutMapping("/update")
-  public Map<String, Object> update(Users users) throws Exception{
-    log.info(users.toString());
-    
-    MultipartFile mf= users.getUfAttach();
-    if(mf!=null && !mf.isEmpty()){
-      users.setUfAttachoname(mf.getOriginalFilename());
-      users.setUfAttachtype(mf.getContentType());
-      users.setUfAttachdata(mf.getBytes());
-    }
-    log.info("----------파일 업데이트 시작");
-    Users dbUsers= usersService.update(users);
-log.info("----------파일 업데이트 실행 완료");
+  public Map<String, Object> update(Users users) throws Exception {
     Map<String, Object> map = new HashMap<>();
-    if(map==null){
-      map.put("result","fail");
-    }else{
-      map.put("result","success");
-      map.put("users","dbUsers");
+
+    try {
+      MultipartFile mf = users.getUfAttach();
+      if (mf != null && !mf.isEmpty()) {
+        users.setUfAttachoname(mf.getOriginalFilename());
+        users.setUfAttachtype(mf.getContentType());
+        users.setUfAttachdata(mf.getBytes());
+      }
+
+      Users dbUsers = usersService.update(users);
+      if (dbUsers == null) {
+        map.put("result", "fail");
+        map.put("message", "해당 사용자가 없습니다.");
+      } else {
+        map.put("result", "success");
+        map.put("users", dbUsers);
+      }
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
     }
     return map;
-
   }
 
   @DeleteMapping("/delete")
-  public String delete(@RequestParam("userId")int userId){
-    usersService.deleteUser(userId);
-    JSONObject jsonObject = new JSONObject();
-    jsonObject.put("result","success");
+  public Map<String, Object> delete(@RequestParam("userId") int userId) {
+    Map<String, Object> map = new HashMap<>();
 
-    return jsonObject.toString();
+    try {
+      int rows = usersService.deleteUser(userId);
+      if (rows == 0) {
+        map.put("result", "fail");
+        map.put("message", "삭제 실패");
+      } else {
+        map.put("result", "success");
+        map.put("message", "사용자가 삭제되었습니다.");
+      }
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
 
+    return map;
   }
 
-
-
-  
 }
