@@ -6,17 +6,18 @@
 
 <mapper namespace="com.devdotdone.ddd.dao.UserTagDao">
   <insert id="insertUserTag">
-    INSERT INTO userTag (user_id, tag_id) VALUES (#{userId}, #{tagId})
+    INSERT INTO userTag (user_id, tag_id) 
+    VALUES (#{userId}, #{tagId})
   </insert>
 
   <select id="selectTagByUserId" resultType="Tag">
-    SELECT t.tag_id, t.tagName, t.tagType
-    FROM tag t
-    JOIN userTag ut ON t.tag_id = ut.tag_id
-    WHERE ut.user_id = #{userId}
+    SELECT t.tag_id AS tagId, t.tagName, t.tagType
+    FROM userTag ut
+    JOIN tag t ON ut.tag_id = t.tag_id
+    WHERE ut.user_id=#{userId}
   </select>
 
-  <delete id="deleteTagById">
+  <delete id="deleteUserTag">
     DELETE FROM userTag
     WHERE user_id=#{userId} AND tag_id=#{tagId}
   </delete>
