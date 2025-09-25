@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
-
 @RestController
 @RequestMapping("/api/schedule")
 public class ScheduleController {
@@ -43,7 +40,7 @@ public class ScheduleController {
     }
     return map;
   }
-  
+
   @GetMapping("/detail")
   public Map<String, Object> detail(@RequestParam("scheduleId") int scheduleId) {
     Map<String, Object> map = new HashMap<>();
@@ -59,12 +56,13 @@ public class ScheduleController {
   }
 
   // @GetMapping("/project/schedules")
-  // public Map<String, Object> projectSchedules(@RequestParam("projectId") int projectId) {
-  //   Map<String, Object> map = new HashMap<>();
-  //   List<Schedule> schedules = scheduleService.getListByProject(projectId);
-  //   map.put("result", "success");
-  //   map.put("schedules", schedules);
-  //   return map;
+  // public Map<String, Object> projectSchedules(@RequestParam("projectId") int
+  // projectId) {
+  // Map<String, Object> map = new HashMap<>();
+  // List<Schedule> schedules = scheduleService.getListByProject(projectId);
+  // map.put("result", "success");
+  // map.put("schedules", schedules);
+  // return map;
   // }
 
   @GetMapping("/users")
@@ -74,7 +72,7 @@ public class ScheduleController {
     map.put("users", usersList);
     return map;
   }
-  
+
   @PutMapping("/update")
   public Map<String, Object> update(@RequestBody ScheduleRequest request) {
     Map<String, Object> map = new HashMap<>();
@@ -90,26 +88,33 @@ public class ScheduleController {
         map.put("result", "success");
         map.put("data", schedule);
       }
-      
+
     } catch (Exception e) {
       map.put("result", "fail");
       map.put("message", e.getMessage());
     }
     return map;
   }
-  
+
   @DeleteMapping("/delete")
   public Map<String, Object> delete(@RequestParam("scheduleId") int scheduleId) {
     Map<String, Object> map = new HashMap<>();
-    int rows = scheduleService.remove(scheduleId);
-    if (rows == 0) {
+
+    try {
+      int rows = scheduleService.remove(scheduleId);
+      if (rows == 0) {
+        map.put("result", "fail");
+        map.put("message", "삭제 실패");
+      } else {
+        map.put("result", "success");
+        map.put("message", "일정이 삭제되었습니다.");
+      }
+    } catch (Exception e) {
       map.put("result", "fail");
-      map.put("message", "삭제 실패");
-    } else {
-      map.put("result", "success");
-      map.put("message", "일정이 삭제되었습니다.");
+      map.put("message", e.getMessage());
     }
+
     return map;
   }
-  
+
 }
