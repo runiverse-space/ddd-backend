@@ -3,7 +3,6 @@ package com.devdotdone.ddd.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,19 +15,16 @@ import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
 import com.devdotdone.ddd.dto.users.Users;
 import com.devdotdone.ddd.dto.users.UsersResponse;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ScheduleService {
-  @Autowired
-  private ScheduleDao scheduleDao;
-
-  @Autowired
-  private ScheduleMemberDao scheduleMemberDao;
-
-  @Autowired
-  private UsersDao usersDao;
+  private final ScheduleDao scheduleDao;
+  private final ScheduleMemberDao scheduleMemberDao;
+  private final UsersDao usersDao;
 
   // 일정 추가
   @Transactional
