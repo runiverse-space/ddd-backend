@@ -28,7 +28,7 @@ public class UsersService {
   }
 
   // 로그인 ID로 조회
-  public Users getUser(String userLoginId) {
+  public Users getUsers(String userLoginId) {
     return usersDao.selectUserByuserloginId(userLoginId);
   }
   // 이메일로 조회

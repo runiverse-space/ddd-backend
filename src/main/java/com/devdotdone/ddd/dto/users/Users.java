@@ -30,7 +30,7 @@ public class Users {
   private String userEmail;
 
   private String userIntro;
-  private Date userCreateAt;
+  private Date userCreatedAt;
 
   @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
   private MultipartFile ufAttach;

@@ -68,7 +68,7 @@ public class UsersController {
   public Map<String, Object> login(@RequestBody LoginForm loginForm) {
     Map<String, Object> map = new HashMap<>();
     
-    Users users = usersService.getUser(loginForm.getUserLoginId());
+    Users users = usersService.getUsers(loginForm.getUserLoginId());
     if (users == null) {
       map.put("result", "fail");
       map.put("message", "아이디가 없음");
