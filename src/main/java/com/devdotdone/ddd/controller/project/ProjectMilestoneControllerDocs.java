@@ -10,7 +10,7 @@ import com.devdotdone.ddd.dto.project.ProjectMilestone;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name="프로젝트 마일스톤", description = "프로젝트 마일스톤 관련 API")
+@Tag(name="마일스톤", description = "프로젝트 마일스톤 관련 API")
 public interface ProjectMilestoneControllerDocs {
 
   @Operation(summary = "마일스톤 생성", description = "새로운 마일스톤을 생성합니다")
