@@ -1,10 +1,13 @@
 package com.devdotdone.ddd.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +25,7 @@ import com.devdotdone.ddd.dto.users.Users;
 import com.devdotdone.ddd.service.JwtService;
 import com.devdotdone.ddd.service.UsersService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,6 +94,35 @@ public class UsersController {
     resultMap.put("result", "success");
     resultMap.put("data", users);
     return resultMap;
+  }
+
+  @GetMapping("/attach-download")
+  public void boardAttachDownload(@RequestParam("userId") int userId, HttpServletResponse response) throws Exception {
+    Users users = usersService.getUsers(userId);
+
+    String fileName = users.getUfAttachoname();
+
+    // 응답 헤더에 Content-Type 추가
+    response.setContentType(users.getUfAttachtype());
+
+    // 본문 내용을 파일로 저장할 수 있도록 헤더 추가
+    String encodedFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+    response.setHeader("Content-Disposition", "attachment; file=\"" + encodedFileName + "\"");
+
+    // 응답 본문으로 데이터를 출력하는 스트림
+    OutputStream os = response.getOutputStream();
+    BufferedOutputStream bos = new BufferedOutputStream(os);
+
+    // 이미지 캐싱을 하지 않도록 헤더 추가
+    response.setHeader(HttpHeaders.CACHE_CONTROL, "no-store, no-cache, must-revalidate, proxy-revalidate");
+    response.setHeader(HttpHeaders.PRAGMA, "no-cache");
+    response.setHeader(HttpHeaders.EXPIRES, "0");
+
+
+    // 응답 본문에 파일 데이터 출력
+    bos.write(users.getUfAttachdata());
+    bos.flush();
+    bos.close();
   }
 
   @PutMapping("/update")
