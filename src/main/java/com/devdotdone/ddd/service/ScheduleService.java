@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.devdotdone.ddd.dao.ScheduleDao;
 import com.devdotdone.ddd.dao.ScheduleMemberDao;
+import com.devdotdone.ddd.dao.UserProjectRoleDao;
 import com.devdotdone.ddd.dao.UsersDao;
 import com.devdotdone.ddd.dto.schedule.Schedule;
 import com.devdotdone.ddd.dto.schedule.ScheduleMember;
@@ -25,6 +26,7 @@ public class ScheduleService {
   private final ScheduleDao scheduleDao;
   private final ScheduleMemberDao scheduleMemberDao;
   private final UsersDao usersDao;
+  private final UserProjectRoleDao userProjectRoleDao;
 
   // 일정 추가
   @Transactional
@@ -42,7 +44,7 @@ public class ScheduleService {
     log.info(schedule.toString());
     scheduleDao.insertSchedule(schedule);
 
-    assignUsers(schedule.getScheduleId(), request.getUserIds());
+    assignUsers(schedule.getScheduleId(), schedule.getProjectId(), request.getUserIds());
   }
 
   // 개별 일정 조회
@@ -101,9 +103,9 @@ public class ScheduleService {
 
     log.info("업데이트됨");
 
-    assignUsers(schedule.getScheduleId(), request.getUserIds());
+    assignUsers(schedule.getScheduleId(), schedule.getProjectId(), request.getUserIds());
     // log.info("사용자 배정됨");
-    cancelUsers(schedule.getScheduleId(), request.getUserIds());
+    cancelUsers(schedule.getScheduleId(), schedule.getProjectId(), request.getUserIds());
     // log.info("배정 해제됨");
 
     return schedule;
@@ -116,8 +118,12 @@ public class ScheduleService {
   }
 
   // 일정 할당
-  private void assignUsers(int scheduleId, List<Integer> userIds) {
+  private void assignUsers(int scheduleId, int projectId, List<Integer> userIds) {
     for (int userId : userIds) {
+      if (userProjectRoleDao.selectUserProjectRole(projectId, userId) == null) {
+        log.info("프로젝트 멤버가 아님: {}", userId);
+        continue;
+      }
       if (usersDao.selectUserById(userId) != null) {
         ScheduleMember sm = new ScheduleMember();
         sm.setScheduleId(scheduleId);
@@ -132,10 +138,14 @@ public class ScheduleService {
   }
 
   // 일정 할당 해제
-  private void cancelUsers(int scheduleId, List<Integer> userIds) {
+  private void cancelUsers(int scheduleId, int projectId, List<Integer> userIds) {
     List<ScheduleMember> smList = scheduleMemberDao.findUsers(scheduleId);
     
     for (ScheduleMember sm: smList) {
+      if (userProjectRoleDao.selectUserProjectRole(projectId, sm.getUserId()) == null) {
+        log.info("프로젝트 멤버가 아님: {}", sm.getUserId());
+        continue;
+      }
       if (!userIds.contains(sm.getUserId())) {
         scheduleMemberDao.dischargeUsers(sm);
       }
