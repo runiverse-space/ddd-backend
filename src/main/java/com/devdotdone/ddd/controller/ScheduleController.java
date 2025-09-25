@@ -79,12 +79,18 @@ public class ScheduleController {
   public Map<String, Object> update(@RequestBody ScheduleRequest request) {
     Map<String, Object> map = new HashMap<>();
 
-    Schedule schedule = scheduleService.update(request);
+    // Schedule schedule = scheduleService.update(request);
 
     try {
-      scheduleService.update(request);
-      map.put("result", "success");
-      map.put("data", schedule);
+      Schedule schedule = scheduleService.update(request);
+      if (schedule == null) {
+        map.put("result", "fail");
+        map.put("message", "해당 일정이 존재하지 않습니다.");
+      } else {
+        map.put("result", "success");
+        map.put("data", schedule);
+      }
+      
     } catch (Exception e) {
       map.put("result", "fail");
       map.put("message", e.getMessage());
