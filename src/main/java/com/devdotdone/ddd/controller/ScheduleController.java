@@ -5,22 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.devdotdone.ddd.dto.project.Project;
-import com.devdotdone.ddd.dto.schedule.Schedule;
-import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
-import com.devdotdone.ddd.dto.users.Users;
-import com.devdotdone.ddd.dto.users.UsersResponse;
-import com.devdotdone.ddd.service.ScheduleService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.devdotdone.ddd.dto.schedule.Schedule;
+import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
+import com.devdotdone.ddd.dto.users.UsersResponse;
+import com.devdotdone.ddd.service.ScheduleService;
 
 @RestController
 @RequestMapping("/api/schedule")
@@ -37,6 +34,7 @@ public class ScheduleController {
       map.put("result", "success");
     } catch (Exception e) {
       map.put("result", "fail");
+      map.put("message", e.getMessage());
     }
     return map;
   }
