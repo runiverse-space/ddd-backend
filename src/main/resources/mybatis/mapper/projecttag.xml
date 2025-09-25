@@ -5,4 +5,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.ProjectTagDao">
+  <insert id="insertProjectTag">
+    INSERT INTO projectTag (project_id, tag_id) 
+    VALUES (#{projectId}, #{tagId})
+  </insert>
+
+  <select id="selectTagByProjectId" resultType="Tag">
+    SELECT t.tag_id AS tagId, t.tagName, t.tagType
+    FROM projectTag pt
+    JOIN tag t ON pt.tag_id = t.tag_id
+    WHERE pt.project_id=#{projectId}
+  </select>
+
+  <delete id="deleteProjectTag">
+    DELETE FROM projectTag
+    WHERE project_id=#{projectId} AND tag_id=#{tagId}
+  </delete>
 </mapper>
