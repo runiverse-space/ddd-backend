@@ -61,4 +61,10 @@
     delete from userProjectRole
     where user_id=#{userId} and project_id=#{projectId}
   </delete>
+
+  <!--프로젝트의 모든 유저 제거(프로젝트 삭제시 실행)-->
+  <delete id="deleteAllUserProjectRole" parameterType="int">
+    delete from userProjectRole
+    where project_id=#{projectId}
+  </delete>
 </mapper>
