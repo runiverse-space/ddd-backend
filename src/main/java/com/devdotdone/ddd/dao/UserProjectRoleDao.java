@@ -30,4 +30,7 @@ public interface UserProjectRoleDao {
 
   // deleteUserProjectRole
   int deleteUserProjectRole(@Param("projectId") int projectId, @Param("userId") int userId);
+
+  // 프로젝트의 모든 유저 제거(프로젝트 삭제시 실행)
+  int deleteAllUserProjectRole(int projectId);
 }
