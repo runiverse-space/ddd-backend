@@ -140,7 +140,7 @@ public class ProjectService {
   }
 
   @Transactional
-  public int delete(int projectId) {
+  public int remove(int projectId) {
     Project project = projectDao.selectProjectById(projectId);
     if (project == null) {
       throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");

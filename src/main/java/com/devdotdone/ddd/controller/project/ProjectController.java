@@ -85,7 +85,7 @@ public class ProjectController implements ProjectControllerDocs {
     Map<String, Object> map = new HashMap<>();
 
     try {
-      int rows = projectService.delete(projectId);
+      int rows = projectService.remove(projectId);
       if (rows == 0) {
         map.put("result", "fail");
         map.put("message", "삭제 실패");
