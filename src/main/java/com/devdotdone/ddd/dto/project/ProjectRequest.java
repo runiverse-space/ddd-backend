@@ -1,6 +1,7 @@
 package com.devdotdone.ddd.dto.project;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -17,4 +18,8 @@ public class ProjectRequest {
     private Date projectStartDate;
     private Date projectEndDate;
     private Date projectCreatedAt;
+
+    private List<Integer> userIds;
+
+    private List<ProjectMilestone> projectMilestones;
 }
