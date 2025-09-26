@@ -90,7 +90,7 @@ public class UserProjectRoleService {
     createMember.setProjectId(projectId);
     createMember.setUserId(userId);
     createMember.setUprId(userId);
-    createMember.setUprRole(uprRole);
+    // createMember.setUprRole(uprRole);
     userProjectRoleDao.insertUsersProjectRole(createMember);
 
   }

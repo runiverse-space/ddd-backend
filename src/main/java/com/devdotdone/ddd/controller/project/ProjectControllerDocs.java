@@ -25,8 +25,8 @@ public interface ProjectControllerDocs {
   // Map<String, Object> list(@RequestParam("projectId") int projectId);
 
 
-  // @Operation(summary = "마일스톤 수정", description = "마일스톤을 수정합니다")
-  // Map<String, Object> update(@RequestBody ProjectMilestone milestone);
+  @Operation(summary = "프로젝트 수정", description = "프로젝트를 수정합니다")
+  Map<String, Object> update(@RequestBody ProjectRequest request);
 
   @Operation(summary = "프로젝트 삭제", description = "프로젝트를 삭제합니다")
   Map<String, Object> delete(@RequestParam("projectId") int projectId);

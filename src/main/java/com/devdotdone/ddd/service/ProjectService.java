@@ -1,5 +1,7 @@
 package com.devdotdone.ddd.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +58,7 @@ public class ProjectService {
 
     // 사용자 MEMBER로 추가
     for (int userId : request.getUserIds()) {
-      assignUsers(project.getProjectId(), userId, "MEMBER");
+      userProjectRoleService.assignUsersToProject(project.getProjectId(), userId, "MEMBER");
     }
 
     // 초기 마일스톤 추가
@@ -68,38 +70,7 @@ public class ProjectService {
     return projectDao.selectProjectById(project.getProjectId());
   }
 
-  // 프로젝트에 멤버 추가
-  @Transactional
-  public void assignUsers(int projectId, int userId, String uprRole) {
-    Project project = projectDao.selectProjectById(projectId);
-    if (project == null)
-      throw new IllegalArgumentException("프로젝트가 존재하지 않습니다.");
-
-    Users users = usersDao.selectUserById(userId);
-    if (users == null)
-      throw new IllegalArgumentException("사용자가 존재하지 않습니다.");
-
-    UserProjectRole exist = userProjectRoleDao.selectUserProjectRole(projectId, userId);
-    if (exist != null)
-      throw new IllegalStateException("이미 프로젝트 멤버입니다.");
-
-    int current = userProjectRoleDao.countProjectMembers(projectId);
-    if (current >= MAX_MEMBERS)
-      throw new IllegalStateException("프로젝트는 최대 " + MAX_MEMBERS + "명까지 참여할 수 있습니다.");
-
-    String normalizeRole = uprRole == null ? "MEMBER" : uprRole.toUpperCase();
-    if ("ADMIN".equals(normalizeRole)) {
-      int adminCount = userProjectRoleDao.countProjectAdmins(projectId);
-      if (adminCount > 0)
-        throw new IllegalStateException("이미 팀장이 존재합니다.");
-    }
-
-    UserProjectRole upr = new UserProjectRole();
-    upr.setUserId(userId);
-    upr.setProjectId(projectId);
-    upr.setUprRole(normalizeRole);
-    userProjectRoleDao.insertUsersProjectRole(upr);
-  }
+  
 
   // 프로젝트 단건 조회
   public Project getProjectById(int projectId) {
@@ -134,6 +105,25 @@ public class ProjectService {
     int result = projectDao.updateProject(project);
     if (result <= 0) {
       throw new RuntimeException("프로젝트 수정에 실패했습니다.");
+    }
+
+    // 참여자 추가
+    for (int userId : request.getUserIds()) {
+      userProjectRoleService.assignUsersToProject(project.getProjectId(), userId, "MEMBER");
+    }
+    
+    // 참여자 삭제
+    List<UserProjectRole> userProjectRoles = userProjectRoleDao.selectProjectMembers(request.getProjectId());
+    log.info(userProjectRoles.toString());
+    for (UserProjectRole userProjectRole : userProjectRoles) {
+      int userId = userProjectRole.getUserId();
+      if (userProjectRole.getUprRole() != null && !userProjectRole.getUprRole().equals("ADMIN") && !request.getUserIds().contains(userId))
+        userProjectRoleService.delete(project.getProjectId(), userId);
+    }
+
+    // 마일스톤 정보 수정
+    for (ProjectMilestone projectMilestone : request.getProjectMilestones()) {
+      projectMilestoneService.updateMilestone(projectMilestone);
     }
 
     return projectDao.selectProjectById(project.getProjectId());
@@ -202,6 +192,39 @@ public class ProjectService {
 
   // public List<UserProjectRole> getProjectMembers(int projectId) {
   // return uprDao.selectProjectMembers(projectId);
+  // }
+
+  // 프로젝트에 멤버 추가
+  // @Transactional
+  // public void assignUsers(int projectId, int userId, String uprRole) {
+  //   Project project = projectDao.selectProjectById(projectId);
+  //   if (project == null)
+  //     throw new IllegalArgumentException("프로젝트가 존재하지 않습니다.");
+
+  //   Users users = usersDao.selectUserById(userId);
+  //   if (users == null)
+  //     throw new IllegalArgumentException("사용자가 존재하지 않습니다.");
+
+  //   UserProjectRole exist = userProjectRoleDao.selectUserProjectRole(projectId, userId);
+  //   if (exist != null)
+  //     throw new IllegalStateException("이미 프로젝트 멤버입니다.");
+
+  //   int current = userProjectRoleDao.countProjectMembers(projectId);
+  //   if (current >= MAX_MEMBERS)
+  //     throw new IllegalStateException("프로젝트는 최대 " + MAX_MEMBERS + "명까지 참여할 수 있습니다.");
+
+  //   String normalizeRole = uprRole == null ? "MEMBER" : uprRole.toUpperCase();
+  //   if ("ADMIN".equals(normalizeRole)) {
+  //     int adminCount = userProjectRoleDao.countProjectAdmins(projectId);
+  //     if (adminCount > 0)
+  //       throw new IllegalStateException("이미 팀장이 존재합니다.");
+  //   }
+
+  //   UserProjectRole upr = new UserProjectRole();
+  //   upr.setUserId(userId);
+  //   upr.setProjectId(projectId);
+  //   upr.setUprRole(normalizeRole);
+  //   userProjectRoleDao.insertUsersProjectRole(upr);
   // }
 
 }
