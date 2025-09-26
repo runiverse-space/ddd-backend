@@ -117,7 +117,7 @@ public class ProjectService {
     log.info(userProjectRoles.toString());
     for (UserProjectRole userProjectRole : userProjectRoles) {
       int userId = userProjectRole.getUserId();
-      if (userProjectRole.getUprRole() != null && !userProjectRole.getUprRole().equals("ADMIN") && !request.getUserIds().contains(userId))
+      if (!userProjectRole.getUprRole().equals("ADMIN") && !request.getUserIds().contains(userId))
         userProjectRoleService.delete(project.getProjectId(), userId);
     }
 
