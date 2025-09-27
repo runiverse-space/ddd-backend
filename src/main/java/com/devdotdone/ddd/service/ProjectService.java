@@ -144,9 +144,9 @@ public class ProjectService {
       throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
     }
 
-    // ** 관련 데이터 삭제 (다른 서비스들에 위임)
+    // 프로젝트의 모든 마일스톤 삭제
     projectMilestoneService.deleteAllMilestonesByProject(projectId);
-    // ** UserProjectRole은 CASCADE DELETE나 별도 삭제 로직 필요
+    // 프로젝트의 모든 멤버 역할 삭제
     userProjectRoleDao.deleteAllUserProjectRole(projectId);
 
     int result = projectDao.deleteProject(projectId);
