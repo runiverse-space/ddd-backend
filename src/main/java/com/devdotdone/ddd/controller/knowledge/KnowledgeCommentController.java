@@ -1,4 +1,4 @@
-package com.devdotdone.ddd.controller;
+package com.devdotdone.ddd.controller.knowledge;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/knowledgecomment")
-public class KnowledgeCommentController {
+public class KnowledgeCommentController implements KnowledgeCommentDocs{
   
   @Autowired
   private KnowledgeCommentService knowledgeCommentService;
