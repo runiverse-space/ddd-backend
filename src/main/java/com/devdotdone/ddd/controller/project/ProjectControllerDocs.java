@@ -21,8 +21,8 @@ public interface ProjectControllerDocs {
   @Operation(summary = "프로젝트 조회", description = "프로젝트의 아이디로 프로젝트를 조회합니다")
   Map<String, Object> detail(@RequestParam("projectId") int projectId);
 
-  // @Operation(summary = "마일스톤 목록", description = "프로젝트에 등록된 마일스톤을 모두 조회합니다")
-  // Map<String, Object> list(@RequestParam("projectId") int projectId);
+  @Operation(summary = "프로젝트 참여자 목록", description = "프로젝트에 참여한 사용자들을 조회합니다")
+  Map<String, Object> projectSchedules(@RequestParam("projectId") int projectId);
 
 
   @Operation(summary = "프로젝트 수정", description = "프로젝트를 수정합니다")

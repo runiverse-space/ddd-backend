@@ -110,9 +110,7 @@ public class ScheduleService {
     log.info("업데이트됨");
 
     assignUsers(schedule.getScheduleId(), schedule.getProjectId(), request.getUserIds());
-    // log.info("사용자 배정됨");
     cancelUsers(schedule.getScheduleId(), request.getUserIds());
-    // log.info("배정 해제됨");
 
     return schedule;
   }
@@ -149,10 +147,6 @@ public class ScheduleService {
     List<ScheduleMember> smList = scheduleMemberDao.findUsers(scheduleId);
     
     for (ScheduleMember sm: smList) {
-      // if (userProjectRoleDao.selectUserProjectRole(projectId, sm.getUserId()) == null) {
-      //   log.info("프로젝트 멤버가 아님: {}", sm.getUserId());
-      //   continue;
-      // }
       if (!userIds.contains(sm.getUserId())) {
         scheduleMemberDao.dischargeUsers(sm);
       }
