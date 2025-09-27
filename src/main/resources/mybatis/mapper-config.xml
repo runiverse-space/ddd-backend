@@ -16,6 +16,7 @@
     <typeAlias type="com.devdotdone.ddd.dto.project.ProjectActivity" alias="ProjectActivity"/>
     <typeAlias type="com.devdotdone.ddd.dto.project.ProjectMilestone" alias="ProjectMilestone"/>
     <typeAlias type="com.devdotdone.ddd.dto.retrospec.Retrospec" alias="Retrospec"/>
+    <typeAlias type="com.devdotdone.ddd.dto.retrospec.RetrospecRequest" alias="RetrospecRequest"/>
     <typeAlias type="com.devdotdone.ddd.dto.schedule.Schedule" alias="Schedule"/>
     <typeAlias type="com.devdotdone.ddd.dto.schedule.ScheduleMember" alias="ScheduleMember"/>
     <typeAlias type="com.devdotdone.ddd.dto.tag.Tag" alias="Tag"/>
