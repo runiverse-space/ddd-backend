@@ -120,27 +120,29 @@ public class UsersController implements UsersCommentDocs {
 
     String fileName = users.getUfAttachoname();
 
-    // 응답 헤더에 Content-Type 추가
-    response.setContentType(users.getUfAttachtype());
+    if (fileName != null) {
+      // 응답 헤더에 Content-Type 추가
+      response.setContentType(users.getUfAttachtype());
 
-    // 본문 내용을 파일로 저장할 수 있도록 헤더 추가
-    String encodedFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
-    response.setHeader("Content-Disposition", "attachment; file=\"" + encodedFileName + "\"");
+      // 본문 내용을 파일로 저장할 수 있도록 헤더 추가
+      String encodedFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+      response.setHeader("Content-Disposition", "attachment; file=\"" + encodedFileName + "\"");
 
-    // 응답 본문으로 데이터를 출력하는 스트림
-    OutputStream os = response.getOutputStream();
-    BufferedOutputStream bos = new BufferedOutputStream(os);
+      // 응답 본문으로 데이터를 출력하는 스트림
+      OutputStream os = response.getOutputStream();
+      BufferedOutputStream bos = new BufferedOutputStream(os);
 
-    // 이미지 캐싱을 하지 않도록 헤더 추가
-    response.setHeader(HttpHeaders.CACHE_CONTROL, "no-store, no-cache, must-revalidate, proxy-revalidate");
-    response.setHeader(HttpHeaders.PRAGMA, "no-cache");
-    response.setHeader(HttpHeaders.EXPIRES, "0");
+      // 이미지 캐싱을 하지 않도록 헤더 추가
+      response.setHeader(HttpHeaders.CACHE_CONTROL, "no-store, no-cache, must-revalidate, proxy-revalidate");
+      response.setHeader(HttpHeaders.PRAGMA, "no-cache");
+      response.setHeader(HttpHeaders.EXPIRES, "0");
 
+      // 응답 본문에 파일 데이터 출력
+      bos.write(users.getUfAttachdata());
+      bos.flush();
+      bos.close();
+    }
 
-    // 응답 본문에 파일 데이터 출력
-    bos.write(users.getUfAttachdata());
-    bos.flush();
-    bos.close();
   }
 
   @PutMapping("/update")
