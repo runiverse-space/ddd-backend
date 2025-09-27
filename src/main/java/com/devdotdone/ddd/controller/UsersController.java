@@ -68,7 +68,7 @@ public class UsersController {
   public Map<String, Object> login(@RequestBody LoginForm loginForm) {
     Map<String, Object> map = new HashMap<>();
 
-    Users users = usersService.getUsers(loginForm.getUserLoginId());
+    Users users = usersService.getUsersByLoginId(loginForm.getUserLoginId());
     if (users == null) {
       map.put("result", "fail");
       map.put("message", "아이디가 없음");
@@ -87,10 +87,28 @@ public class UsersController {
     return map;
   }
 
-  @GetMapping("/detail")
-  public Map<String, Object> detail(@RequestParam("userId") int userId) {
+  @GetMapping("/detail/id")
+  public Map<String, Object> detailId(@RequestParam("userId") int userId) {
     Map<String, Object> resultMap = new HashMap<>();
     Users users = usersService.getUsers(userId);
+    resultMap.put("result", "success");
+    resultMap.put("data", users);
+    return resultMap;
+  }
+
+  @GetMapping("/detail/loginId")
+  public Map<String, Object> detailLoginId(@RequestParam("userLoginId") String userLoginId) {
+    Map<String, Object> resultMap = new HashMap<>();
+    Users users = usersService.getUsersByLoginId(userLoginId);
+    resultMap.put("result", "success");
+    resultMap.put("data", users);
+    return resultMap;
+  }
+
+  @GetMapping("/detail/email")
+  public Map<String, Object> detailEmail(@RequestParam("userEmail") String userEmail) {
+    Map<String, Object> resultMap = new HashMap<>();
+    Users users = usersService.getUsersByEmail(userEmail);
     resultMap.put("result", "success");
     resultMap.put("data", users);
     return resultMap;

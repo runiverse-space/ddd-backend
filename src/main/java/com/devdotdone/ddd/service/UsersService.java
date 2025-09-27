@@ -28,10 +28,14 @@ public class UsersService {
   }
 
   // 로그인 ID로 조회
-  public Users getUsers(String userLoginId) {
-    return usersDao.selectUserByuserloginId(userLoginId);
+  public Users getUsersByLoginId(String userLoginId) {
+    return usersDao.selectUserByLoginId(userLoginId);
   }
+
   // 이메일로 조회
+  public Users getUsersByEmail(String userEmail) {
+    return usersDao.selectUserByEmail(userEmail);
+  }
 
   //useId로 사용자 정보 수정
   public Users update(Users users) {

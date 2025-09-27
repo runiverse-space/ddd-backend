@@ -10,7 +10,7 @@ import com.devdotdone.ddd.dto.users.Users;
 public interface UsersDao {
   public int insertUser(Users users);
   public Users selectUserById(int userId);
-  public Users selectUserByuserloginId(String userLoginId);
+  public Users selectUserByLoginId(String userLoginId);
   public Users selectUserByEmail(String userEmail);
   public List<Users> selectAllUsers();
   public int updateUser(Users users);

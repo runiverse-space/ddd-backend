@@ -18,7 +18,7 @@
   </select>
 
   <!-- 로그인 ID로 조회 -->
-  <select id="selectUserByuserloginId" resultType="Users" parameterType="String"> 
+  <select id="selectUserByLoginId" resultType="Users" parameterType="String"> 
     SELECT * FROM users
     WHERE userLoginId= #{userLoginId} 
   </select>
