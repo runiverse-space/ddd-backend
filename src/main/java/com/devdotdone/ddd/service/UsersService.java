@@ -4,17 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.devdotdone.ddd.dao.ScheduleMemberDao;
+import com.devdotdone.ddd.dao.UserProjectRoleDao;
 import com.devdotdone.ddd.dao.UsersDao;
 import com.devdotdone.ddd.dto.users.Users;
 
 import ch.qos.logback.core.util.StringUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UsersService {
-  @Autowired
-  private UsersDao usersDao;
+  private final UsersDao usersDao;
+  private final UserProjectRoleDao userProjectRoleDao;
 
   public void insertUser(Users users) {
     usersDao.insertUser(users);
@@ -68,6 +72,10 @@ public class UsersService {
   }
 
   public int deleteUser(int userId) {
+    // if (userProjectRoleDao.selectUsersProject(userId).size() > 0) {
+    //   throw new Exception("프로젝트에 참여 중입니다. 팀장에게 문의하세요.");
+    // }
+
     int rows = usersDao.deleteUser(userId);
     return rows;
   }

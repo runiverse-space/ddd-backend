@@ -15,6 +15,9 @@ public interface UserProjectRoleDao {
   // selectProjectMembers
   List<UserProjectRole> selectProjectMembers(@Param("projectId") int projectId);
 
+  // 특정 사용자가 참여한 프로젝트 조회
+  List<UserProjectRole> selectUsersProject(@Param("userId") int userId);
+
   // countProjectMembers
   int countProjectMembers(@Param("projectId") int projectId);
 
@@ -23,7 +26,6 @@ public interface UserProjectRoleDao {
 
   // selectUserProjectRole
   UserProjectRole selectUserProjectRole(@Param("projectId") int projectId, @Param("userId") int userId);
- 
 
   // updateUserProjectRole
   int updateUserProjectRole(UserProjectRole userProjectRole);
