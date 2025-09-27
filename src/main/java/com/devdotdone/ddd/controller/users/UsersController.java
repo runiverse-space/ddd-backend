@@ -75,7 +75,7 @@ public class UsersController implements UsersCommentDocs {
     } else {
       PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       if (passwordEncoder.matches(loginForm.getUserPassword(), users.getUserPassword())) {
-        String jwt = jwtService.createJwt(users.getUserLoginId(), users.getUserEmail());
+        String jwt = jwtService.createJwt(users.getUserId(), users.getUserLoginId(), users.getUserEmail());
         map.put("result", "success");
         map.put("userId", users.getUserLoginId());
         map.put("jwt", jwt);

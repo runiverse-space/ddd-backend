@@ -21,7 +21,7 @@ public class UserProjectRoleService {
 
   @Autowired
   private ProjectDao projectDao;
-  
+
   @Autowired
   private UsersDao usersDao;
 
@@ -100,7 +100,7 @@ public class UserProjectRoleService {
    * 프로젝트에서 멤버 제거
    */
   @Transactional
-  public int delete(int projectId, int userId) {
+  public int banUsersFromProject(int projectId, int userId) {
 
     UserProjectRole existUser = userProjectRoleDao.selectUserProjectRole(projectId, userId);
     if (existUser == null) {
