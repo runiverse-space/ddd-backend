@@ -2,6 +2,7 @@ package com.devdotdone.ddd.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devdotdone.ddd.dao.KnowledgeTagDao;
@@ -9,12 +10,10 @@ import com.devdotdone.ddd.dto.tag.KnowledgeTagRequest;
 import com.devdotdone.ddd.dto.tag.KnowledgeTagResponse;
 import com.devdotdone.ddd.dto.tag.Tag;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class KnowledgeTagService {
-    private final KnowledgeTagDao knowledgeTagDao;
+    @Autowired
+    private KnowledgeTagDao knowledgeTagDao;
 
     public KnowledgeTagResponse create(KnowledgeTagRequest request) {
         List<Tag> existing = knowledgeTagDao.selectTagByKnowledgeId(request.getKnowledgeId());

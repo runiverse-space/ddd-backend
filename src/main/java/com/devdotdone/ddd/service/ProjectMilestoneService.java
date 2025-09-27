@@ -2,6 +2,7 @@ package com.devdotdone.ddd.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,16 +11,16 @@ import com.devdotdone.ddd.dao.ProjectMilestoneDao;
 import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.project.ProjectMilestone;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class ProjectMilestoneService {
-  
-  private final ProjectMilestoneDao projectMilestoneDao;
-  private final ProjectDao projectDao;
+  @Autowired
+  private ProjectMilestoneDao projectMilestoneDao;
+
+  @Autowired
+  private ProjectDao projectDao;
 
   // 프로젝트 마일스톤 생성
   public ProjectMilestone createMilestone(ProjectMilestone milestone) {

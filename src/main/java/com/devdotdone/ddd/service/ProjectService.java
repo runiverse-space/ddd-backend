@@ -2,6 +2,7 @@ package com.devdotdone.ddd.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,18 +15,25 @@ import com.devdotdone.ddd.dto.project.ProjectRequest;
 import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
 import com.devdotdone.ddd.dto.users.Users;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ProjectService {
-  private final ProjectDao projectDao;
-  private final UsersDao usersDao;
-  private final UserProjectRoleDao userProjectRoleDao;
-  private final UserProjectRoleService userProjectRoleService;
-  private final ProjectMilestoneService projectMilestoneService;
+  @Autowired
+  private ProjectDao projectDao;
+
+  @Autowired
+  private UsersDao usersDao;
+
+  @Autowired
+  private UserProjectRoleDao userProjectRoleDao;
+
+  @Autowired
+  private UserProjectRoleService userProjectRoleService;
+
+  @Autowired
+  private ProjectMilestoneService projectMilestoneService;
 
   private static final int MAX_MEMBERS = 6;
 

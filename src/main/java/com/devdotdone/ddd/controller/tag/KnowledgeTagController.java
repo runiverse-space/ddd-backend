@@ -1,5 +1,6 @@
 package com.devdotdone.ddd.controller.tag;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,15 +13,14 @@ import com.devdotdone.ddd.dto.tag.KnowledgeTagRequest;
 import com.devdotdone.ddd.dto.tag.KnowledgeTagResponse;
 import com.devdotdone.ddd.service.KnowledgeTagService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/knowledgeTag")
 public class KnowledgeTagController implements KnowledgeTagControllerDocs {
-    private final KnowledgeTagService knowledgeTagService;
+    @Autowired
+    private KnowledgeTagService knowledgeTagService;
 
     @PostMapping("/create")
     public KnowledgeTagResponse create(@RequestBody KnowledgeTagRequest request) {

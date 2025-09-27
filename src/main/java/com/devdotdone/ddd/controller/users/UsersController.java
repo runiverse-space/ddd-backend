@@ -115,7 +115,7 @@ public class UsersController implements UsersCommentDocs {
   }
 
   @GetMapping("/attach-download")
-  public void boardAttachDownload(@RequestParam("userId") int userId, HttpServletResponse response) throws Exception {
+  public void ufAttachDownload(@RequestParam("userId") int userId, HttpServletResponse response) throws Exception {
     Users users = usersService.getUsers(userId);
 
     String fileName = users.getUfAttachoname();

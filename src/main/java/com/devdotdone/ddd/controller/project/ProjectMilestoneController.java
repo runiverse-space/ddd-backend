@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devdotdone.ddd.dto.project.ProjectMilestone;
 import com.devdotdone.ddd.service.ProjectMilestoneService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/api/projectmilestone")
-@RequiredArgsConstructor
 public class ProjectMilestoneController implements ProjectMilestoneControllerDocs {
-  private final ProjectMilestoneService projectMilestoneService;
+  @Autowired
+  private ProjectMilestoneService projectMilestoneService;
 
   @PostMapping("/create")
   public Map<String, Object> create(@RequestBody ProjectMilestone projectMilestone) {

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +19,11 @@ import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
 import com.devdotdone.ddd.dto.users.UsersResponse;
 import com.devdotdone.ddd.service.ScheduleService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/api/schedule")
-@RequiredArgsConstructor
 public class ScheduleController implements ScheduleControllerDocs {
-  private final ScheduleService scheduleService;
+  @Autowired
+  private ScheduleService scheduleService;
 
   @PostMapping("/create")
   public Map<String, Object> create(@RequestBody ScheduleRequest request) {
@@ -52,16 +51,6 @@ public class ScheduleController implements ScheduleControllerDocs {
     }
     return map;
   }
-
-  // @GetMapping("/project/schedules")
-  // public Map<String, Object> projectSchedules(@RequestParam("projectId") int
-  // projectId) {
-  // Map<String, Object> map = new HashMap<>();
-  // List<Schedule> schedules = scheduleService.getListByProject(projectId);
-  // map.put("result", "success");
-  // map.put("schedules", schedules);
-  // return map;
-  // }
 
   @GetMapping("/users")
   public Map<String, Object> users(@RequestParam("scheduleId") int scheduleId) {

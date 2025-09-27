@@ -33,7 +33,7 @@ public interface UsersCommentDocs {
   Map<String, Object> detailEmail(@RequestParam("userEmail") String userEmail);
 
   @Operation(summary = "첨부파일 다운로드", description = "사용자 정보에 있는 첨부파일을 다운로드합니다")
-  void boardAttachDownload(@RequestParam("userId") int userId, HttpServletResponse response) throws Exception;
+  void ufAttachDownload(@RequestParam("userId") int userId, HttpServletResponse response) throws Exception;
 
   @Operation(summary = "사용자 정보 수정", description = "사용자 정보를 수정합니다")
   Map<String, Object> update(Users users) throws Exception ;

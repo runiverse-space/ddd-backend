@@ -2,6 +2,7 @@ package com.devdotdone.ddd.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devdotdone.ddd.dao.ProjectTagDao;
@@ -9,13 +10,10 @@ import com.devdotdone.ddd.dto.tag.ProjectTagRequest;
 import com.devdotdone.ddd.dto.tag.ProjectTagResponse;
 import com.devdotdone.ddd.dto.tag.Tag;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class ProjectTagService {
-
-    private final ProjectTagDao projectTagDao;
+    @Autowired
+    private ProjectTagDao projectTagDao;
 
     // 태그 등록
     public ProjectTagResponse create(ProjectTagRequest request) {

@@ -2,6 +2,7 @@ package com.devdotdone.ddd.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,8 +11,6 @@ import com.devdotdone.ddd.dto.tag.Tag;
 import com.devdotdone.ddd.dto.tag.UserTagRequest;
 import com.devdotdone.ddd.dto.tag.UserTagResponse;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * 유저 태그 서비스
  * - 요청 받은 tagIds를 추가/삭제
@@ -19,10 +18,9 @@ import lombok.RequiredArgsConstructor;
  */
 
 @Service
-@RequiredArgsConstructor
 public class UserTagService {
-
-    private final UserTagDao userTagDao;
+    @Autowired
+    private UserTagDao userTagDao;
 
     public UserTagResponse create(UserTagRequest request) {
         // 현재 등록된 태그 목록 조회

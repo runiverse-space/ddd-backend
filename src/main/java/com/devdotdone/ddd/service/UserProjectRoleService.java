@@ -18,8 +18,10 @@ public class UserProjectRoleService {
 
   @Autowired
   private UserProjectRoleDao userProjectRoleDao;
+
   @Autowired
   private ProjectDao projectDao;
+  
   @Autowired
   private UsersDao usersDao;
 

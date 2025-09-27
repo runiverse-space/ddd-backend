@@ -2,6 +2,7 @@ package com.devdotdone.ddd.controller.tag;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,14 +14,11 @@ import com.devdotdone.ddd.dto.tag.Tag;
 import com.devdotdone.ddd.dto.tag.TagType;
 import com.devdotdone.ddd.service.TagService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/api/tags")
-@RequiredArgsConstructor
 public class TagController implements TagControllerDocs{
-
-    private final TagService tagService;
+    @Autowired
+    private TagService tagService;
 
     @PostMapping("/create")
     public void insertTag(@RequestBody Tag tag) {

@@ -1,5 +1,6 @@
 package com.devdotdone.ddd.controller.tag;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,13 +13,11 @@ import com.devdotdone.ddd.dto.tag.ProjectTagRequest;
 import com.devdotdone.ddd.dto.tag.ProjectTagResponse;
 import com.devdotdone.ddd.service.ProjectTagService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/projectTag")
 public class ProjectTagController implements ProjectTagControllerDocs {
-    private final ProjectTagService projectTagService;
+    @Autowired
+    private ProjectTagService projectTagService;
 
     @PostMapping("/create")
     public ProjectTagResponse create(@RequestBody ProjectTagRequest request) {

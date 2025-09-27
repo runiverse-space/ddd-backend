@@ -1,5 +1,6 @@
 package com.devdotdone.ddd.controller.tag;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +13,6 @@ import com.devdotdone.ddd.dto.tag.UserTagRequest;
 import com.devdotdone.ddd.dto.tag.UserTagResponse;
 import com.devdotdone.ddd.service.UserTagService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/userTag")
 public class UserTagController implements UserTagControllerDocs{
-    private final UserTagService userTagService;
+    @Autowired
+    private UserTagService userTagService;
 
     @PostMapping("/create")
     public UserTagResponse create(@RequestBody UserTagRequest request) {
