@@ -1,4 +1,4 @@
-package com.devdotdone.ddd.controller;
+package com.devdotdone.ddd.controller.users;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/users")
 @Slf4j
-public class UsersController {
+public class UsersController implements UsersCommentDocs {
   @Autowired
   private UsersService usersService;
 
