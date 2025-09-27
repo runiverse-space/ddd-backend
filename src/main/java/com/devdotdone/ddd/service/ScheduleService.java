@@ -44,7 +44,7 @@ public class ScheduleService {
     log.info(schedule.toString());
     scheduleDao.insertSchedule(schedule);
 
-    assignUsers(schedule.getScheduleId(), request.getUserIds());
+    assignUsers(schedule.getScheduleId(), schedule.getProjectId(), request.getUserIds());
   }
 
   // 개별 일정 조회
@@ -103,7 +103,7 @@ public class ScheduleService {
 
     log.info("업데이트됨");
 
-    assignUsers(schedule.getScheduleId(), request.getUserIds());
+    assignUsers(schedule.getScheduleId(), schedule.getProjectId(), request.getUserIds());
     // log.info("사용자 배정됨");
     cancelUsers(schedule.getScheduleId(), request.getUserIds());
     // log.info("배정 해제됨");
@@ -118,22 +118,23 @@ public class ScheduleService {
   }
 
   // 일정 할당
-  private void assignUsers(int scheduleId, List<Integer> userIds) {
+  private void assignUsers(int scheduleId, int projectId, List<Integer> userIds) {
     for (int userId : userIds) {
-      // if (userProjectRoleDao.selectUserProjectRole(projectId, userId) == null) {
-      //   log.info("프로젝트 멤버가 아님: {}", userId);
-      //   continue;
-      // }
-      if (usersDao.selectUserById(userId) != null) {
-        ScheduleMember sm = new ScheduleMember();
-        sm.setScheduleId(scheduleId);
-        sm.setUserId(userId);
-        // log.info(scheduleMemberDao.selectOne(sm).toString());
-
-        ScheduleMember dbsm = scheduleMemberDao.selectOne(sm);
-        if (dbsm == null)
-          scheduleMemberDao.chargeUsers(sm);
+      if (usersDao.selectUserById(userId) == null) {
+        throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
       }
+      if (userProjectRoleDao.selectUserProjectRole(projectId, userId) == null) {
+        throw new IllegalArgumentException(userId + "는 프로젝트 " + projectId + "의 구성원이 아닙니다.");
+      }
+      
+      ScheduleMember sm = new ScheduleMember();
+      sm.setScheduleId(scheduleId);
+      sm.setUserId(userId);
+
+      ScheduleMember dbsm = scheduleMemberDao.selectOne(sm);
+      if (dbsm == null)
+        scheduleMemberDao.chargeUsers(sm);
+      
     }
   }
 
