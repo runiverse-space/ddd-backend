@@ -126,7 +126,7 @@ public class ProjectService {
     for (UserProjectRole userProjectRole : userProjectRoles) {
       int userId = userProjectRole.getUserId();
       if (!userProjectRole.getUprRole().equals("ADMIN") && !request.getUserIds().contains(userId))
-        userProjectRoleService.delete(project.getProjectId(), userId);
+        userProjectRoleService.banUsersFromProject(project.getProjectId(), userId);
     }
 
     // 마일스톤 정보 수정
