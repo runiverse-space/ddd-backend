@@ -1,10 +1,14 @@
 package com.devdotdone.ddd.controller.knowledge;
 
+
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.devdotdone.ddd.dto.knowledge.Knowledge;
 import com.devdotdone.ddd.service.KnowledgeService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -89,6 +94,38 @@ public class KnowledgeController {
 
     return jsonObject.toString();
   }
+
+  /*
+      지식창고 파일 다운 받기   
+   */
+
+   @GetMapping("/attachdownload")
+   public void attachdownload(@RequestParam("knowledgeId") int knowledgeId, HttpServletResponse response) throws Exception {
+      
+    //db에서 내용을 읽음
+    Knowledge knowledge = knowledgeService.getKnowledge(knowledgeId);
+
+    String fileName = knowledge.getKfAttachoname();
+
+    response.setContentType(knowledge.getKfAttachtype());
+
+    String encodedfileName = new String(fileName.getBytes("UTF-8"),"ISO_8859-1");
+    response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedfileName + "\"");
+
+    response.setHeader(HttpHeaders.CACHE_CONTROL, "no-store, no-cache, must-revalidate, proxy-revalidate");
+    response.setHeader(HttpHeaders.PRAGMA, "no-cache");
+    response.setHeader(HttpHeaders.EXPIRES, "0");
+
+    OutputStream os = response.getOutputStream();
+    BufferedOutputStream bos = new BufferedOutputStream(os);
+
+    bos.write(knowledge.getKfAttachdata());
+    bos.flush();
+    bos.close();
+
+
+   }
+   
 
   
     
