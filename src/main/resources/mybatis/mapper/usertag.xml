@@ -5,20 +5,20 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.UserTagDao">
-    <!-- 사용자에 태그 추가 -->
-  <insert id="insertUserTag" parameterType="UserTag">
-    INSERT INTO userTag (user_id, tag_id)
+  <insert id="insertUserTag">
+    INSERT INTO userTag (user_id, tag_id) 
     VALUES (#{userId}, #{tagId})
   </insert>
 
-  <!-- 사용자에 포함된 태그 조회 -->
-  <select id="findTags" parameterType="int" resultType="UserTag">
-    SELECT user_id, tag_id FROM userTag
-    WHERE user_id = #{userId}
+  <select id="selectTagByUserId" resultType="Tag">
+    SELECT t.tag_id AS tagId, t.tagName, t.tagType
+    FROM userTag ut
+    JOIN tag t ON ut.tag_id = t.tag_id
+    WHERE ut.user_id=#{userId}
   </select>
 
-  <!-- 사용자의 태그 제거 -->
-  <delete id="deleteTag" parameterType="int">
-    DELETE FROM userTag WHERE tag_id = #{tagId}
+  <delete id="deleteUserTag">
+    DELETE FROM userTag
+    WHERE user_id=#{userId} AND tag_id=#{tagId}
   </delete>
 </mapper>

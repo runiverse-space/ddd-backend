@@ -4,31 +4,48 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.devdotdone.ddd.dao.ProjectMileStoneDao">
+<mapper namespace="com.devdotdone.ddd.dao.ProjectMilestoneDao">
+  <!-- 마일스톤 추가 -->
   <insert id="insertMilestone" parameterType="ProjectMilestone">
-	  insert into projectMilestone( milestone_id, project_id, milestoneTitle, milestoneDate,
-	   milestoneSortOrder) 
-	  values(seq_projectMileStone.NEXTVAL, #{projectId},#{milestoneTitle},
-	  #{milestoneDate},#{milestoneSortOrder})
+    <selectKey keyProperty="MilestoneId" resultType="int" order="BEFORE">
+      SELECT seq_projectMilestone_projectMilestoneId.nextval from dual
+    </selectKey>
+	  INSERT INTO projectMilestone(milestone_id, project_id, milestoneTitle, milestoneDate) 
+	  VALUES (#{MilestoneId}, #{projectId},#{milestoneTitle}, #{milestoneDate})
   </insert>
 
-  <select id="selectMilestonesByProject" resultType="ProjectMilestone">
-	  SELECT milestone_id, project_id, milestoneTitle,milestoneDate, milestoneSortOrder
+  <!-- 개별 마일스톤 조회 -->
+  <select id="selectByProject" resultType="ProjectMilestone" parameterType="int">
+    SELECT milestone_id, project_id, milestoneTitle, milestoneDate
+    FROM projectMilestone
+    WHERE milestone_id = #{milestoneId}
+  </select>
+
+  <!-- 프로젝트의 마일스톤 조회 -->
+  <select id="selectMilestonesByProject" resultType="ProjectMilestone" parameterType="int">
+	  SELECT milestone_id, project_id, milestoneTitle, milestoneDate
     FROM projectMilestone
     WHERE project_id = #{projectId}
-    ORDER BY milestoneSortOrder ASC
+    ORDER BY milestoneDate ASC
   </select>
   
+  <!-- 마일스톤 수정 -->
   <update id="updateMilestone" parameterType="ProjectMilestone">
 		  UPDATE projectMilestone
-		  SET  milestoneTitle= #{milestoneTitle}, 
-		  milestoneDate= #{milestoneDate},
-		  WHERE milestone_id=#{milestoneId}
+		  SET  milestoneTitle = #{milestoneTitle}, milestoneDate = #{milestoneDate}
+		  WHERE milestone_id = #{milestoneId}
   </update>
   
+  <!-- 마일스톤 삭제 -->
   <delete id="deleteMilestone" parameterType="int">
 	  DELETE FROM projectMilestone
     WHERE milestone_id = #{milestoneId}
+  </delete>
+
+  <!-- 프로젝트의 모든 마일스톤 삭제(프로젝트 삭제 시 실행) -->
+  <delete id="deleteAll" parameterType="int">
+  DELETE FROM projectMilestone
+  WHERE project_id = #{projectId}
   </delete>
 
 </mapper>

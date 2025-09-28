@@ -1,4 +1,4 @@
-package com.devdotdone.ddd.dto.users;
+package com.devdotdone.ddd.dto.userProjectRole;
 
 import lombok.Data;
 
@@ -8,5 +8,4 @@ public class UserProjectRole {
   private int userId;
   private int projectId;
   private String uprRole;
-
 }

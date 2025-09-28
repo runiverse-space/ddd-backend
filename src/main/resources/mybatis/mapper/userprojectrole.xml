@@ -4,54 +4,75 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.dao.UserProjectRoleDao">
-  <!-- 프로젝트생성자= admin으로 설정-->
-  <insert id="insertUsersProjectRoleAsAdmin" parameterType="UserProjectRole">
-    insert into UserProjectRole(
-      upr_id, user_id, project_id,uprRole
-    )
-    values(seq_userProjectRole.NEXTVAL, #{userId}, #{projectId}, 'ADMIN')
+<mapper namespace="com.devdotdone.ddd.dao.UserProjectRoleDao">
+  <!-- 프로젝트생성자-->
+  <insert id="insertUsersProjectRole" parameterType="UserProjectRole">
+    <selectKey resultType="int" keyProperty="uprId" order="BEFORE">
+       SELECT seq_userprojectrole_uprid.NEXTVAL FROM dual
+    </selectKey>
 
-  </insert>
-
-  <!-- 일반 멤버 등록-->
-  <insert id="insertUsersProjectRoleAsMember" parameterType="UserProjectRole">
-    insert into UserProjectRole(
+    insert into userProjectRole(
       upr_id, user_id, project_id, uprRole
     )
-    values(
-      seq_userProjectRole.NEXTVAL, #{userId}, #{projectId}, 'MEMBER'
-    )
+    values(#{uprId}, #{userId}, #{projectId},#{uprRole})
   </insert>
-  
+
   <!-- 특정 프로젝트의 멤버 조회-->
-  <select id="selectUsersByProjectId" resultType="UserProjectRole">
-    select 
-    from users u
-    join userprojectrole upr ON u.user_id = upr.user_id
-    where upr.project_id = #{projectId}
+  <select id="selectProjectMembers" parameterType="int" resultType="UserProjectRole">
+    select upr_id, user_id, project_id, uprRole
+    from userProjectRole
+    where project_id=#{projectId}
+    order by upr_id
   </select>
 
-  <!--특정 유저의 프로젝트 목록 조회 -->
-  <select id="selectUsersByUserId" resultType="UserProjectRole">
-    select 
-    p.project_id, p.projectTitle,p.projectContent,p.projectStartDate,
-    p.projectEndDate, p.projectCreatedAt 
-    from project p
-    join userprojectrole upr on p.project_id = upr.project_id
-    where upr.user_id=#{userID}
+  <!-- 특정 사용자가 참여한 프로젝트 조회-->
+  <select id="selectUsersProject" parameterType="int" resultType="UserProjectRole">
+    select upr_id, user_id, project_id, uprRole
+    from userProjectRole
+    where user_id=#{userId}
+    order by upr_id
   </select>
 
-  <!--유저 권한 확인-->
-  <select id="selectUserRoleInProject" parameterType="UserProjectRole" resultType="string">
+  <!-- 카운트 멤버수-->
+  <select id="countProjectMembers" parameterType="int">
+    select count(*) 
+    from userProjectRole 
+    where project_id=#{projectId} 
+  </select>
+
+  <!-- 특정 프로젝트의 관리자 수 찾기-->
+  <select id="countProjectAdmins" parameterType="int">
+    select count(*)
+    from userProjectRole
+    where project_id=#{projectId}
+          and Upper(uprRole) ='ADMIN'
+
+  </select>
+
+  <!--특정 사용자의 프로젝트 역할 조회 -->
+  <select id="selectUserProjectRole" parameterType="UserProjectRole" resultType="UserProjectRole">
     select uprRole
-    from userprojectrole
-    where user_id=#{userId} and project_id=#{projectId}
+    from userProjectRole
+    where project_id = #{projectId} AND user_id = #{userId}
   </select>
+
+  <!-- 사용자 역할변경(팀장 위임가능)  -->
+  <update id="updateUserProjectRole" parameterType="UserProjectRole">
+        UPDATE userProjectRole 
+        SET uprRole = #{uprRole}
+        WHERE project_id = #{projectId} 
+          AND user_id = #{userId}
+  </update>
+
   <!--프로젝트에서 유저 제거-->
-  <delete id="deleteUserFromProject">
-    delete from UserProjectRole
+  <delete id="deleteUserProjectRole" parameterType="int">
+    delete from userProjectRole
     where user_id=#{userId} and project_id=#{projectId}
   </delete>
 
+  <!--프로젝트의 모든 유저 제거(프로젝트 삭제시 실행)-->
+  <delete id="deleteAllUserProjectRole" parameterType="int">
+    delete from userProjectRole
+    where project_id=#{projectId}
+  </delete>
 </mapper>

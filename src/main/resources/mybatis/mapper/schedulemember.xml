@@ -11,14 +11,31 @@
     VALUES (#{scheduleId}, #{userId})
   </insert>
 
+  <!-- 단일행 조회 -->
+  <select id="selectOne" parameterType="ScheduleMember" resultType="ScheduleMember">
+    SELECT schedule_id, user_id FROM scheduleMember
+    WHERE schedule_id = #{scheduleId} AND user_id = #{userId}
+  </select>
+
   <!-- 일정을 수행하는 사용자 조회 -->
   <select id="findUsers" parameterType="int" resultType="ScheduleMember">
     SELECT schedule_id, user_id FROM scheduleMember
     WHERE schedule_id = #{scheduleId}
   </select>
 
+  <!-- 특정 사용자가 배정받은 일정 조회 -->
+  <select id="findSchedulesOfUsers" parameterType="int" resultType="ScheduleMember">
+    SELECT schedule_id, user_id FROM scheduleMember
+    WHERE user_id = #{userId}
+  </select>
+
   <!-- 일정을 할당받은 멤버 해제 -->
-  <delete id="dischargeUsers" parameterType="int">
-    DELETE FROM scheduleMember WHERE user_id = #{userId}
+  <delete id="dischargeUsers" parameterType="ScheduleMember">
+    DELETE FROM scheduleMember WHERE schedule_id = #{scheduleId} AND user_id = #{userId}
+  </delete>
+
+  <!-- 일정 삭제시 모든 멤버 배정 해제 -->
+  <delete id="dischargeAll" parameterType="int">
+    DELETE FROM scheduleMember WHERE schedule_id = #{scheduleId}
   </delete>
 </mapper>
