@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.devdotdone.ddd.dto.tag.Tag;
 
-import com.devdotdone.ddd.dto.tag.KnowledgeTag;
+// import com.devdotdone.ddd.dto.tag.KnowledgeTag;
 
 @Mapper
 public interface KnowledgeTagDao {
