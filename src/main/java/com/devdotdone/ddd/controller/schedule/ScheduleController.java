@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devdotdone.ddd.dto.schedule.Schedule;
 import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
-import com.devdotdone.ddd.dto.users.UsersResponse;
+import com.devdotdone.ddd.dto.users.Users;
 import com.devdotdone.ddd.service.ScheduleService;
 
 @RestController
@@ -55,7 +55,7 @@ public class ScheduleController implements ScheduleControllerDocs {
   @GetMapping("/users")
   public Map<String, Object> users(@RequestParam("scheduleId") int scheduleId) {
     Map<String, Object> map = new HashMap<>();
-    List<UsersResponse> usersList = scheduleService.getAssignedUsers(scheduleId);
+    List<Users> usersList = scheduleService.getAssignedUsers(scheduleId);
     map.put("users", usersList);
     return map;
   }
