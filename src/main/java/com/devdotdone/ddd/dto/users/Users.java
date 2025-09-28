@@ -20,6 +20,7 @@ public class Users {
 
   @NotBlank(message = "비밀번호는 필수 입력값입니다.")
   @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8~16자 영문자, 숫자, 특수문자를 사용하세요.")
+  @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
   private String userPassword;
 
   @NotBlank(message = "사용자 이름은 필수 입력값입니다.")  
