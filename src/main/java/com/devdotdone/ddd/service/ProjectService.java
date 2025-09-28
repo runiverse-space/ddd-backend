@@ -41,6 +41,7 @@ public class ProjectService {
   @Transactional
   public Project create(ProjectRequest request) {
     // 생성자 존재 여부 확인
+    //userdao없이 request.getUserId가 가능한건지 확인 (주말 확인)
     Users creator = usersDao.selectUserById(request.getUserId());
     if (creator == null) {
       throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
@@ -126,7 +127,7 @@ public class ProjectService {
     for (UserProjectRole userProjectRole : userProjectRoles) {
       int userId = userProjectRole.getUserId();
       if (!userProjectRole.getUprRole().equals("ADMIN") && !request.getUserIds().contains(userId))
-        userProjectRoleService.banUsersFromProject(project.getProjectId(), userId);
+        userProjectRoleService.deleteUsersFromProject(project.getProjectId(), userId);
     }
 
     // 마일스톤 정보 수정
