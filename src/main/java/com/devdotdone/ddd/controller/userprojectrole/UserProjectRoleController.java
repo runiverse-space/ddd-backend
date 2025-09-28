@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/userprojectrole")
-public class UserProjectRoleController {
+public class UserProjectRoleController implements UserProjectRoleControllerDocs{
 
   @Autowired
   private UserProjectRoleService userProjectRoleService;
