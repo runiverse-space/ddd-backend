@@ -102,12 +102,18 @@ public class ScheduleService {
   }
 
   // 일정 삭제
+  @Transactional
   public int remove(int scheduleId) {
+    Schedule schedule = scheduleDao.selectScheduleById(scheduleId);
+    if (schedule == null) {
+      throw new IllegalArgumentException("존재하지 않는 일정입니다.");
+    }
     scheduleMemberDao.dischargeAll(scheduleId);
     return scheduleDao.deleteSchedule(scheduleId);
   }
 
   // 일정 할당
+  @Transactional
   private void assignUsers(int scheduleId, int projectId, List<Integer> userIds) {
     for (int userId : userIds) {
       if (usersDao.selectUserById(userId) == null) {
@@ -129,6 +135,7 @@ public class ScheduleService {
   }
 
   // 일정 할당 해제
+  @Transactional
   private void cancelUsers(int scheduleId, List<Integer> userIds) {
     List<ScheduleMember> smList = scheduleMemberDao.findUsers(scheduleId);
     

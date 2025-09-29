@@ -80,14 +80,10 @@ public class ScheduleController implements ScheduleControllerDocs {
     Map<String, Object> map = new HashMap<>();
 
     try {
-      int rows = scheduleService.remove(scheduleId);
-      if (rows == 0) {
-        map.put("result", "fail");
-        map.put("message", "삭제 실패");
-      } else {
-        map.put("result", "success");
-        map.put("message", "일정이 삭제되었습니다.");
-      }
+      scheduleService.remove(scheduleId);
+      map.put("result", "success");
+      map.put("message", "일정이 삭제되었습니다.");
+
     } catch (Exception e) {
       map.put("result", "fail");
       map.put("message", e.getMessage());
