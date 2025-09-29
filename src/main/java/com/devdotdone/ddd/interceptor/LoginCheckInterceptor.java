@@ -23,6 +23,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
       return true;
     }
 
+    if (!(handler instanceof HandlerMethod)) {
+      // 정적 리소스나 다른 핸들러는 통과
+      return true;
+    }
+
     HandlerMethod handlerMethod = (HandlerMethod) handler;
     Login login = handlerMethod.getMethodAnnotation(Login.class);
 
