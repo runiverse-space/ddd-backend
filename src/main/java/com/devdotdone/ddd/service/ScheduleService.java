@@ -79,7 +79,7 @@ public class ScheduleService {
   public Schedule update(ScheduleRequest request) {
     Schedule schedule = scheduleDao.selectScheduleById(request.getScheduleId());
     if (schedule == null) {
-      return null;
+      throw new IllegalArgumentException("존재하지 않는 일정입니다.");
     }
     // schedule.setProjectId(request.getProjectId());
     log.info("수정전: {}", schedule);

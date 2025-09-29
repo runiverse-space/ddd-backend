@@ -42,13 +42,14 @@ public class ScheduleController implements ScheduleControllerDocs {
   public Map<String, Object> detail(@RequestParam("scheduleId") int scheduleId) {
     Map<String, Object> map = new HashMap<>();
     Schedule schedule = scheduleService.getSchedule(scheduleId);
-    if (schedule != null) {
+    try {
       map.put("result", "success");
       map.put("schedule", schedule);
-    } else {
+    } catch (Exception e) {
       map.put("result", "fail");
-      map.put("message", "해당 일정이 존재하지 않습니다.");
+      map.put("message", e.getMessage());
     }
+
     return map;
   }
 
@@ -65,14 +66,8 @@ public class ScheduleController implements ScheduleControllerDocs {
     Map<String, Object> map = new HashMap<>();
     try {
       Schedule schedule = scheduleService.update(request);
-      if (schedule == null) {
-        map.put("result", "fail");
-        map.put("message", "해당 일정이 존재하지 않습니다.");
-      } else {
-        map.put("result", "success");
-        map.put("data", schedule);
-      }
-
+      map.put("result", "success");
+      map.put("data", schedule);
     } catch (Exception e) {
       map.put("result", "fail");
       map.put("message", e.getMessage());
