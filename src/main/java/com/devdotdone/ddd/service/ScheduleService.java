@@ -15,7 +15,6 @@ import com.devdotdone.ddd.dto.schedule.Schedule;
 import com.devdotdone.ddd.dto.schedule.ScheduleMember;
 import com.devdotdone.ddd.dto.schedule.ScheduleRequest;
 import com.devdotdone.ddd.dto.users.Users;
-import com.devdotdone.ddd.dto.users.UsersResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -64,28 +63,15 @@ public class ScheduleService {
   }
 
   // 일정을 배정받은 사용자 조회
-  public List<UsersResponse> getAssignedUsers(int scheduleId) {
-    List<UsersResponse> usersResponseList = new ArrayList<>();
+  public List<Users> getAssignedUsers(int scheduleId) {
+    List<Users> usersList = new ArrayList<>();
     List<ScheduleMember> smList = scheduleMemberDao.findUsers(scheduleId);
     for (ScheduleMember sm : smList) {
       int userId = sm.getUserId();
       Users users = usersDao.selectUserById(userId);
-
-      UsersResponse usersResponse = new UsersResponse();
-
-      usersResponse.setUserId(users.getUserId());
-      usersResponse.setUserLoginId(users.getUserLoginId());
-      usersResponse.setUserName(users.getUserName());
-      usersResponse.setUserEmail(users.getUserEmail());
-      usersResponse.setUserIntro(users.getUserIntro());
-      usersResponse.setUfAttach(users.getUfAttach());
-      usersResponse.setUfAttachoname(users.getUfAttachoname());
-      usersResponse.setUfAttachtype(users.getUfAttachtype());
-      usersResponse.setUfAttachdata(users.getUfAttachdata());
-
-      usersResponseList.add(usersResponse);
+      usersList.add(users);
     }
-    return usersResponseList;
+    return usersList;
   }
 
   // 일정 수정

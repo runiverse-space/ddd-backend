@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.devdotdone.ddd.dto.tag.Tag;
 
+// import com.devdotdone.ddd.dto.tag.ProjectTag;
+
 @Mapper
 public interface ProjectTagDao {
     void insertProjectTag(@Param("projectId") int projectId, @Param("tagId") int tagId);

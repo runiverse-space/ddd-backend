@@ -13,6 +13,7 @@ import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
 import com.devdotdone.ddd.dto.users.Users;
 
+
 @Service
 public class UserProjectRoleService {
 
@@ -65,7 +66,7 @@ public class UserProjectRoleService {
       throw new IllegalArgumentException("사용자가 존재하지 않습니다.");
     }
 
-    // 이미 프로젝트 참여중인지 확인
+    // 이미 프로젝트 참여중인지 확인하고 없으면 추가
     UserProjectRole existUpr = userProjectRoleDao.selectUserProjectRole(projectId, userId);
 
     if (existUpr != null) {
@@ -99,8 +100,9 @@ public class UserProjectRoleService {
   /*
    * 프로젝트에서 멤버 제거
    */
+
   @Transactional
-  public int banUsersFromProject(int projectId, int userId) {
+  public int deleteUsersFromProject(int projectId, int userId) {
 
     UserProjectRole existUser = userProjectRoleDao.selectUserProjectRole(projectId, userId);
     if (existUser == null) {
@@ -109,7 +111,7 @@ public class UserProjectRoleService {
     if ("ADMIN".equalsIgnoreCase(existUser.getUprRole())) {
       int adminCount = getCountProjectAdmins(projectId);
       if (adminCount <= 1) {
-        throw new IllegalStateException("마지막 팀장은 직접 삭제할 수 없습니다. 팀장을 변경 후 삭제하세요.");
+        throw new IllegalStateException("팀장은 직접 삭제할 수 없습니다. 팀장을 변경 후 삭제하세요.");
       }
     }
 
@@ -119,53 +121,9 @@ public class UserProjectRoleService {
   }
 
   /*
-   * 사용자 역할 변경(일반 멤버)
-   */
-  @Transactional
-  public int update(UserProjectRole userProjectRole) {
-
-    // 현재 사용자의 프로젝트 역할조회 userprojectrole을 통해서
-    UserProjectRole nowUpr = userProjectRoleDao.selectUserProjectRole(userProjectRole.getProjectId(),
-    userProjectRole.getUserId());
-
-    // 해당 프로젝트 멤버가 아닐때 projectId
-    if (nowUpr == null) {
-      throw new IllegalArgumentException("해당 유저는 프로젝트 멤버가 아닙니다");
-    }
-
-    // 새롭게 바뀐 admin이나 멤버
-    String changeUpr = userProjectRole.getUprRole();
-
-    // admin으로 변경하는 경우 팀장 위임 메서드 사용하도록 안내
-    if ("ADMIN".equals(changeUpr)) {
-       throw new IllegalStateException("팀장 변경은 updateAdmin 메서드를 사용하세요.");
-    }
-    //Member로만 변경 가능
-    if (!"MEMBER".equals(changeUpr)) {
-        throw new IllegalArgumentException("일반 역할 변경은 MEMBER만 가능합니다.");
-    }
-
-    int rows = userProjectRoleDao.updateUserProjectRole(userProjectRole);
-    return rows;
-  }
-
-  /*
-   * 프로젝트 멤버 목록 조회
-   */
-
-  public List<UserProjectRole> getUsersProject(int projectId) {
-    // 프로젝트 존재 여부 확인
-    Project project = projectDao.selectProjectById(projectId);
-    if (project == null) {
-      throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
-    }
-    List<UserProjectRole> uprList = userProjectRoleDao.selectProjectMembers(projectId);
-    return uprList;
-  }
-
-  /*
    * 역할 변경 (팀장 위임)
    */
+
   @Transactional
   public int updateAdmin(UserProjectRole userProjectRole){
 
@@ -191,18 +149,19 @@ public class UserProjectRoleService {
     UserProjectRole currentAdmin=null;
    
     for(UserProjectRole projectMember: projectMembers ){
-      if("ADMIN".equalsIgnoreCase(userProjectRole.getUprRole())){
+      if("ADMIN".equalsIgnoreCase(projectMember.getUprRole())){
         currentAdmin= projectMember;
         break;
       }
     }
+      //이 경우는 없을텐데..
       if(currentAdmin==null){
         throw new IllegalStateException("현재 팀장이 존재하지 않습니다.");
       }
 
     //기존 Admin을 멤버로 바꿀수 있다. 
     UserProjectRole oldAdmin = new UserProjectRole();
-    oldAdmin.setUserId(userProjectRole.getUserId());
+    oldAdmin.setUserId(currentAdmin.getUserId());
     oldAdmin.setProjectId(userProjectRole.getProjectId());
     oldAdmin.setUprRole("MEMBER");
     int oldAdminResult =userProjectRoleDao.updateUserProjectRole(oldAdmin);
@@ -223,11 +182,38 @@ public class UserProjectRoleService {
     return newAdminResult;
   }
 
-
   /*
-   * 사용자의 특정 프로젝트 역할 조회
+   * 프로젝트 멤버 목록 조회
    */
 
+  public List<UserProjectRole> getProjectMember(int projectId) {
+    // 프로젝트 존재 여부 확인
+    Project project = projectDao.selectProjectById(projectId);
+    if (project == null) {
+      throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
+    }
+    List<UserProjectRole> uprList = userProjectRoleDao.selectProjectMembers(projectId);
+    return uprList;
+  }
+
+
+  /*
+   * 사용자의 특정 프로젝트 역할 조회(admin인지 일반 member인지 구별)
+   */
+
+  public String getUserProjectRole(int projectId, int userId){
+   UserProjectRole userRole= userProjectRoleDao.selectUserProjectRole(projectId, userId);
+    
+   if(userRole!=null && userRole.getUprRole()!=null && !userRole.getUprRole().trim().isEmpty()){
+    return userRole.getUprRole().trim();
+   }else{
+    return "NONE";
+   }
+   
+
+  }
+
+  
 
   /*
    * 프로젝트 멤버 수 조회
