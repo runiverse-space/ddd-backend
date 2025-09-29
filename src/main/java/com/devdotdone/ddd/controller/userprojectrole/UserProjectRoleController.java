@@ -54,9 +54,9 @@ public class UserProjectRoleController implements UserProjectRoleControllerDocs{
           userProjectRole.getUprRole());
   
 
-    System.out.println("프로젝트 ID: " + userProjectRole.getProjectId());
-    System.out.println("사용자 ID: " + userProjectRole.getUserId());
-    System.out.println("역할: " + userProjectRole.getUprRole());
+    // System.out.println("프로젝트 ID: " + userProjectRole.getProjectId());
+    // System.out.println("사용자 ID: " + userProjectRole.getUserId());
+    // System.out.println("역할: " + userProjectRole.getUprRole());
 
     String role = userProjectRoleService.getUserProjectRole(userProjectRole.getProjectId(),
         userProjectRole.getUserId());
