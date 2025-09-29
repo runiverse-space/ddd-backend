@@ -14,6 +14,7 @@ public interface RetrospecDao {
     Retrospec selectByretroId(@Param("retroId") int retroId);
     List<Retrospec> selectByProject(@Param("projectId") int projectId);
     int updateRetrospec(RetrospecRequest request);
+    // retroId + projectId + userId 일치해야 삭제
     int deleteRetrospec(@Param("retroId") int retroId,
                         @Param("projectId") int projectId,
                         @Param("userId") int userId);

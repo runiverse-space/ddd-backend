@@ -26,19 +26,29 @@ public class UserTagService {
         // 현재 등록된 태그 목록 조회
         List<Tag> existing = userTagDao.selectTagByUserId(request.getUserId());
 
-        // 기존 태그 + 추가 태그 개수 3인지 검증
+        // 기존 태그 개수 + 새 태그 개수 검증
         TagValidator.validate(existing.size(), request.getTagIds().size());
 
         for (int tagId : request.getTagIds()) {
-            boolean alreadyExists = existing.stream().anyMatch(t -> t.getTagId() == tagId);
+            boolean alreadyExists = false;
+
+            // 기존 태그들 중에서 동일한 tagId가 있는지 직접 for문으로 검사
+            for (Tag t : existing) {
+                if (t.getTagId() == tagId) {
+                    alreadyExists = true;
+                    break; // 동일한 태그가 하나라도 있다면
+                }
+            }
 
             // 이미 등록된 경우 예외 발생
             if (alreadyExists) {
-                throw new IllegalArgumentException("이미 등록된 태그입니다.");
+                throw new IllegalArgumentException("이미 등록된 태그입니다. tagId=" + tagId);
             }
-            // 새로운 태그만 isnert
+
+            // 새로운 태그만 insert
             userTagDao.insertUserTag(request.getUserId(), tagId);
         }
+
         // 최종 상태 반환
         return getUserTags(request.getUserId());
     }
