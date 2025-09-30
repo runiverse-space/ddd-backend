@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/userprojectrole")
-public class UserProjectRoleController implements UserProjectRoleControllerDocs{
+public class UserProjectRoleController {
 
   @Autowired
   private UserProjectRoleService userProjectRoleService;
@@ -32,8 +32,8 @@ public class UserProjectRoleController implements UserProjectRoleControllerDocs{
  
 
   // 프로젝트 멤버 목록 조회
-  @GetMapping("/list")
-  public List<UserProjectRole> userProjectRoleList(@RequestParam("projectId") int projectId) {
+  @GetMapping("/memberlist")
+  public List<UserProjectRole> memberList(@RequestParam("projectId") int projectId) {
 
     List<UserProjectRole> projectmemberlist = userProjectRoleService.getProjectMember(projectId);
     log.info(projectmemberlist.toString());
@@ -42,6 +42,18 @@ public class UserProjectRoleController implements UserProjectRoleControllerDocs{
 
   }
 
+  //특정 유저의 프로젝트 목록조회
+  @GetMapping("/projectlist")
+  public Map<String,Object> getUsersProjectRoles(@RequestParam("userId") int userId){
+    Map<String,Object> result = new HashMap<>();
+    
+    List<UserProjectRole> roles = userProjectRoleService.getProjectsListByUserId(userId);
+    result.put("result","success");
+    result.put("data", roles);
+    
+    return result;
+
+  }
   
 
   // 새로운 멤버 영입(총인원 6명인 조건 그대로)
@@ -53,10 +65,6 @@ public class UserProjectRoleController implements UserProjectRoleControllerDocs{
           userProjectRole.getUserId(),
           userProjectRole.getUprRole());
   
-
-    // System.out.println("프로젝트 ID: " + userProjectRole.getProjectId());
-    // System.out.println("사용자 ID: " + userProjectRole.getUserId());
-    // System.out.println("역할: " + userProjectRole.getUprRole());
 
     String role = userProjectRoleService.getUserProjectRole(userProjectRole.getProjectId(),
         userProjectRole.getUserId());

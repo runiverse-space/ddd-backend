@@ -196,6 +196,19 @@ public class UserProjectRoleService {
     return uprList;
   }
 
+  /*
+    특정 유저가 속한 프로젝트 목록 조회
+   */
+  public List<UserProjectRole> getProjectsListByUserId(int userId){
+    //유저 존재 확인
+    Users users = usersDao.selectUserById(userId);
+    if(users ==null){
+      throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
+    }
+
+    return userProjectRoleDao.selectUsersProject(userId);
+  }
+
 
   /*
    * 사용자의 특정 프로젝트 역할 조회(admin인지 일반 member인지 구별)
