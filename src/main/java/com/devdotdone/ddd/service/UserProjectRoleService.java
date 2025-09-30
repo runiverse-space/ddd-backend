@@ -13,7 +13,9 @@ import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
 import com.devdotdone.ddd.dto.users.Users;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class UserProjectRoleService {
 
@@ -193,6 +195,9 @@ public class UserProjectRoleService {
       throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
     }
     List<UserProjectRole> uprList = userProjectRoleDao.selectProjectMembers(projectId);
+    log.info("프로젝트에 속한 멤버: {}", uprList);
+     log.info("멤버 수: {}", uprList.size());
+
     return uprList;
   }
 
