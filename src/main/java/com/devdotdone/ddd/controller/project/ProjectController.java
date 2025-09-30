@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.project.ProjectRequest;
 import com.devdotdone.ddd.dto.schedule.Schedule;
+import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
 import com.devdotdone.ddd.service.ProjectService;
 import com.devdotdone.ddd.service.ScheduleService;
+import com.devdotdone.ddd.service.UserProjectRoleService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +33,9 @@ public class ProjectController implements ProjectControllerDocs {
 
   @Autowired
   private ScheduleService scheduleService;
+
+  @Autowired
+  private UserProjectRoleService userProjectRoleService;
 
   @PostMapping("/create")
   public Map<String, Object> create(@RequestBody ProjectRequest request) {
@@ -81,6 +86,21 @@ public class ProjectController implements ProjectControllerDocs {
     }
     return map;
   }
+
+  @GetMapping("/userprojectroles")
+  public Map<String, Object> projectUserProjectRoles(@RequestParam("projectId") int projectId) {
+       Map<String, Object> map = new HashMap<>();
+        try {
+      List<UserProjectRole> upr = userProjectRoleService.getProjectMember(projectId);
+      map.put("result", "success");
+      map.put("data", upr);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+  
 
   @PutMapping("/update")
   public Map<String, Object> update(@RequestBody ProjectRequest request) {
