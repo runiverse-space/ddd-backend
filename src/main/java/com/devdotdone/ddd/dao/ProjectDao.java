@@ -1,5 +1,7 @@
 package com.devdotdone.ddd.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.devdotdone.ddd.dto.project.Project;
@@ -25,6 +27,7 @@ public interface ProjectDao{
 
   public Project selectProjectById(int projectId);
 
+  public List<Project> selectAllProjects();
   
   public int updateProject(Project project);
   

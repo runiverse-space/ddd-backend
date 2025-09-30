@@ -90,6 +90,11 @@ public class ProjectService {
     return project;
   }
 
+  //프로젝트 전부 조회
+  public List<Project> getAllProjects(){
+    return projectDao.selectAllProjects();
+  }
+
   // 프로젝트 수정
   @Transactional
   public Project update(ProjectRequest request) {

@@ -20,6 +20,9 @@ import com.devdotdone.ddd.dto.schedule.Schedule;
 import com.devdotdone.ddd.service.ProjectService;
 import com.devdotdone.ddd.service.ScheduleService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController implements ProjectControllerDocs {
@@ -41,6 +44,15 @@ public class ProjectController implements ProjectControllerDocs {
     }
     return map;
   }
+
+  @GetMapping("/list")
+  public List<Project> list() {
+      List<Project> list= projectService.getAllProjects();
+      log.info("프로젝트 목록 조회",list);
+      return list;
+  }
+  
+
 
   @GetMapping("/detail")
   public Map<String, Object> detail(@RequestParam("projectId") int projectId) {

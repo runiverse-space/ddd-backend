@@ -17,6 +17,13 @@
     #{projectContent}, #{projectStartDate}, #{projectEndDate}, SYSTIMESTAMP)
   </insert> 
 
+  <!-- 전체 프로젝트 조회-->
+  <select id="selectAllProjects" resultType="Project">
+    select 
+    project_id, user_id,projectTitle,projectContent
+    from project
+    order by project_id desc
+  </select>
 
   <select id="selectProjectById" parameterType="int" resultType="Project">
     SELECT 
