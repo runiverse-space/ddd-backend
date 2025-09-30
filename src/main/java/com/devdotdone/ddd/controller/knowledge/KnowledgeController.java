@@ -1,9 +1,9 @@
 package com.devdotdone.ddd.controller.knowledge;
 
-
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -32,16 +32,17 @@ import lombok.extern.slf4j.Slf4j;
 public class KnowledgeController {
   @Autowired
   KnowledgeService knowledgeService;
-/*
-  지식창고 글 생성
- */
+
+  /*
+   * 지식창고 글 생성
+   */
   @PostMapping("/create")
-  public Knowledge create(@ModelAttribute Knowledge knowledge) throws Exception{
-     
+  public Knowledge create(@ModelAttribute Knowledge knowledge) throws Exception {
+
     log.info(knowledge.toString());
-    
-    MultipartFile mf =knowledge.getKfAttach();
-     
+
+    MultipartFile mf = knowledge.getKfAttach();
+
     if (mf != null && !mf.isEmpty()) { // mf가 null 아니고 안에 파일이 있다
       knowledge.setKfAttachoname(mf.getOriginalFilename());// 사용자가 올린 파일이름
       knowledge.setKfAttachtype(mf.getContentType());
@@ -49,45 +50,59 @@ public class KnowledgeController {
     }
 
     knowledgeService.create(knowledge);
-    Knowledge dbknowledge= knowledgeService.getKnowledge(knowledge.getKnowledgeId());
-    
+    Knowledge dbknowledge = knowledgeService.getKnowledge(knowledge.getKnowledgeId());
+
     return dbknowledge;
   }
- 
+
+  /*
+   * 리스트
+   */
+
+  @GetMapping("/list")
+  public List<Knowledge> knowledgeList(@RequestParam("projectId") int projectId) {
+
+    List<Knowledge> list = knowledgeService.getKnowledgeListByProject(projectId);
+
+    return list;
+
+  }
+
   /*
    * 특정 지식창고 글 자세히보기
    */
   @GetMapping("/detail")
   public Map<String, Object> detail(@RequestParam("knowledgeId") int knowledgeId) {
-     
-    Map<String, Object> resultMap= new HashMap<>();
+
+    Map<String, Object> resultMap = new HashMap<>();
     Knowledge knowledge = knowledgeService.getKnowledge(knowledgeId);
-    resultMap.put("result","success");
-    resultMap.put("data",knowledge);
+    resultMap.put("result", "success");
+    resultMap.put("data", knowledge);
     return resultMap;
 
   }
- /*
-  * 지식 창고 수정하기
-  */
-   @PutMapping("/update")
-   public Knowledge update(@RequestBody Knowledge knowledge) {
-       log.info("지식창고 수정하기",knowledge.toString());
 
-       knowledgeService.update(knowledge);//반환값 무시하고 
+  /*
+   * 지식 창고 수정하기
+   */
+  @PutMapping("/update")
+  public Knowledge update(@RequestBody Knowledge knowledge) {
+    log.info("지식창고 수정하기", knowledge.toString());
 
-       Knowledge dbKnowledge = knowledgeService.getKnowledge(knowledge.getKnowledgeId());
-     
-       return dbKnowledge;
+    knowledgeService.update(knowledge);// 반환값 무시하고
 
-   }
+    Knowledge dbKnowledge = knowledgeService.getKnowledge(knowledge.getKnowledgeId());
 
- /*
-  * 지식 창고 삭제하기
-  */
+    return dbKnowledge;
+
+  }
+
+  /*
+   * 지식 창고 삭제하기
+   */
 
   @DeleteMapping("/delete")
-  public String delete(@RequestParam("knowledgeId") int knowledgeId){
+  public String delete(@RequestParam("knowledgeId") int knowledgeId) {
     knowledgeService.delete(knowledgeId);
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("result", "success");
@@ -96,20 +111,21 @@ public class KnowledgeController {
   }
 
   /*
-      지식창고 파일 다운 받기   
+   * 지식창고 파일 다운 받기
    */
 
-   @GetMapping("/attachdownload")
-   public void attachdownload(@RequestParam("knowledgeId") int knowledgeId, HttpServletResponse response) throws Exception {
-      
-    //db에서 내용을 읽음
+  @GetMapping("/attachdownload")
+  public void attachdownload(@RequestParam("knowledgeId") int knowledgeId, HttpServletResponse response)
+      throws Exception {
+
+    // db에서 내용을 읽음
     Knowledge knowledge = knowledgeService.getKnowledge(knowledgeId);
 
     String fileName = knowledge.getKfAttachoname();
 
     response.setContentType(knowledge.getKfAttachtype());
 
-    String encodedfileName = new String(fileName.getBytes("UTF-8"),"ISO_8859-1");
+    String encodedfileName = new String(fileName.getBytes("UTF-8"), "ISO_8859-1");
     response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedfileName + "\"");
 
     response.setHeader(HttpHeaders.CACHE_CONTROL, "no-store, no-cache, must-revalidate, proxy-revalidate");
@@ -123,11 +139,6 @@ public class KnowledgeController {
     bos.flush();
     bos.close();
 
+  }
 
-   }
-   
-
-  
-    
-  
 }

@@ -36,10 +36,11 @@ public interface KnowledgeDao {
   public int insertKnowledge(Knowledge knowledge);
   //knowledgeId별 조회
   public Knowledge selectKnowledgeByKnowledgeId(int knowledgeId);
-  //유저별 조회
-  public Knowledge selectKnowledgeByUserId(int userId);
-  //프로젝트별 조회
-  public Knowledge selectKnowledgeByProjectId(int projectId);
+  //유저별 목록 조회
+  public List<Knowledge> selectKnowledgeByUserId(int userId);
+
+  //프로젝트별 목록 조회
+  public List<Knowledge> selectKnowledgeByProjectId(int projectId);
 
   //수정
   public int updateKnowledge(Knowledge knowledge);
