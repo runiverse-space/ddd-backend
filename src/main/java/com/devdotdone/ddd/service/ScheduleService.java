@@ -113,7 +113,6 @@ public class ScheduleService {
   }
 
   // 일정 할당
-  @Transactional
   private void assignUsers(int scheduleId, int projectId, List<Integer> userIds) {
     for (int userId : userIds) {
       if (usersDao.selectUserById(userId) == null) {
@@ -135,7 +134,6 @@ public class ScheduleService {
   }
 
   // 일정 할당 해제
-  @Transactional
   private void cancelUsers(int scheduleId, List<Integer> userIds) {
     List<ScheduleMember> smList = scheduleMemberDao.findUsers(scheduleId);
     
