@@ -15,7 +15,7 @@ import com.devdotdone.ddd.service.ProjectTagService;
 
 @RestController
 @RequestMapping("/api/projectTag")
-public class ProjectTagController implements ProjectTagControllerDocs {
+public class ProjectTagController {
     @Autowired
     private ProjectTagService projectTagService;
 

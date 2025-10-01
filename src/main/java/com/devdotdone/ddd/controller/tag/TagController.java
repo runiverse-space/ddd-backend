@@ -16,7 +16,7 @@ import com.devdotdone.ddd.service.TagService;
 
 @RestController
 @RequestMapping("/api/tags")
-public class TagController implements TagControllerDocs{
+public class TagController {
     @Autowired
     private TagService tagService;
 

@@ -19,7 +19,7 @@ import com.devdotdone.ddd.service.ProjectMilestoneService;
 
 @RestController
 @RequestMapping("/api/projectmilestone")
-public class ProjectMilestoneController implements ProjectMilestoneControllerDocs {
+public class ProjectMilestoneController {
   @Autowired
   private ProjectMilestoneService projectMilestoneService;
 

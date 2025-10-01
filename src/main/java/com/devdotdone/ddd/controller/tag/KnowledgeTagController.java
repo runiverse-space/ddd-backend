@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/knowledgeTag")
-public class KnowledgeTagController implements KnowledgeTagControllerDocs {
+public class KnowledgeTagController {
     @Autowired
     private KnowledgeTagService knowledgeTagService;
 

@@ -21,7 +21,7 @@ import com.devdotdone.ddd.service.ScheduleService;
 
 @RestController
 @RequestMapping("/api/schedule")
-public class ScheduleController implements ScheduleControllerDocs {
+public class ScheduleController {
   @Autowired
   private ScheduleService scheduleService;
 

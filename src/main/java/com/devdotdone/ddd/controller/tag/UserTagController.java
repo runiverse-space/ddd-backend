@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/userTag")
-public class UserTagController implements UserTagControllerDocs{
+public class UserTagController {
     @Autowired
     private UserTagService userTagService;
 

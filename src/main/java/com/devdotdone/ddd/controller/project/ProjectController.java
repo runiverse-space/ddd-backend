@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/project")
-public class ProjectController implements ProjectControllerDocs {
+public class ProjectController {
   @Autowired
   private ProjectService projectService;
 

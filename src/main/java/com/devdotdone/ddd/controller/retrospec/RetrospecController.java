@@ -19,7 +19,7 @@ import com.devdotdone.ddd.service.RetrospecService;
 
 @RestController
 @RequestMapping("/api/retrospec")
-public class RetrospecController implements RetrospecControllerDocs {
+public class RetrospecController {
     @Autowired
     private RetrospecService retrospecService;
 
