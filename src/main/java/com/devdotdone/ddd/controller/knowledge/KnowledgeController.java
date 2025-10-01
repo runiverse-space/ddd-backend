@@ -86,7 +86,7 @@ public class KnowledgeController {
    * 지식 창고 수정하기
    */
   @PutMapping("/update")
-  public Knowledge update(@RequestBody Knowledge knowledge) {
+  public Knowledge update(@ModelAttribute Knowledge knowledge) {
     log.info("지식창고 수정하기", knowledge.toString());
 
     knowledgeService.update(knowledge);// 반환값 무시하고
