@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/users")
 @Slf4j
-public class UsersController implements UsersCommentDocs {
+public class UsersController {
   @Autowired
   private UsersService usersService;
 
