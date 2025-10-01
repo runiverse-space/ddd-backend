@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/knowledgecomment")
-public class KnowledgeCommentController implements KnowledgeCommentDocs{
+public class KnowledgeCommentController {
   
   @Autowired
   private KnowledgeCommentService knowledgeCommentService;
