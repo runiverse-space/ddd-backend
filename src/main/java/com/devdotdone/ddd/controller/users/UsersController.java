@@ -77,7 +77,8 @@ public class UsersController {
       if (passwordEncoder.matches(loginForm.getUserPassword(), users.getUserPassword())) {
         String jwt = jwtService.createJwt(users.getUserId(), users.getUserLoginId(), users.getUserEmail());
         map.put("result", "success");
-        map.put("userId", users.getUserLoginId());
+        map.put("userId", Integer.toString(users.getUserId()));
+        map.put("userLoginId", users.getUserLoginId());
         map.put("jwt", jwt);
       } else {
         map.put("result", "fail");
