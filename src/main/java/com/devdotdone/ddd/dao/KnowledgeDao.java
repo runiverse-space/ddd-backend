@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.devdotdone.ddd.dto.Pager;
 import com.devdotdone.ddd.dto.knowledge.Knowledge;
 /*
  
@@ -51,7 +52,10 @@ public interface KnowledgeDao {
   public int countAll();
 
 
- // public List<Knowledge> selectByPage(Pager pager);
+ public Knowledge selectPrevKnowledge(int knowledgeId);
+ 
+ public Knowledge selectNextKnowledge(int knowledgeId);
+
 
 
 
