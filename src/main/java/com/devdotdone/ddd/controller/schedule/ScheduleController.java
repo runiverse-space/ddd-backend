@@ -44,7 +44,7 @@ public class ScheduleController {
     Schedule schedule = scheduleService.getSchedule(scheduleId);
     try {
       map.put("result", "success");
-      map.put("schedule", schedule);
+      map.put("data", schedule);
     } catch (Exception e) {
       map.put("result", "fail");
       map.put("message", e.getMessage());
@@ -56,8 +56,14 @@ public class ScheduleController {
   @GetMapping("/users")
   public Map<String, Object> users(@RequestParam("scheduleId") int scheduleId) {
     Map<String, Object> map = new HashMap<>();
-    List<Users> usersList = scheduleService.getAssignedUsers(scheduleId);
-    map.put("users", usersList);
+    try {
+      List<Users> usersList = scheduleService.getAssignedUsers(scheduleId);
+      map.put("result", "success");
+      map.put("data", usersList);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
     return map;
   }
 
