@@ -68,16 +68,26 @@ public class KnowledgeController {
 
   }
 
+ 
+
   /*
    * 특정 지식창고 글 자세히보기
    */
   @GetMapping("/detail")
   public Map<String, Object> detail(@RequestParam("knowledgeId") int knowledgeId) {
 
+
+
     Map<String, Object> resultMap = new HashMap<>();
     Knowledge knowledge = knowledgeService.getKnowledge(knowledgeId);
+    Knowledge prevKnowledge = knowledgeService.getPrevKnowledge(knowledgeId);
+    Knowledge nextKnowledge = knowledgeService.getNextKnowledge(knowledgeId);
+
     resultMap.put("result", "success");
     resultMap.put("data", knowledge);
+    resultMap.put("prevKnowledge", prevKnowledge);
+    resultMap.put("nextKnowledge", nextKnowledge);
+
     return resultMap;
 
   }
