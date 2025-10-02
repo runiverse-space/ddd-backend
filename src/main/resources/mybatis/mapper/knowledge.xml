@@ -1,97 +1,78 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.KnowledgeDao">
   <!--insert문 -->
   <insert id="insertKnowledge" parameterType="Knowledge">
 
-    <selectKey keyProperty="knowledgeId" resultType="int" order="BEFORE">
-      select seq_knowledge_knowledgeId.nextval from dual
-    </selectKey>
-    insert into knowledge(
-      knowledge_id,project_id, user_id, knowledgeTitle,knowledgeContent, knowledgeUrl,
-      kfAttachoname, kfAttachsname, kfAttachtype, kfAttachdata, 
-      knowledgeCreatedAt
-    )
-    values(
-    #{knowledgeId},
+    <selectKey keyProperty="knowledgeId" resultType="int" order="BEFORE"> select
+    seq_knowledge_knowledgeId.nextval from dual </selectKey> insert into knowledge(
+    knowledge_id,project_id, user_id, knowledgeTitle,knowledgeContent, knowledgeUrl, kfAttachoname,
+    kfAttachsname, kfAttachtype, kfAttachdata, knowledgeCreatedAt ) values( #{knowledgeId},
     #{projectId},#{userId},#{knowledgeTitle},#{knowledgeContent},
-    #{knowledgeUrl},#{kfAttachoname},#{kfAttachsname},#{kfAttachtype},#{kfAttachdata},
-    SYSTIMESTAMP)
-  </insert>
+    #{knowledgeUrl},#{kfAttachoname},#{kfAttachsname},#{kfAttachtype},#{kfAttachdata}, SYSTIMESTAMP) </insert>
 
-<!--  knowledgeId별 조회-->
-  <select id="selectKnowledgeByKnowledgeId" resultType="Knowledge">
-    select
-      knowledge_id, project_id, user_id, knowledgeTitle, 
-      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
-      from knowledge
-    where knowledge_id = #{knowledgeId}
-    order by knowledgeCreatedAt desc
-  </select>
+  <!--  knowledgeId별 조회-->
+  <select id="selectKnowledgeByKnowledgeId" resultType="Knowledge"> select knowledge_id, project_id,
+    user_id, knowledgeTitle, knowledgeContent, knowledgeUrl, knowledgeCreatedAt, kfAttachoname,
+    kfAttachsname, kfAttachtype,kfAttachdata from knowledge where knowledge_id = #{knowledgeId}
+    order by knowledgeCreatedAt desc </select>
 
   <!-- 글쓴 유저별 조회-->
-  <select id="selectKnowledgeByUserId" resultType="Knowledge">
-    select
-      knowledge_id, project_id, user_id, knowledgeTitle, 
-      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
-      from knowledge
+  <select id="selectKnowledgeByUserId" resultType="Knowledge"> select knowledge_id, project_id,
+    user_id, knowledgeTitle, knowledgeContent, knowledgeUrl, knowledgeCreatedAt, kfAttachoname,
+    kfAttachsname, kfAttachtype,kfAttachdata from knowledge where user_id =#{userId} order by
+    knowledgeCreatedAt desc </select>
 
-    where user_id =#{userId}
-    order by knowledgeCreatedAt desc
-  </select>
-
-  
 
   <!-- 프로젝트별 조회-->
-  <select id="selectKnowledgeByProjectId" resultType="Knowledge">
-    select
-      knowledge_id, project_id, user_id, knowledgeTitle, 
-      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
-    from knowledge
-    where project_id=#{projectId}
-    order by knowledgeCreatedAt desc
-  </select>  
+  <select id="selectKnowledgeByProjectId" resultType="Knowledge"> select knowledge_id, project_id,
+    user_id, knowledgeTitle, knowledgeContent, knowledgeUrl, knowledgeCreatedAt, kfAttachoname,
+    kfAttachsname, kfAttachtype,kfAttachdata from knowledge where project_id=#{projectId} order by
+    knowledgeCreatedAt desc </select>
 
   <!-- 전체 조회-->
-   <select id="selectKnowledge" resultType="Knowledge">
-    select
-      knowledge_id, project_id, user_id, knowledgeTitle, 
-      knowledgeContent, knowledgeUrl, knowledgeCreatedAt,
-      kfAttachoname, kfAttachsname, kfAttachtype,kfAttachdata
-    from knowledge
-    order by knowledgeCreatedAt desc
-  </select>
+  <select id="selectKnowledge" resultType="Knowledge"> select knowledge_id, project_id, user_id,
+    knowledgeTitle, knowledgeContent, knowledgeUrl, knowledgeCreatedAt, kfAttachoname,
+    kfAttachsname, kfAttachtype,kfAttachdata from knowledge order by knowledgeCreatedAt desc </select>
 
   <!-- update 문-->
-  <update id="updateKnowledge" parameterType="Knowledge">
-    update knowledge
-    set knowledgeTitle =#{knowledgeTitle},
-        knowledgeContent=#{knowledgeContent},
-        knowledgeUrl=#{knowledgeUrl}
-        <if test="kfAttachoname!=null">
-        ,kfAttachoname=#{kfAttachoname}
-        ,kfAttachsname=#{kfAttachsname}
-        ,kfAttachtype=#{kfAttachtype}
-        ,kfAttachdata=#{kfAttachdata}
-        </if>
-    where knowledge_id=#{knowledgeId}
+  <update id="updateKnowledge" parameterType="Knowledge"> update knowledge set knowledgeTitle
+    =#{knowledgeTitle}, knowledgeContent=#{knowledgeContent}, knowledgeUrl=#{knowledgeUrl} <if
+      test="kfAttachoname!=null"> ,kfAttachoname=#{kfAttachoname} ,kfAttachsname=#{kfAttachsname}
+    ,kfAttachtype=#{kfAttachtype} ,kfAttachdata=#{kfAttachdata} </if> where
+    knowledge_id=#{knowledgeId} </update>
 
-  </update>
+  <delete id="deleteKnowledge" parameterType="int"> delete from knowledge where
+    knowledge_id=#{value} </delete>
 
-  <delete id="deleteKnowledge" parameterType="int">
-    delete from knowledge
-    where knowledge_id=#{value}
-  </delete>
+  <select id="countAllKnowledge" resultType="int"> select count(*) from knowledge </select>
 
-  <select id="countAllKnowledge" resultType="int">
-    select count(*) from knowledge
+
+  <!--이전글
+  조회 -->
+
+  <select id="selectPrevKnowledge" parameterType="int" resultType="Knowledge">
+    
+    <![CDATA[
+    select knowledge_id, knowledgeTitle
+    from knowledge
+    where knowledge_id < #{knowledgeId}
+    order by knowledge_id ASC
+    fetch first 1 rows only
+    ]]>
   </select>
+
+  <select id="selectNextKnowledge" parameterType="int" resultType="Knowledge">
+    <![CDATA[
+        select knowledge_id, knowledgeTitle
+        from knowledge
+        where knowledge_id > #{knowledgeId}
+        order by knowledge_id ASC
+        fetch first 1 rows only
+    ]]>
+
+  </select>
+
 
 </mapper>
