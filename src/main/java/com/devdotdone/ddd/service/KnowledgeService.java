@@ -37,15 +37,26 @@ public class KnowledgeService {
   public List<Knowledge> getKnowledgesListByUser(int userId){
     return knowledgeDao.selectKnowledgeByUserId(userId);
   }
-
+  //업데이트
   public int update(Knowledge knowledge){
     int rows =knowledgeDao.updateKnowledge(knowledge);
     return rows;
   }
-
+  //삭제
   public int delete(int knowledgeId){
     int rows= knowledgeDao.deleteKnowledge(knowledgeId);
     return rows;
   }
+
+  //이전글 조회
+  public Knowledge getPrevKnowledge(int knowledgeId){
+    return knowledgeDao.selectPrevKnowledge(knowledgeId);
+  }
+
+  //다음글 조회
+  public Knowledge getNextKnowledge(int knowledgeId){
+    return knowledgeDao.selectNextKnowledge(knowledgeId);
+  }
+
 
 }
