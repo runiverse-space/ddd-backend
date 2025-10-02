@@ -20,7 +20,7 @@
   <!-- 전체 프로젝트 조회-->
   <select id="selectAllProjects" resultType="Project">
     select 
-    project_id, user_id,projectTitle,projectContent
+    project_id, user_id,projectTitle,projectContent, projectCreatedAt
     from project
     order by project_id desc
   </select>
