@@ -57,7 +57,7 @@ public class ScheduleController {
   public Map<String, Object> users(@RequestParam("scheduleId") int scheduleId) {
     Map<String, Object> map = new HashMap<>();
     List<Users> usersList = scheduleService.getAssignedUsers(scheduleId);
-    map.put("users", usersList);
+    map.put("data", usersList);
     return map;
   }
 
