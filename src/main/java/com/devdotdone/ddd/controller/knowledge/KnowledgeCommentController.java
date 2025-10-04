@@ -1,6 +1,7 @@
 package com.devdotdone.ddd.controller.knowledge;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -38,17 +39,27 @@ public class KnowledgeCommentController {
   }
 
 
-  @GetMapping("/read")
-  public Map<String,Object> read(@RequestParam("knowledgeId") int knowledgeId){
+  @GetMapping("/detail")
+  public Map<String,Object> detail(@RequestParam("knowledgeCommentId") int knowledgeCommentId){
     Map<String,Object> resultMap = new HashMap<>();
-    KnowledgeComment knowledgeComment= knowledgeCommentService.getKnowledgeComment(knowledgeId);
+    KnowledgeComment knowledgeComment= knowledgeCommentService.getKnowledgeCommentByKnowledgeCommentId(knowledgeCommentId);
     resultMap.put("result","success");
     resultMap.put("data",knowledgeComment);
 
     return resultMap;
 
-
   }
+
+  @GetMapping("/list")
+  public Map<String,Object> list(@RequestParam("knowledgeId") int knowledgeId) {
+    Map<String,Object> map = new HashMap<>();
+    List<KnowledgeComment> commentList = knowledgeCommentService.getKnowledgeCommentByKnowledgeId(knowledgeId);
+    map.put("result", "success");
+    map.put("commentList",commentList);
+
+    return map;
+  }
+  
 
   @PutMapping("/update")
   public KnowledgeComment update(@RequestBody KnowledgeCommentRequest knowledgeCommentRequest){
@@ -71,6 +82,15 @@ public class KnowledgeCommentController {
 
 
   }
+
+  // @GetMapping("/count")
+  // public int count(@RequestParam("knowledgeId") int knowledgeId) {
+      
+  //   int totalComment= knowledgeCommentService.getCountKnowledgeCommentByKnowledgeId(knowledgeId);
+    
+  //   return totalComment;
+  // }
+  
      
 
   

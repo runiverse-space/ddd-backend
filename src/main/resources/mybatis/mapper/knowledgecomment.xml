@@ -29,7 +29,8 @@
     where knowledgeComment_id= #{knowledgeCommentId}
     
   </select>
-  <!-- 댓글 목록 조회-->
+
+  <!-- 특정 지식 창고글의 (knowledgeId를 가진) 댓글 전부 조회-->
    <select id="selectKnowledgeCommentByKnowledgeId" parameterType="int" resultType="KnowledgeComment" >
     
     select

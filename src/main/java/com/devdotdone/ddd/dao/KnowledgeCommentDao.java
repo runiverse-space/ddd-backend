@@ -35,9 +35,10 @@ public interface KnowledgeCommentDao {
     public int updateKnowledgeCommentByKnowledgeCommentId(KnowledgeComment knowledgeComment);
 
 
-   //특정 지식창고의 댓글 목록 조회
+   //특정 지식창고의 댓글 목록 조회 (knowledgeId를 가진) 댓글 전부 조회
     public List<KnowledgeComment> selectKnowledgeCommentByKnowledgeId(int knowledgeId);
-   //댓글 상세 조회
+   
+    //댓글 상세 조회
     public KnowledgeComment selectKnowledgeCommentByKnowledgeCommentId(int knowledgeCommentId);
 
   //public List<KnowledgeComment> selectByPage(Pager pager);

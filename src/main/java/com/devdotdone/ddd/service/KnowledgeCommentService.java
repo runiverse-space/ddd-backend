@@ -1,5 +1,7 @@
 package com.devdotdone.ddd.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,9 +54,21 @@ public class KnowledgeCommentService {
     
   }
 
-  //댓글 읽기
-  public KnowledgeComment getKnowledgeComment(int knowledgeId){
-    KnowledgeComment knowledgeComment= knowledgeCommentDao.selectKnowledgeCommentByKnowledgeCommentId(knowledgeId);
+  //특정 지식창고의 댓글 전체 개수 조회
+  public int getCountKnowledgeCommentByKnowledgeId(int knowledgeId){
+    int totalCounts= knowledgeCommentDao.countKnowledgeCommentsByKnowledgeId(knowledgeId);
+    return totalCounts;
+  }
+
+  //특정 지식창고의 댓글 목록 조회 (knowledgeId를 가진) 댓글 전부 조회
+  public List<KnowledgeComment> getKnowledgeCommentByKnowledgeId(int knowledgeId){
+    List<KnowledgeComment> resultList = knowledgeCommentDao.selectKnowledgeCommentByKnowledgeId(knowledgeId);
+    return resultList;
+  }
+
+  //댓글 읽기()
+  public KnowledgeComment getKnowledgeCommentByKnowledgeCommentId(int knowledgeCommentId){
+    KnowledgeComment knowledgeComment= knowledgeCommentDao.selectKnowledgeCommentByKnowledgeCommentId(knowledgeCommentId);
     return knowledgeComment;
   }
   
