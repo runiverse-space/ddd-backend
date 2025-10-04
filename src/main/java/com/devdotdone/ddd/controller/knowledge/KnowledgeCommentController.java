@@ -78,6 +78,7 @@ public class KnowledgeCommentController {
     knowledgeCommentService.delete(knowledgeCommentId);
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("result", "success");
+     log.info("댓글 삭제 완료 - 결과: {}", jsonObject.toString());
     return jsonObject.toString();
 
 
