@@ -54,9 +54,11 @@ public class UsersService {
         dbUsers.setUserPassword(users.getUserPassword());
       }
       if (StringUtils.hasText(users.getUserEmail())) {
-        dbUsers.setUserPassword(users.getUserEmail());
+        dbUsers.setUserEmail(users.getUserEmail());
       }
-
+      if (StringUtils.hasText(users.getUserIntro())) {
+        dbUsers.setUserIntro(users.getUserIntro());
+      }
       dbUsers.setUfAttachoname(users.getUfAttachoname());
       dbUsers.setUfAttachsname(users.getUfAttachsname());
       dbUsers.setUfAttachtype(users.getUfAttachtype());
