@@ -71,10 +71,10 @@ public class ProjectService {
     }
 
     // 초기 마일스톤 추가
-    for (ProjectMilestone milestone : request.getProjectMilestones()) {
-      milestone.setProjectId(project.getProjectId());
-      projectMilestoneService.createMilestone(milestone);
-    }
+    // for (ProjectMilestone milestone : request.getProjectMilestones()) {
+    //   milestone.setProjectId(project.getProjectId());
+    //   projectMilestoneService.createMilestone(milestone);
+    // }
 
     return projectDao.selectProjectById(project.getProjectId());
   }

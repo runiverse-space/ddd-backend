@@ -39,10 +39,12 @@ public class ProjectController {
 
   @PostMapping("/create")
   public Map<String, Object> create(@RequestBody ProjectRequest request) {
+    log.info(request.toString());
     Map<String, Object> map = new HashMap<>();
     try {
-      projectService.create(request);
+      Project response = projectService.create(request);
       map.put("result", "success");
+      map.put("data", response);
     } catch (Exception e) {
       map.put("result", "fail");
       map.put("message", e.getMessage());
