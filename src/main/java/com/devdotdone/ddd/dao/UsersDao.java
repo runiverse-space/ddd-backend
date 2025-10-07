@@ -16,4 +16,5 @@ public interface UsersDao {
   public int updateUser(Users users);
   public int deleteUser(int userId);
   public int deleteUserProfileImg(int userId);
+  public List<Users> searchUsers(String keyword);
 }

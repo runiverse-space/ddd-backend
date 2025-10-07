@@ -15,12 +15,6 @@ import com.devdotdone.ddd.service.UserTagService;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * 유저 태그 컨트롤러
- * - 프론트에서 JSON으로 userId + tagIds를 받아 서비스 호출
- * - 결과는 ResponseDto(JSON)로 반환
- */
-
 @Slf4j
 @RestController
 @RequestMapping("/api/userTag")
@@ -28,14 +22,9 @@ public class UserTagController {
     @Autowired
     private UserTagService userTagService;
 
-    @PostMapping("/create")
-    public UserTagResponse create(@RequestBody UserTagRequest request) {
-        return userTagService.create(request);
-    }
-
-    @DeleteMapping("/delete")
-    public UserTagResponse delete(@RequestBody UserTagRequest request) {
-        return userTagService.delete(request);
+    @PostMapping("/update")
+    public UserTagResponse update(@RequestBody UserTagRequest request) {
+        return userTagService.update(request);
     }
 
     @GetMapping("/{userId}")

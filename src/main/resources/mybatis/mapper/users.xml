@@ -48,9 +48,6 @@
     </if> WHERE user_id = #{userId} 
   </update>
 
-  <!-- 사용자 프로필 이미지 정보 수정(위에거로 같이 가능) -->
-
-
   <!-- 사용자 삭제 -->
   <delete id="deleteUser" parameterType="int"> 
     DELETE FROM users WHERE user_id = #{userId} 
@@ -58,5 +55,16 @@
 
   <!-- 사용자 프로필 이미지 삭제 -->
   <update id="deleteUserProfileImg" parameterType="int"> UPDATE users SET ufAttachoname = NULL,
-    ufAttachsname = NULL, ufAttachtype = NULL, ufAttachdata = NULL WHERE user_id = #{userId} </update>
+    ufAttachsname = NULL, ufAttachtype = NULL, ufAttachdata = NULL WHERE user_id = #{userId}
+  </update>
+
+  <!-- 이름 또는 이메일 일부로 사용자 검색 -->
+  <select id="searchUsers" resultType="Users" parameterType="String">
+    SELECT 
+      user_id, userLoginId, userName, userEmail, userIntro, ufAttachoname, ufAttachsname, ufAttachtype, ufAttachdata
+    FROM users
+    WHERE userName LIKE '%' || #{keyword} || '%'
+      OR userEmail LIKE '%' || #{keyword} || '%'
+    ORDER BY userCreatedAt DESC
+  </select>
 </mapper>
