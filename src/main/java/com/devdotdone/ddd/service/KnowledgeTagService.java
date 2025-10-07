@@ -1,9 +1,13 @@
 package com.devdotdone.ddd.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.devdotdone.ddd.dao.KnowledgeTagDao;
 import com.devdotdone.ddd.dto.tag.KnowledgeTagRequest;
@@ -15,39 +19,37 @@ public class KnowledgeTagService {
     @Autowired
     private KnowledgeTagDao knowledgeTagDao;
 
-    public KnowledgeTagResponse create(KnowledgeTagRequest request) {
-        List<Tag> existing = knowledgeTagDao.selectTagByKnowledgeId(request.getKnowledgeId());
-        TagValidator.validate(existing.size(), request.getTagIds().size());
+    @Transactional
+    public KnowledgeTagResponse update(KnowledgeTagRequest request) {
+        List<Tag> currentTags = knowledgeTagDao.selectTagByKnowledgeId(request.getKnowledgeId());
+        Set<Integer> currentIds = new HashSet<>();
+        for (Tag tag : currentTags)
+            currentIds.add(tag.getTagId());
 
-        for (int tagId : request.getTagIds()) {
-            boolean alreadyExists = existing.stream().anyMatch(t -> t.getTagId() == tagId);
+        List<Integer> newIds = request.getTagIds();
+        int total = newIds.size();
+        TagValidator.validate(0, total);
 
-            if (alreadyExists) {
-                throw new IllegalArgumentException("이미 등록된 태그입니다.");
-            }
-            knowledgeTagDao.insertKnowledgeTag(request.getKnowledgeId(), tagId);
-        }
-        return getKnowledgeTags(request.getKnowledgeId());
-    }
-
-    public KnowledgeTagResponse delete(KnowledgeTagRequest request) {
-        for (int tagId : request.getTagIds()) {
-            int rows = knowledgeTagDao.deleteKnowledgeTag(request.getKnowledgeId(), tagId);
-
-            if (rows == 0) {
-                throw new IllegalArgumentException("삭제할 태그가 존재하지 않습니다.");
+        for (int tagId : newIds) {
+            if (!currentIds.contains(tagId)) {
+                knowledgeTagDao.insertKnowledgeTag(request.getKnowledgeId(), tagId);
             }
         }
+
+        for (int tagId : currentIds) {
+            if (!newIds.contains(tagId)) {
+                knowledgeTagDao.deleteKnowledgeTag(request.getKnowledgeId(), tagId);
+            }
+        }
+
         return getKnowledgeTags(request.getKnowledgeId());
     }
 
     public KnowledgeTagResponse getKnowledgeTags(int knowledgeId) {
         List<Tag> tags = knowledgeTagDao.selectTagByKnowledgeId(knowledgeId);
-
         KnowledgeTagResponse response = new KnowledgeTagResponse();
         response.setKnowledgeId(knowledgeId);
-        response.setTags(tags);
-
+        response.setTags(tags != null ? tags : new ArrayList<>());
         return response;
     }
 }

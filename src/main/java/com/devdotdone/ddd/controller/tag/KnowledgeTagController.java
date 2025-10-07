@@ -22,20 +22,13 @@ public class KnowledgeTagController {
     @Autowired
     private KnowledgeTagService knowledgeTagService;
 
-    @PostMapping("/create")
-    public KnowledgeTagResponse create(@RequestBody KnowledgeTagRequest request) {
-        log.info("POST create: ", request.toString());
-        KnowledgeTagResponse response = knowledgeTagService.create(request);
-        return response;
+    @PostMapping("/update")
+    public KnowledgeTagResponse update(@RequestBody KnowledgeTagRequest request) {
+        return knowledgeTagService.update(request);
     }
 
-    @DeleteMapping("/delete")
-    public KnowledgeTagResponse delete(@RequestBody KnowledgeTagRequest request) {
-        return knowledgeTagService.delete(request);
-    }
-
-    @GetMapping("{knowledgeId}")
-    public KnowledgeTagResponse getKnowledgeTags(@PathVariable("knowledgeId") int knowledgeId) {
+    @GetMapping("/{knowledgeId}")
+    public KnowledgeTagResponse getKnowledgeTags(@PathVariable int knowledgeId) {
         return knowledgeTagService.getKnowledgeTags(knowledgeId);
     }
 }
