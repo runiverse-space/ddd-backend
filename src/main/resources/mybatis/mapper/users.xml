@@ -38,8 +38,7 @@
 
   <!-- 사용자 정보 수정 -->
   <update id="updateUser" parameterType="Users"> 
-    UPDATE users SET userName = #{userName}, userEmail =
-    #{userEmail}, userIntro = #{userIntro} 
+    UPDATE users SET userPassword = #{userPassword}, userEmail = #{userEmail}, userIntro = #{userIntro} 
     <if test="ufAttachoname !=null"> 
       ,ufAttachoname = #{ufAttachoname} 
       ,ufAttachsname = #{ufAttachsname} 
