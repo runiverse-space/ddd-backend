@@ -54,12 +54,10 @@ public class ProjectController {
 
   @GetMapping("/list")
   public List<Project> list() {
-      List<Project> list= projectService.getAllProjects();
-      log.info("프로젝트 목록 조회",list);
-      return list;
+    List<Project> list = projectService.getAllProjects();
+    log.info("프로젝트 목록 조회", list);
+    return list;
   }
-  
-
 
   @GetMapping("/detail")
   public Map<String, Object> detail(@RequestParam("projectId") int projectId) {
@@ -91,8 +89,8 @@ public class ProjectController {
 
   @GetMapping("/userprojectroles")
   public Map<String, Object> projectUserProjectRoles(@RequestParam("projectId") int projectId) {
-       Map<String, Object> map = new HashMap<>();
-        try {
+    Map<String, Object> map = new HashMap<>();
+    try {
       List<UserProjectRole> upr = userProjectRoleService.getProjectMember(projectId);
       map.put("result", "success");
       map.put("data", upr);
@@ -102,7 +100,6 @@ public class ProjectController {
     }
     return map;
   }
-  
 
   @PutMapping("/update")
   public Map<String, Object> update(@RequestBody ProjectRequest request) {
@@ -143,6 +140,11 @@ public class ProjectController {
     }
 
     return map;
+  }
+
+  @GetMapping("/list/user")
+  public List<Project> getUserProjects(@RequestParam("userId") int userId) {
+    return projectService.getProjectsByUserId(userId);
   }
 
 }
