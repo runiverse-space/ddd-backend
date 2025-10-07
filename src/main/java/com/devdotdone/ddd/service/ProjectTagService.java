@@ -1,9 +1,13 @@
 package com.devdotdone.ddd.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.devdotdone.ddd.dao.ProjectTagDao;
 import com.devdotdone.ddd.dto.tag.ProjectTagRequest;
@@ -15,43 +19,37 @@ public class ProjectTagService {
     @Autowired
     private ProjectTagDao projectTagDao;
 
-    // 태그 등록
-    public ProjectTagResponse create(ProjectTagRequest request) {
-        List<Tag> existing = projectTagDao.selectTagByProjectId(request.getProjectId());
-        TagValidator.validate(existing.size(), request.getTagIds().size());
-        
-        for (int tagId : request.getTagIds()) {
-            boolean alreadyExists = existing.stream().anyMatch(t -> t.getTagId() == tagId);
-            
-            if (alreadyExists) {
-                throw new IllegalArgumentException("이미 등록된 태그입니다.");
+    @Transactional
+    public ProjectTagResponse update(ProjectTagRequest request) {
+        List<Tag> currentTags = projectTagDao.selectTagByProjectId(request.getProjectId());
+        Set<Integer> currentIds = new HashSet<>();
+        for (Tag tag : currentTags)
+            currentIds.add(tag.getTagId());
+
+        List<Integer> newIds = request.getTagIds();
+        int total = newIds.size();
+        TagValidator.validate(0, total);
+
+        for (int tagId : newIds) {
+            if (!currentIds.contains(tagId)) {
+                projectTagDao.insertProjectTag(request.getProjectId(), tagId);
             }
-            projectTagDao.insertProjectTag(request.getProjectId(), tagId);
         }
+
+        for (int tagId : currentIds) {
+            if (!newIds.contains(tagId)) {
+                projectTagDao.deleteProjectTag(request.getProjectId(), tagId);
+            }
+        }
+
         return getProjectTags(request.getProjectId());
     }
 
-    // 태그 삭제
-    public ProjectTagResponse delete(ProjectTagRequest request) {
-        for (int tagId : request.getTagIds()) {
-            int rows = projectTagDao.deleteProjectTag(request.getProjectId(), tagId);
-            
-            if (rows == 0) {
-                throw new IllegalArgumentException("삭제할 태그가 존재하지 않습니다.");
-            }
-        }
-        return getProjectTags(request.getProjectId());
-    }
-
-    // 태그 조회
     public ProjectTagResponse getProjectTags(int projectId) {
         List<Tag> tags = projectTagDao.selectTagByProjectId(projectId);
-
         ProjectTagResponse response = new ProjectTagResponse();
         response.setProjectId(projectId);
-        response.setTags(tags);
-        
+        response.setTags(tags != null ? tags : new ArrayList<>());
         return response;
     }
-
 }

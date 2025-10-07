@@ -19,18 +19,13 @@ public class ProjectTagController {
     @Autowired
     private ProjectTagService projectTagService;
 
-    @PostMapping("/create")
-    public ProjectTagResponse create(@RequestBody ProjectTagRequest request) {
-        return projectTagService.create(request);
-    }
-
-    @DeleteMapping("/delete")
-    public ProjectTagResponse delete(@RequestBody ProjectTagRequest request) {
-        return projectTagService.delete(request);
+    @PostMapping("/update")
+    public ProjectTagResponse update(@RequestBody ProjectTagRequest request) {
+        return projectTagService.update(request);
     }
 
     @GetMapping("/{projectId}")
-    public ProjectTagResponse getProjectTags(@PathVariable("projectId") int projectId) {
+    public ProjectTagResponse getProjectTags(@PathVariable int projectId) {
         return projectTagService.getProjectTags(projectId);
     }
 }
