@@ -58,15 +58,22 @@ public class UsersController {
   }
 
   @PostMapping("/login")
-  public Map<String, Object> login(@RequestBody UsersLoginRequest req) {
+  public Map<String, Object> login(@RequestBody UsersLoginRequest request) {
     Map<String, Object> map = new HashMap<>();
     try {
-      Users users = usersService.getUsersByLoginId(req.getUserLoginId());
+      // 로그인 아이디로 사용자 조회
+      Users users = usersService.getUsersByLoginId(request.getUserLoginId());
+
+      // 비밀번호 비교
       PasswordEncoder encoder = new BCryptPasswordEncoder();
-      if (!encoder.matches(req.getUserPassword(), users.getUserPassword())) {
+      if (!encoder.matches(request.getUserPassword(), users.getUserPassword())) {
         throw new IllegalArgumentException("비밀번호 불일치");
       }
+
+      // JWT 토큰 발급
       String jwt = jwtService.createJwt(users.getUserId(), users.getUserLoginId(), users.getUserEmail());
+
+      // 응답 데이터
       map.put("result", "success");
       map.put("userId", users.getUserId());
       map.put("userLoginId", users.getUserLoginId());

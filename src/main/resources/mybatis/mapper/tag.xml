@@ -21,4 +21,12 @@
     WHERE tagType=#{tagType}
     ORDER BY tagName
   </select>
+
+  <!-- 태그 검색 -->
+  <select id="searchTags" parameterType="string" resultType="Tag">
+    SELECT * 
+    FROM tag
+    WHERE LOWER(tagName) LIKE CONCAT('%', LOWER(#{keyword}), '%')
+    ORDER BY tagName ASC
+  </select>
 </mapper>

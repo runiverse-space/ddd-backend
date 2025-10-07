@@ -15,4 +15,5 @@ import com.devdotdone.ddd.dto.tag.Tag;
 public interface TagDao {
     void insertTag(Tag tag);
     List<Tag> selectTagByType(@Param("tagType") String tagType);
+    List<Tag> searchTags(String keyword);
 }

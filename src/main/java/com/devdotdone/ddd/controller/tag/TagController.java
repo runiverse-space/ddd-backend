@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devdotdone.ddd.dto.tag.Tag;
@@ -30,4 +31,8 @@ public class TagController {
         return tagService.getTagByType(tagType);
     }
 
+    @GetMapping("/search")
+    public List<Tag> searchTags(@RequestParam("keyword") String keyword) {
+        return tagService.searchTags(keyword);
+    }
 }

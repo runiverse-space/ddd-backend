@@ -21,4 +21,8 @@ public class TagService {
     public List<Tag> getTagByType(TagType tagType) {
         return tagDao.selectTagByType(tagType.name());
     }
+
+    public List<Tag> searchTags(String keyword) {
+        return tagDao.searchTags(keyword);
+    }
 }
