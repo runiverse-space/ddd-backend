@@ -125,7 +125,7 @@ public class UsersService {
 
   public List<Users> searchUsers(String keyword) {
     if (keyword == null || keyword.trim().isEmpty()) {
-      throw new IllegalArgumentException("검색어가 비어 있습니다.");
+      return usersDao.selectAllUsers(); // 전체 조회용 쿼리 실행
     }
     return usersDao.searchUsers(keyword);
   }
