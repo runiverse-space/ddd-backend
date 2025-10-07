@@ -1,6 +1,8 @@
 package com.devdotdone.ddd.service;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,9 @@ public class UsersService {
   private UsersDao usersDao;
 
   @Autowired
-  private UserProjectRoleDao userProjectRoleDao;
-
-  @Autowired
   private UserTagService userTagService;
+
+  private static final String DEFAULT_IMAGE_PATH = "src/main/resources/static/images/default-profile.png";
 
   @Transactional
   public void create(UsersSignupRequest request) throws IOException {
@@ -38,10 +39,25 @@ public class UsersService {
 
     // 프로필 사진
     MultipartFile mf = users.getUfAttach();
+
     if (mf != null && !mf.isEmpty()) {
+      // 업로드된 이미지가 있을 경우
       users.setUfAttachoname(mf.getOriginalFilename());
       users.setUfAttachtype(mf.getContentType());
       users.setUfAttachdata(mf.getBytes());
+    } else {
+      // 업로드된 이미지가 없을 경우 기본 프로필 설정
+      try {
+        File file = new File(DEFAULT_IMAGE_PATH);
+        byte[] defaultImageData = Files.readAllBytes(file.toPath());
+
+        users.setUfAttachoname("default-profile.png");
+        users.setUfAttachsname("default-profile.png");
+        users.setUfAttachtype("image/png");
+        users.setUfAttachdata(defaultImageData);
+      } catch (IOException e) {
+        throw new RuntimeException("기본 프로필 이미지를 불러올 수 없습니다.", e);
+      }
     }
 
     // 비밀번호 암호화

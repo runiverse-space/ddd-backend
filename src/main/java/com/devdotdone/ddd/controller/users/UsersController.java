@@ -172,8 +172,7 @@ public class UsersController {
       // 본문 내용을 파일로 저장할 수 있도록 헤더 추가
       String encodedFileName = new String(fileName.getBytes("UTF-8"),
           "ISO-8859-1");
-      response.setHeader("Content-Disposition", "attachment; file=\"" +
-          encodedFileName + "\"");
+      response.setHeader("Content-Disposition", "inline; filename=\"" + encodedFileName + "\"");
 
       // 응답 본문으로 데이터를 출력하는 스트림
       OutputStream os = response.getOutputStream();
