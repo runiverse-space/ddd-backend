@@ -231,6 +231,23 @@ public class UserProjectRoleService {
 
   }
 
+  /*
+   * admin 찾기
+   */
+
+  public int getProjectAdmins(int projectId){
+    UserProjectRole userRole= userProjectRoleDao.selectProjectAdmins(projectId);
+  
+     if (userRole == null) {
+        return 0;
+        //** admin이 없으면 null 반환
+    }
+
+    int userId= userRole.getUserId();
+    return userId;
+  
+  }
+
   
 
   /*

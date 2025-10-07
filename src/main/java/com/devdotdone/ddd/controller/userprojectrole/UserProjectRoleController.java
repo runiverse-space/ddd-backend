@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -121,6 +121,26 @@ public class UserProjectRoleController {
     return jsonObject.toString();
 
   }
+
+  //팀장 조회하기
+  @GetMapping("/admin")
+  public Map<String, Object> selectProjectAdmins(@RequestParam("projectId") int projectId) {
+      
+    int userId= userProjectRoleService.getProjectAdmins(projectId);
+    Map<String, Object> response = new HashMap<>();
+    if(userId==0){
+      response.put("success", false);
+      response.put("message", "admin이 없습니다.");
+      response.put("userId", 0);
+    }else{
+       response.put("success", true);
+      response.put("message", "admin 조회 성공");
+      response.put("userId", userId);
+    }
+    return response;
+
+  }
+  
 
 
 

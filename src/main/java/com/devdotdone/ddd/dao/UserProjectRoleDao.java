@@ -28,8 +28,9 @@ public interface UserProjectRoleDao {
   // 프로젝트 참여하는 사용자의 플젝 내 역할 조회 selectUserProjectRole
   UserProjectRole selectUserProjectRole(@Param("projectId") int projectId, @Param("userId") int userId);
 
-  // updateUserProjectRole
- 
+  //관리자의 userId 찾기
+  UserProjectRole selectProjectAdmins(@Param("projectId")int projectId);
+
   
   // 역할 변경(팀장위임도 포함함)
   int updateUserProjectRole(UserProjectRole userProjectRole);
