@@ -104,9 +104,16 @@ public class UsersService {
 
   public Users updateProfile(UsersUpdateRequest request) throws IOException {
     Users dbUsers = usersDao.selectUserById(request.getUserId());
+
     if (dbUsers == null) {
       throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
     }
+
+    // 한마디 글자수 검증 추가
+    if (request.getUserIntro() != null && request.getUserIntro().length() > 100) {
+      throw new IllegalArgumentException("한마디는 최대 100자까지만 입력 가능합니다.");
+    }
+
     if (StringUtils.hasText(request.getUserEmail()))
       dbUsers.setUserEmail(request.getUserEmail());
     if (StringUtils.hasText(request.getUserPassword())) {
