@@ -49,13 +49,13 @@ public class KnowledgeService {
   }
 
   //이전글 조회
-  public Knowledge getPrevKnowledge(int knowledgeId){
-    return knowledgeDao.selectPrevKnowledge(knowledgeId);
+  public Knowledge getPrevKnowledge(int knowledgeId,int projectId){
+    return knowledgeDao.selectPrevKnowledge(knowledgeId,projectId);
   }
 
   //다음글 조회
-  public Knowledge getNextKnowledge(int knowledgeId){
-    return knowledgeDao.selectNextKnowledge(knowledgeId);
+  public Knowledge getNextKnowledge(int knowledgeId,int projectId){
+    return knowledgeDao.selectNextKnowledge(knowledgeId,projectId);
   }
 
 

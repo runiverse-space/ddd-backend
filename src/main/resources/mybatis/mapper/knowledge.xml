@@ -58,7 +58,8 @@
     select knowledge_id, knowledgeTitle
     from knowledge
     where knowledge_id < #{knowledgeId}
-    order by knowledge_id ASC
+      and project_id=#{projectId}
+    order by knowledge_id desc
     fetch first 1 rows only
     ]]>
   </select>
@@ -68,7 +69,8 @@
         select knowledge_id, knowledgeTitle
         from knowledge
         where knowledge_id > #{knowledgeId}
-        order by knowledge_id ASC
+          and project_id=#{projectId}
+        order by knowledge_id desc
         fetch first 1 rows only
     ]]>
 

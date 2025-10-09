@@ -3,6 +3,7 @@ package com.devdotdone.ddd.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.devdotdone.ddd.dto.Pager;
 import com.devdotdone.ddd.dto.knowledge.Knowledge;
@@ -52,9 +53,11 @@ public interface KnowledgeDao {
   public int countAll();
 
 
- public Knowledge selectPrevKnowledge(int knowledgeId);
+ public Knowledge selectPrevKnowledge(@Param("knowledgeId") int knowledgeId,
+                                    @Param("projectId") int projectId);
  
- public Knowledge selectNextKnowledge(int knowledgeId);
+ public Knowledge selectNextKnowledge(@Param("knowledgeId") int knowledgeId,
+                                    @Param("projectId") int projectId);
 
 
 

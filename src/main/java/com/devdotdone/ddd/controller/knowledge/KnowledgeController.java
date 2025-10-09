@@ -77,11 +77,13 @@ public class KnowledgeController {
   public Map<String, Object> detail(@RequestParam("knowledgeId") int knowledgeId) {
 
 
-
+    
     Map<String, Object> resultMap = new HashMap<>();
     Knowledge knowledge = knowledgeService.getKnowledge(knowledgeId);
-    Knowledge prevKnowledge = knowledgeService.getPrevKnowledge(knowledgeId);
-    Knowledge nextKnowledge = knowledgeService.getNextKnowledge(knowledgeId);
+    int projectId= knowledge.getProjectId();
+    
+    Knowledge prevKnowledge = knowledgeService.getPrevKnowledge(knowledgeId,projectId);
+    Knowledge nextKnowledge = knowledgeService.getNextKnowledge(knowledgeId,projectId);
 
     resultMap.put("result", "success");
     resultMap.put("data", knowledge);
