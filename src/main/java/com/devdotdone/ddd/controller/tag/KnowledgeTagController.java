@@ -28,7 +28,7 @@ public class KnowledgeTagController {
     }
 
     @GetMapping("/{knowledgeId}")
-    public KnowledgeTagResponse getKnowledgeTags(@PathVariable int knowledgeId) {
+    public KnowledgeTagResponse getKnowledgeTags(@PathVariable ("knowledgeId") int knowledgeId) {
         return knowledgeTagService.getKnowledgeTags(knowledgeId);
     }
 }
