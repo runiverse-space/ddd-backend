@@ -25,7 +25,7 @@ public class ProjectTagController {
     }
 
     @GetMapping("/{projectId}")
-    public ProjectTagResponse getProjectTags(@PathVariable int projectId) {
+    public ProjectTagResponse getProjectTags(@PathVariable("projectId") int projectId) {
         return projectTagService.getProjectTags(projectId);
     }
 }
