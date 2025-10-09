@@ -1,5 +1,9 @@
 package com.devdotdone.ddd.dto.knowledge;
 
+
+
+import java.sql.Timestamp;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +37,9 @@ public class Knowledge {
   private String knowledgeTitle;
   private String knowledgeContent;
   private String knowledgeUrl;
+
+
+  private Timestamp knowledgeCreatedAt;
 
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private MultipartFile kfAttach;
