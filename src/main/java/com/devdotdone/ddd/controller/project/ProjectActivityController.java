@@ -72,6 +72,28 @@ public class ProjectActivityController {
     return map;
   }
 
+  // 참여 불허, paStatus를 "REJECTED"로 변경, paIsRead를 "Y"로 변경
+  @PutMapping("/reject-participation")
+  public Map<String, Object> rejectParticipation(@RequestBody ProjectActivity activity) {
+    log.info("rejectParticipation()");
+    Map<String, Object> map = new HashMap<>();
+    ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+    try {
+      dbActivity.setPaStatus("REJECTED");
+      log.info("정보 기입 완료");
+      projectActivityService.updateActivityStatus(dbActivity);
+      log.info("수정 실행 완료");
+      dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+
+
 
   // 일정 배정 발생 시 알림 전송
   @PostMapping("/schedule-assignment")
