@@ -20,6 +20,7 @@ public class ProjectRequest {
     private Date projectCreatedAt;
 
     private List<Integer> userIds;
+    private List<Integer> removeUserIdList;
 
     private List<ProjectMilestone> projectMilestones;
 }
