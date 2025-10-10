@@ -105,20 +105,33 @@ public class ProjectController {
   public Map<String, Object> update(@RequestBody ProjectRequest request) {
     Map<String, Object> map = new HashMap<>();
     try {
-      Project project = projectService.update(request);
-      if (project == null) {
-        map.put("result", "fail");
-        map.put("message", "해당 프로젝트가 존재하지 않습니다.");
-      } else {
+        Map<String, Object> result = projectService.update(request);  // ← Map 받기
         map.put("result", "success");
-        map.put("data", project);
-      }
-
+        map.put("data", result);  // ← project + memberIds 포함
     } catch (Exception e) {
-      map.put("result", "fail");
-      map.put("message", e.getMessage());
+        map.put("result", "fail");
+        map.put("message", e.getMessage());
+        log.error("프로젝트 수정 실패", e);
     }
     return map;
+
+
+    // Map<String, Object> map = new HashMap<>();
+    // try {
+    //   Project project = projectService.update(request);
+    //   if (project == null) {
+    //     map.put("result", "fail");
+    //     map.put("message", "해당 프로젝트가 존재하지 않습니다.");
+    //   } else {
+    //     map.put("result", "success");
+    //     map.put("data", project);
+    //   }
+
+    // } catch (Exception e) {
+    //   map.put("result", "fail");
+    //   map.put("message", e.getMessage());
+    // }
+    // return map;
   }
 
   @DeleteMapping("/delete")
