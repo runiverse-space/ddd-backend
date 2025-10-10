@@ -1,6 +1,6 @@
 package com.devdotdone.ddd.dto.project;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -9,12 +9,16 @@ public class ProjectActivity {
   private int activityId;
   private String paType;
   private int senderId;
-  private int receiverid;
+  private int receiverId;
   private int projectId;
   private String paMessage;
   private String paStatus;
   private String paIsRead;
-  private Date paCreatedAt;
-  private Date paUpdatedAt;
+  private Timestamp paCreatedAt;
+  private Timestamp paUpdatedAt;
+
+  // 추가 필드(화면 표시용)
+  private String senderName;
+  private String projectTitle;
 }
 

@@ -10,8 +10,8 @@ import com.devdotdone.ddd.dto.project.ProjectActivity;
 public interface ProjectActivityDao {
   public int insertActivity(ProjectActivity projectActivity);
   public ProjectActivity selectById(int activityId);
-  public List<ProjectActivity> selectByReceiver(int userId);
-  public int updateActivityStatus(String newStatus);
-  public int chageToRead();
+  public List<ProjectActivity> selectByReceiverId(int userId);
+  public int updateActivityStatus(ProjectActivity projectActivity);
+  public int chageToRead(int activityId);
   public int delete(int activityId);
 }

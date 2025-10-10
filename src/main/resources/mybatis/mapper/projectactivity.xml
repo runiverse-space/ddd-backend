@@ -5,14 +5,16 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.devdotdone.ddd.dao.ProjectActivityDao">
+  <!-- 알림 등록 -->
   <insert id="insertActivity" parameterType="ProjectActivity">
     <selectKey keyProperty="activityId" resultType="int" order="BEFORE"> 
       SELECT seq_projectActivity.nextval from dual 
     </selectKey> 
     INSERT INTO projectActivity (activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt)
-    VALUES (#{activityId}, #{paType}, #{senderId}, #{receiverId}, #{projectId}, #{paMessage}, #{paStatus}, #{paIsRead}, #{paCreatedAt}, #{paUpdatedAt})
+    VALUES (#{activityId}, #{paType}, #{senderId}, #{receiverId}, #{projectId}, #{paMessage}, 'PENDING', 'N', systimestamp, null)
   </insert>
 
+  <!-- 단건 조회 -->
   <select id="selectById" parameterType="int" resultType="ProjectActivity">
     SELECT activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt
     FROM projectActivity
@@ -20,21 +22,28 @@
   </select>
 
   <!-- 사용자가 받은 알림 조회 -->
-  <select id="selectByReceiver" parameterType="int" resultType="ProjectActivity">
-    SELECT activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt
-    FROM projectActivity
-    WHERE receiver_id = #{value}
+  <select id="selectByReceiverId" parameterType="int" resultType="ProjectActivity">
+    SELECT pa.*,
+      u.userName AS senderName,
+      p.projectTitle
+    FROM projectActivity pa
+    LEFT JOIN users u ON pa.sender_id = u.user_id
+    LEFT JOIN project p ON pa.project_id = p.project_id
+    WHERE pa.receiver_id = #{receiverId}
+    ORDER BY pa.paCreatedAt DESC
   </select>
 
+  <!-- 상태 변경(승인, 거절 등) -->
   <update id="updateActivityStatus" parameterType="string">
     UPDATE projectActivity 
     SET paStatus = #{paStatus},
     WHERE activity_id = #{activityId}
   </update>
 
-  <update id="chageToRead">
+  <!-- 읽음 상태 업데이트 -->
+  <update id="chageToRead" parameterType="ProjectActivity">
     UPDATE projectActivity 
-    SET paStatus = 'READ',
+    SET paIsRead = 'Y', paUpdatedAt = systimestamp
     WHERE activity_id = #{activityId}
   </update>
 
