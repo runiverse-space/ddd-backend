@@ -34,16 +34,16 @@
   </select>
 
   <!-- 상태 변경(승인, 거절 등) -->
-  <update id="updateActivityStatus" parameterType="string">
+  <update id="updateActivityStatus" parameterType="ProjectActivity">
     UPDATE projectActivity 
-    SET paStatus = #{paStatus},
+    SET paStatus = #{paStatus}, paIsRead = 'Y', paUpdatedAt = systimestamp
     WHERE activity_id = #{activityId}
   </update>
 
   <!-- 읽음 상태 업데이트 -->
   <update id="chageToRead" parameterType="ProjectActivity">
     UPDATE projectActivity 
-    SET paIsRead = 'Y', paUpdatedAt = systimestamp
+    SET paIsRead = 'Y'
     WHERE activity_id = #{activityId}
   </update>
 

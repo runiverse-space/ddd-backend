@@ -34,13 +34,44 @@ public class ProjectActivityController {
 
   // 프로젝트 참여 요청 발생 시 알림 전송
   @PostMapping("/participate")
-  public ResponseEntity<String> participate(@RequestParam("projectId") int projectId, @RequestParam("senderId") int senderId) {
+  public Map<String, Object> participate(@RequestBody ProjectActivity activity) {
     log.info("participate()");
-    Project project = projectService.getProjectById(projectId);
-    int receiverId = project.getUserId();
-    projectActivityService.sendParticipation(project, senderId, receiverId);
-    return ResponseEntity.ok("Participation request sent to " + receiverId + ".");
+    Map<String, Object> map = new HashMap<>();
+    try {
+      Project project = projectService.getProjectById(activity.getProjectId());
+      int receiverId = project.getUserId();
+      projectActivityService.sendParticipation(project, activity.getSenderId(), receiverId);
+      ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
   }
+
+  // 참여 허가 후 paStatus를 "APPROVED"로 변경, paIsRead를 "Y"로 변경
+  @PutMapping("/approve-participation")
+  public Map<String, Object> approveParticipation(@RequestBody ProjectActivity activity) {
+    log.info("approveParticipation()");
+    Map<String, Object> map = new HashMap<>();
+    ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+    try {
+      dbActivity.setPaStatus("APPROVED");
+      log.info("정보 기입 완료");
+      projectActivityService.updateActivityStatus(dbActivity);
+      log.info("수정 실행 완료");
+      dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+
 
   // 일정 배정 발생 시 알림 전송
   @PostMapping("/schedule-assignment")

@@ -134,8 +134,21 @@ public class ProjectActivityService {
     }
   }
 
-  // 테스트용: 알림 목록 조회
+  // 단건 조회
+  public ProjectActivity getById(int activityId) {
+    return projectActivityDao.selectById(activityId);
+  }
+
+  // 알림 목록 조회
   public List<ProjectActivity> getByReceiverId(int receiverId) {
     return projectActivityDao.selectByReceiverId(receiverId);
+  }
+
+  // 알림 상태 수정 
+  public ProjectActivity updateActivityStatus(ProjectActivity activity) {
+    int row = projectActivityDao.updateActivityStatus(activity);
+    log.info("수정된 행 수{}", row);
+    ProjectActivity dbActivity = projectActivityDao.selectById(activity.getActivityId());
+    return dbActivity;
   }
 }
