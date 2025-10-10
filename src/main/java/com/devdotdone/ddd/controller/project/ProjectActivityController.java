@@ -93,6 +93,25 @@ public class ProjectActivityController {
     return map;
   }
 
+  // 참여자에게 답변 알림 발송
+  @PostMapping("/respond-participation")
+  public Map<String, Object> respondParticipation(@RequestBody ProjectActivity activity) {
+    log.info("respondParticipation()");
+    Map<String, Object> map = new HashMap<>();
+    try {
+      Project project = projectService.getProjectById(activity.getProjectId());
+      // int receiverId = project.getUserId();
+      projectActivityService.respondParticipation(project, activity.getSenderId(), activity.getReceiverId(), activity.getPaStatus());
+      ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+
 
 
   // 일정 배정 발생 시 알림 전송

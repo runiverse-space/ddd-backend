@@ -83,6 +83,46 @@ public class ProjectActivityService {
     }
   }
 
+  // 참여 요청에 대한 답변
+  public void respondParticipation(Project project, int senderId, int receiverId, String paStatus) {
+    SseEmitter emitter = emitters.get(receiverId);
+
+    // DB에 알림 저장
+    ProjectActivity projectActivity = new ProjectActivity();
+
+    projectActivity.setPaType("SYSTEM_NOTIFICATION");
+    projectActivity.setProjectId(project.getProjectId());
+
+    if (paStatus.equals("APPROVED")) {
+      projectActivity.setPaMessage(project.getProjectTitle() + " 참여가 승인되었습니다. 환영합니다!");
+    } else {
+      projectActivity.setPaMessage(project.getProjectTitle() + "에 대한 참여 요청이 거절되었습니다.");
+    }
+    projectActivity.setPaStatus(paStatus);
+    projectActivity.setPaIsRead("N");
+    projectActivity.setSenderId(senderId);
+    projectActivity.setReceiverId(receiverId);
+
+    log.info(projectActivity.toString());
+
+    projectActivityDao.insertActivity(projectActivity);
+
+    if (emitter != null) {
+      try {
+        emitter.send(SseEmitter.event()
+            .name(paStatus.toLowerCase() + "-participation")
+            .data(projectActivity.getPaMessage()));
+        log.info("Received participation response from user {} for project {}", senderId, project.getProjectId());
+
+      } catch (IOException e) {
+        emitters.remove(receiverId); // 전송 실패 시 맵에서 제거
+        log.info("Failed to send response to user {}: {}", receiverId, e.getMessage());
+      }
+    } else {
+      log.info("No active connection for user {}", receiverId);
+    }
+  }
+
   // 여러 사용자에게 프로젝트 초대 알림 전송
   // public void sendInvitationsToMultipleUsers(int projectId, List<Integer>
   // userIds) {

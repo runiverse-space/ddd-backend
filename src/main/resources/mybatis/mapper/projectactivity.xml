@@ -11,7 +11,7 @@
       SELECT seq_projectActivity.nextval from dual 
     </selectKey> 
     INSERT INTO projectActivity (activity_id, paType, sender_id, receiver_id, project_id, paMessage, paStatus, paIsRead, paCreatedAt, paUpdatedAt)
-    VALUES (#{activityId}, #{paType}, #{senderId}, #{receiverId}, #{projectId}, #{paMessage}, 'PENDING', 'N', systimestamp, null)
+    VALUES (#{activityId}, #{paType}, #{senderId}, #{receiverId}, #{projectId}, #{paMessage}, #{paStatus}, 'N', systimestamp, null)
   </insert>
 
   <!-- 단건 조회 -->
