@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.devdotdone.ddd.dao.KnowledgeCommentDao;
 import com.devdotdone.ddd.dao.KnowledgeDao;
 import com.devdotdone.ddd.dao.KnowledgeTagDao;
 import com.devdotdone.ddd.dto.knowledge.Knowledge;
@@ -16,12 +17,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class KnowledgeService {
+  @Autowired
+  private KnowledgeCommentService knowledgeCommentService;
 
+  @Autowired
+  private KnowledgeCommentDao knowledgeCommentDao;
   @Autowired
   private KnowledgeDao knowledgeDao;
 
   @Autowired
   private KnowledgeTagDao knowledgeTagDao;
+
+
+
 
   //지식창고 글 생성
   public void create(Knowledge knowledge){
@@ -57,6 +65,7 @@ public class KnowledgeService {
       knowledgeTagDao.deleteKnowledgeTag(knowledgeId, tag.getTagId());
     }
    
+    knowledgeCommentDao.deleteAllKnowledgeComment(knowledgeId);
    
     int rows= knowledgeDao.deleteKnowledge(knowledgeId);
    

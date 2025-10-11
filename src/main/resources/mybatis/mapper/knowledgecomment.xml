@@ -58,6 +58,15 @@
     delete from knowledgecomment
     where knowledgeComment_id=#{value}
   </delete>
+
+  <!-- knowledgeId에 해당하는 모든 코멘트 삭제-->
+ <delete id="deleteAllKnowledgeComment" parameterType="int">
+    delete 
+    from knowledgecomment
+    where knowledge_id= #{knowledgeId}
+  </delete>
+
+
  
   <!--count all 코멘트 -->
   <select id="countAllKnowledgeComment" resultType="int">

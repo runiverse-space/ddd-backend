@@ -3,6 +3,7 @@ package com.devdotdone.ddd.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.devdotdone.ddd.dto.knowledge.KnowledgeComment;
 
@@ -48,6 +49,9 @@ public interface KnowledgeCommentDao {
   public int countKnowledgeCommentsByKnowledgeId(int knowledgeId);
 
   public int deleteKnowledgeComment(int knowledgeCommentId);
+
+  //특정 지식창고 전체 댓글 삭제
+  public int deleteAllKnowledgeComment(@Param("knowledgeId") int knowledgeId);
 
   public int countAllKnowledgeComment();
 
