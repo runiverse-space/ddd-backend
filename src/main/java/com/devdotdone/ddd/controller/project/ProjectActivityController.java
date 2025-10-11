@@ -28,7 +28,7 @@ public class ProjectActivityController {
 
   // 유저별 SSE 연결 생성
   @GetMapping(value = "/subscribe", produces = "text/event-stream")
-  public SseEmitter subscribe(@RequestParam int userId) {
+  public SseEmitter subscribe(@RequestParam("userId") int userId) {
     return projectActivityService.subscribe(userId);
   }
 
@@ -111,6 +111,28 @@ public class ProjectActivityController {
     }
     return map;
   }
+
+  // 답변 알림 읽음 처리
+  @PutMapping("/read-response")
+  public Map<String, Object> readResponse(@RequestBody ProjectActivity activity) {
+    log.info("readResponse()");
+    Map<String, Object> map = new HashMap<>();
+    try {
+      int row = projectActivityService.updateToRead(activity);
+      if (row == 1) {
+        ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+        map.put("result", "success");
+        map.put("data", dbActivity);
+      } else {
+        map.put("result", "fail");
+        map.put("message", "읽음 처리 실패");
+      }
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  } 
 
 
 

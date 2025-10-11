@@ -41,7 +41,7 @@
   </update>
 
   <!-- 읽음 상태 업데이트 -->
-  <update id="chageToRead" parameterType="ProjectActivity">
+  <update id="changeToRead" parameterType="int">
     UPDATE projectActivity 
     SET paIsRead = 'Y'
     WHERE activity_id = #{activityId}

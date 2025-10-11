@@ -110,9 +110,9 @@ public class ProjectActivityService {
     if (emitter != null) {
       try {
         emitter.send(SseEmitter.event()
-            .name(paStatus.toLowerCase() + "-participation")
+            .name("participation-response")
             .data(projectActivity.getPaMessage()));
-        log.info("Received participation response from user {} for project {}", senderId, project.getProjectId());
+        log.info("Sent participation response from user {} for project {}", senderId, project.getProjectId());
 
       } catch (IOException e) {
         emitters.remove(receiverId); // 전송 실패 시 맵에서 제거
@@ -123,13 +123,10 @@ public class ProjectActivityService {
     }
   }
 
-  // 여러 사용자에게 프로젝트 초대 알림 전송
-  // public void sendInvitationsToMultipleUsers(int projectId, List<Integer>
-  // userIds) {
-  // for (int userId : userIds) {
-  // sendInvitation(userId, projectId);
-  // }
-  // }
+  // 답변 알림 읽음 처리
+  public int updateToRead(ProjectActivity activity) {
+    return projectActivityDao.changeToRead(activity.getActivityId());
+  }
 
   // 일정 배정 알림 전송
   public void sendAssignment(int scheduleId, int projectId, int senderId, int receiverId) {

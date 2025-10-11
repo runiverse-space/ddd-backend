@@ -12,6 +12,6 @@ public interface ProjectActivityDao {
   public ProjectActivity selectById(int activityId);
   public List<ProjectActivity> selectByReceiverId(int userId);
   public int updateActivityStatus(ProjectActivity projectActivity);
-  public int chageToRead(int activityId);
+  public int changeToRead(int activityId);
   public int delete(int activityId);
 }
