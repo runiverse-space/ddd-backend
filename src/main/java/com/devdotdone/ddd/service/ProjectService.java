@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devdotdone.ddd.dao.ProjectDao;
+import com.devdotdone.ddd.dao.ProjectTagDao;
 import com.devdotdone.ddd.dao.UserProjectRoleDao;
 import com.devdotdone.ddd.dao.UsersDao;
 import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.project.ProjectMilestone;
 import com.devdotdone.ddd.dto.project.ProjectRequest;
+import com.devdotdone.ddd.dto.tag.Tag;
 import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
 import com.devdotdone.ddd.dto.users.Users;
 
@@ -25,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ProjectService {
+
+    private final ProjectTagService projectTagService;
   @Autowired
   private ProjectDao projectDao;
 
@@ -35,12 +39,19 @@ public class ProjectService {
   private UserProjectRoleDao userProjectRoleDao;
 
   @Autowired
+  private ProjectTagDao projectTagDao;
+
+  @Autowired
   private UserProjectRoleService userProjectRoleService;
 
   @Autowired
   private ProjectMilestoneService projectMilestoneService;
 
   private static final int MAX_MEMBERS = 6;
+
+    ProjectService(ProjectTagService projectTagService) {
+        this.projectTagService = projectTagService;
+    }
 
   // 새 프로젝트 만들기
   @Transactional
@@ -225,12 +236,17 @@ public class ProjectService {
     if (project == null) {
       throw new IllegalArgumentException("존재하지 않는 프로젝트입니다.");
     }
-
+    
     // 프로젝트의 모든 마일스톤 삭제
     projectMilestoneService.deleteAllMilestonesByProject(projectId);
     // 프로젝트의 모든 멤버 역할 삭제
     userProjectRoleDao.deleteAllUserProjectRole(projectId);
 
+    List<Tag> tags = projectTagDao.selectTagByProjectId(projectId);
+    for(Tag tag: tags){
+       projectTagDao.deleteProjectTag(projectId, tag.getTagId());
+    }
+    
     int result = projectDao.deleteProject(projectId);
     if (result <= 0) {
       throw new RuntimeException("프로젝트 삭제에 실패했습니다.");
