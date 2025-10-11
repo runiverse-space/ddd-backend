@@ -112,6 +112,68 @@ public class ProjectActivityController {
     return map;
   }
 
+  // 프로젝트 초대 알림 발송
+  @PostMapping("/invite")
+  public Map<String, Object> invite(@RequestBody ProjectActivity activity) {
+    log.info("invite()");
+    Map<String, Object> map = new HashMap<>();
+    try {
+      Project project = projectService.getProjectById(activity.getProjectId());
+      int senderId = activity.getSenderId();
+      int receiverId = activity.getReceiverId();
+      projectActivityService.sendInvitation(project, senderId, receiverId);
+      ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+
+  // 프로젝트 초대 수락
+  @PutMapping("/accept-invitation")
+  public Map<String, Object> acceptInvitation(@RequestBody ProjectActivity activity) {
+    log.info("acceptInvitation()");
+    Map<String, Object> map = new HashMap<>();
+    ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+    try {
+      dbActivity.setPaStatus("ACCEPTED");
+      log.info("정보 기입 완료");
+      projectActivityService.updateActivityStatus(dbActivity);
+      log.info("수정 실행 완료");
+      dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+
+  // 프로젝트 초대 거절
+  @PutMapping("/decline-invitation")
+  public Map<String, Object> declineInvitation(@RequestBody ProjectActivity activity) {
+    log.info("acceptInvitation()");
+    Map<String, Object> map = new HashMap<>();
+    ProjectActivity dbActivity = projectActivityService.getById(activity.getActivityId());
+    try {
+      dbActivity.setPaStatus("DECLINED");
+      log.info("정보 기입 완료");
+      projectActivityService.updateActivityStatus(dbActivity);
+      log.info("수정 실행 완료");
+      dbActivity = projectActivityService.getById(activity.getActivityId());
+      map.put("result", "success");
+      map.put("data", dbActivity);
+    } catch (Exception e) {
+      map.put("result", "fail");
+      map.put("message", e.getMessage());
+    }
+    return map;
+  }
+
   // 답변 알림 읽음 처리
   @PutMapping("/read-response")
   public Map<String, Object> readResponse(@RequestBody ProjectActivity activity) {

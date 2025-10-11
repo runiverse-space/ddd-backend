@@ -48,7 +48,7 @@ public class ProjectActivityService {
     return emitter;
   }
 
-  // 프로젝트 참여 요청 알림 전송
+  // 프로젝트 참여 요청 알림 발송
   public void sendParticipation(Project project, int senderId, int receiverId) {
     SseEmitter emitter = emitters.get(receiverId);
 
@@ -117,6 +117,41 @@ public class ProjectActivityService {
       } catch (IOException e) {
         emitters.remove(receiverId); // 전송 실패 시 맵에서 제거
         log.info("Failed to send response to user {}: {}", receiverId, e.getMessage());
+      }
+    } else {
+      log.info("No active connection for user {}", receiverId);
+    }
+  }
+
+  // 프로젝트 초대 알림 발송
+  public void sendInvitation(Project project, int senderId, int receiverId) {
+    SseEmitter emitter = emitters.get(receiverId);
+
+    // DB에 알림 저장
+    ProjectActivity projectActivity = new ProjectActivity();
+
+    projectActivity.setPaType("INVITATION");
+    projectActivity.setProjectId(project.getProjectId());
+    projectActivity.setPaMessage(project.getProjectTitle() + " 프로젝트에 초대되었습니다. 함께하시겠어요?");
+    projectActivity.setPaStatus("PENDING");
+    projectActivity.setPaIsRead("N");
+    projectActivity.setSenderId(senderId);
+    projectActivity.setReceiverId(receiverId);
+
+    log.info(projectActivity.toString());
+
+    projectActivityDao.insertActivity(projectActivity);
+
+    if (emitter != null) {
+      try {
+        emitter.send(SseEmitter.event()
+            .name("project-invitation")
+            .data(projectActivity.getPaMessage()));
+        log.info("Received invitation request from user {} for project {}", senderId, project.getProjectId());
+
+      } catch (IOException e) {
+        emitters.remove(receiverId); // 전송 실패 시 맵에서 제거
+        log.info("Failed to send invitation to user {}: {}", receiverId, e.getMessage());
       }
     } else {
       log.info("No active connection for user {}", receiverId);
