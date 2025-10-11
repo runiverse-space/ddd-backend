@@ -2,11 +2,14 @@ package com.devdotdone.ddd.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.devdotdone.ddd.dao.KnowledgeDao;
+import com.devdotdone.ddd.dao.KnowledgeTagDao;
 import com.devdotdone.ddd.dto.knowledge.Knowledge;
+import com.devdotdone.ddd.dto.tag.Tag;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +19,9 @@ public class KnowledgeService {
 
   @Autowired
   private KnowledgeDao knowledgeDao;
+
+  @Autowired
+  private KnowledgeTagDao knowledgeTagDao;
 
   //지식창고 글 생성
   public void create(Knowledge knowledge){
@@ -44,7 +50,17 @@ public class KnowledgeService {
   }
   //삭제
   public int delete(int knowledgeId){
+    
+    List<Tag> tags= knowledgeTagDao.selectTagByKnowledgeId(knowledgeId);
+    
+    for(Tag tag: tags){
+      knowledgeTagDao.deleteKnowledgeTag(knowledgeId, tag.getTagId());
+    }
+   
+   
     int rows= knowledgeDao.deleteKnowledge(knowledgeId);
+   
+
     return rows;
   }
 
