@@ -129,7 +129,7 @@ public class ProjectService {
     project.setProjectStartDate(request.getProjectStartDate());
     project.setProjectEndDate(request.getProjectEndDate());
 
-    // projectDao.updateProject(project);
+    
 
     int result = projectDao.updateProject(project);
 
@@ -137,60 +137,43 @@ public class ProjectService {
       throw new RuntimeException("프로젝트 수정에 실패했습니다.");
     }
 
-    // 멤버 변경사항 처리 request.getUserIds가 null이 아닐때만 프론트에서 바뀐 newIds만 보낸다.
-    if (request.getUserIds() != null) {
-      log.info("➕ 새 멤버 추가 시작: {}", request.getUserIds());
+    log.info("=== 멤버 변경 요청 데이터 ===");
+    log.info("addUserIdList: {}", request.getAddUserIdList());
+    log.info("removeUserIdList: {}", request.getRemoveUserIdList());
+    log.info("userIds (전체): {}", request.getUserIds());
 
-      // 현재 db에 저장된 멤버 조회
-      List<UserProjectRole> currentMembers = userProjectRoleDao.selectProjectMembers(request.getProjectId());
-      Set<Integer> currentMembersIds = new HashSet<>();
 
-      for (UserProjectRole member : currentMembers) {
-        if (!"ADMIN".equals(member.getUprRole())) {
-          currentMembersIds.add(member.getUserId());
+// ✅ 멤버 추가 처리
+    if (request.getAddUserIdList() != null && !request.getAddUserIdList().isEmpty()) {
+        log.info("➕ 멤버 추가 시작: {}", request.getAddUserIdList());
+        for (int userId : request.getAddUserIdList()) {
+            try {
+                userProjectRoleService.assignUsersToProject(project.getProjectId(), userId, "MEMBER");
+                log.info("  ✅ 멤버 추가 성공: userId={}", userId);
+            } catch (Exception e) {
+                log.error("  ❌ 멤버 추가 실패: userId={}, error={}", userId, e.getMessage());
+            }
         }
-      }
-      log.info("현재 db멤버 :{}", currentMembersIds);
-
-      // 새로 요청된 멤버 목록
-      Set<Integer> requestMemberIds = new HashSet<>(request.getUserIds());
-      log.info("요청한 멤버:{}", requestMemberIds);
-
-      // 추가할 멤버 찾기(새로 들어온 리스트에 있는데 db는 없는 뉴비 찾기)
-      Set<Integer> membersToAdd = new HashSet<>(requestMemberIds);
-      membersToAdd.removeAll(currentMembersIds);// 고인물은 리스트에서 뺀다.
-
-      if (!membersToAdd.isEmpty()) {
-        log.info("  ➕ 추가할 멤버: {}", membersToAdd);
-        for (int userId : membersToAdd) {
-          try {
-            userProjectRoleService.assignUsersToProject(project.getProjectId(), userId, "MEMBER");
-            log.info("    ✅ 멤버 추가 성공: userId={}", userId);
-          } catch (Exception e) {
-            log.error("  ❌ 멤버 추가 실패: userId={}, error={}", userId, e.getMessage());
-          }
-        }
-      } else {
-        log.info("  ⏭️ 추가할 멤버 없음");
-      }
-      // 참여자 삭제
-      Set<Integer> membersToRemove = new HashSet<>(currentMembersIds);
-      membersToRemove.removeAll(requestMemberIds);
-
-      if (!membersToRemove.isEmpty()) {
-        log.info("삭제할 멤버:{}", membersToRemove);
-        for (int userId : membersToRemove) {
-          try {
-            userProjectRoleService.deleteUsersFromProject(project.getProjectId(), userId);
-            log.info("멤버 삭제 성공: userId={}", userId);
-          } catch (Exception e) {
-            log.error("    ❌ 멤버 삭제 실패: userId={}, error={}", userId, e.getMessage());
-          }
-        }
-      } else {
-        log.info("⏭️ 멤버 변경 요청 없음 (userIds가 null)");
-      }
+    } else {
+        log.info("⏭️ 추가할 멤버 없음 (addUserIdList가 {})", 
+            request.getAddUserIdList() == null ? "null" : "빈 배열");
     }
+      // 참여자 삭제
+     if (request.getRemoveUserIdList() != null && !request.getRemoveUserIdList().isEmpty()) {
+        log.info("➖ 멤버 삭제 시작: {}", request.getRemoveUserIdList());
+        for (int userId : request.getRemoveUserIdList()) {
+            try {
+                userProjectRoleService.deleteUsersFromProject(project.getProjectId(), userId);
+                log.info("  ✅ 멤버 삭제 성공: userId={}", userId);
+            } catch (Exception e) {
+                log.error("  ❌ 멤버 삭제 실패: userId={}, error={}", userId, e.getMessage());
+            }
+        }
+    } else {
+        log.info("⏭️ 삭제할 멤버 없음 (removeUserIdList가 {})", 
+            request.getRemoveUserIdList() == null ? "null" : "빈 배열");
+    }
+    
 
     // List<UserProjectRole> userProjectRoles = userProjectRoleDao.selectProjectMembers(request.getProjectId());
     // List<Integer> requestUserIds = request.getUserIds();
