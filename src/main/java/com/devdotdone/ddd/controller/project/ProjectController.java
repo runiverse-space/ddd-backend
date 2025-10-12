@@ -104,6 +104,12 @@ public class ProjectController {
   @PutMapping("/update")
   public Map<String, Object> update(@RequestBody ProjectRequest request) {
     Map<String, Object> map = new HashMap<>();
+    log.info("🎯 프로젝트 수정 요청 - ProjectId: {}, Add: {}, Remove: {}", 
+             request.getProjectId(), 
+             request.getAddUserIdList(), 
+             request.getRemoveUserIdList());
+
+
     try {
         Map<String, Object> result = projectService.update(request);  // ← Map 받기
         map.put("result", "success");
