@@ -138,7 +138,7 @@ public class ProjectService {
     }
 
     // 멤버 변경사항 처리 request.getUserIds가 null이 아닐때만 프론트에서 바뀐 newIds만 보낸다.
-    if (request.getUserIds() != null && !request.getUserIds().isEmpty()) {
+    if (request.getUserIds() != null) {
       log.info("➕ 새 멤버 추가 시작: {}", request.getUserIds());
 
       // 현재 db에 저장된 멤버 조회
