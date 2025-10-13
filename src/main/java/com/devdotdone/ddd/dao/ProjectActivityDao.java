@@ -14,4 +14,5 @@ public interface ProjectActivityDao {
   public int updateActivityStatus(ProjectActivity projectActivity);
   public int changeToRead(int activityId);
   public int delete(int activityId);
+  public int deleteAllUserProjectRole(int projectId);
 }

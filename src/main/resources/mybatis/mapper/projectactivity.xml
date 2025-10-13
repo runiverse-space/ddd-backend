@@ -47,8 +47,15 @@
     WHERE activity_id = #{activityId}
   </update>
 
+  <!-- 알림 삭제 -->
   <delete id="delete" parameterType="int">
     DELETE FROM projectActivity
     WHERE activity_id = #{value}
+  </delete>
+
+  <!-- 특정 프로젝트와 관련된 모든 알림 삭제 -->
+  <delete id="deleteAllUserProjectRole" parameterType="int">
+    DELETE FROM projectActivity
+    WHERE project_id = #{value}
   </delete>
 </mapper>
