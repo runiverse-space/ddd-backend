@@ -3,6 +3,7 @@ package com.devdotdone.ddd.controller.tag;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +23,9 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/create")
-    public void insertTag(@RequestBody Tag tag) {
+    public ResponseEntity<Tag> insertTag(@RequestBody Tag tag) {
         tagService.insertTag(tag);
+        return ResponseEntity.ok(tag);
     }
 
     @GetMapping("/{tagType}")

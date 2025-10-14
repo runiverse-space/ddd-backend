@@ -8,7 +8,7 @@
   <!-- 태그 생성 -->
   <insert id="insertTag" useGeneratedKeys="true" keyProperty="tagId" parameterType="Tag">
     <selectKey keyProperty="tagId" resultType="int" order="BEFORE">
-      SELECT seq_tag_tagId.NEXTVAL FROM dual
+      SELECT seq_tag_tag_Id.NEXTVAL FROM dual
     </selectKey>
     INSERT INTO tag (tag_id, tagName, tagType)
     VALUES (#{tagId}, #{tagName}, #{tagType})
