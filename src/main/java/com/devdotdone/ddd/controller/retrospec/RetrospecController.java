@@ -1,8 +1,11 @@
 package com.devdotdone.ddd.controller.retrospec;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,14 +27,15 @@ public class RetrospecController {
     private RetrospecService retrospecService;
 
     @PostMapping
-    public String create(@RequestBody RetrospecRequest request) {
+    public ResponseEntity<RetrospecRequest> create(@RequestBody RetrospecRequest request) {
         retrospecService.create(request);
-        return "회고 작성 성공";
+        return ResponseEntity.ok(request);
     }
 
     @GetMapping("{retroId}")
-    public RetrospecResponse getById(@PathVariable("retroId") int retroId) {
-        return retrospecService.getById(retroId);
+    public ResponseEntity<RetrospecResponse> getById(@PathVariable("retroId") int retroId) {
+        RetrospecResponse response = retrospecService.getById(retroId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/project/{projectId}")
@@ -40,16 +44,20 @@ public class RetrospecController {
     }
 
     @PutMapping("/{retroId}")
-    public String update(@PathVariable("retroId") int retroId, @RequestBody RetrospecRequest request) {
+    public ResponseEntity<RetrospecRequest> update(@PathVariable("retroId") int retroId, @RequestBody RetrospecRequest request) {
         retrospecService.update(retroId, request);
-        return "회고 수정 성공";
+        return ResponseEntity.ok(request);
     }
 
     @DeleteMapping("/{retroId}")
-    public String delete(@PathVariable("retroId") int retroId,
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable("retroId") int retroId,
                          @RequestParam("projectId") int projectId,
                          @RequestParam("userId") int userId) {
         retrospecService.delete(retroId, projectId, userId);
-        return "회고 삭제 성공";
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("retroId", retroId);
+        response.put("message", "회고 삭제 성공");
+        return ResponseEntity.ok(response);
     }
 }
