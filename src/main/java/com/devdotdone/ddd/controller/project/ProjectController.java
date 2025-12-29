@@ -105,21 +105,8 @@ public class ProjectController {
   }
  @Login
   @PutMapping("/update")
-  public Map<String, Object> update(@RequestBody ProjectRequest request) {
-    Map<String, Object> map = new HashMap<>();
-
-    try {
-        ProjectResponse result = projectService.update(request);
-        map.put("result", "success");
-        map.put("data", result);
-    } catch (Exception e) {
-        map.put("result", "fail");
-        map.put("message", e.getMessage());
-        log.error("프로젝트 수정 실패", e);
-    }
-    return map;
-
-
+  public ProjectResponse update(@RequestBody ProjectRequest request) {
+     return projectService.update(request);
   }
  @Login
   @DeleteMapping("/delete")
