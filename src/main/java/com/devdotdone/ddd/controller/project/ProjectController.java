@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devdotdone.ddd.dto.project.Project;
 import com.devdotdone.ddd.dto.project.ProjectRequest;
+import com.devdotdone.ddd.dto.project.ProjectResponse;
 import com.devdotdone.ddd.dto.schedule.Schedule;
 import com.devdotdone.ddd.dto.userProjectRole.UserProjectRole;
+import com.devdotdone.ddd.interceptor.Login;
 import com.devdotdone.ddd.service.ProjectService;
 import com.devdotdone.ddd.service.ScheduleService;
 import com.devdotdone.ddd.service.UserProjectRoleService;
@@ -37,6 +39,7 @@ public class ProjectController {
   @Autowired
   private UserProjectRoleService userProjectRoleService;
 
+  @Login
   @PostMapping("/create")
   public Map<String, Object> create(@RequestBody ProjectRequest request) {
     log.info(request.toString());
@@ -58,7 +61,7 @@ public class ProjectController {
     log.info("프로젝트 목록 조회", list);
     return list;
   }
-
+ @Login
   @GetMapping("/detail")
   public Map<String, Object> detail(@RequestParam("projectId") int projectId) {
     Map<String, Object> map = new HashMap<>();
@@ -100,20 +103,15 @@ public class ProjectController {
     }
     return map;
   }
-
+ @Login
   @PutMapping("/update")
   public Map<String, Object> update(@RequestBody ProjectRequest request) {
     Map<String, Object> map = new HashMap<>();
-    log.info("🎯 프로젝트 수정 요청 - ProjectId: {}, Add: {}, Remove: {}", 
-             request.getProjectId(), 
-             request.getAddUserIdList(), 
-             request.getRemoveUserIdList());
-
 
     try {
-        Map<String, Object> result = projectService.update(request);  // ← Map 받기
+        ProjectResponse result = projectService.update(request);
         map.put("result", "success");
-        map.put("data", result);  // ← project + memberIds 포함
+        map.put("data", result);
     } catch (Exception e) {
         map.put("result", "fail");
         map.put("message", e.getMessage());
@@ -122,24 +120,8 @@ public class ProjectController {
     return map;
 
 
-    // Map<String, Object> map = new HashMap<>();
-    // try {
-    //   Project project = projectService.update(request);
-    //   if (project == null) {
-    //     map.put("result", "fail");
-    //     map.put("message", "해당 프로젝트가 존재하지 않습니다.");
-    //   } else {
-    //     map.put("result", "success");
-    //     map.put("data", project);
-    //   }
-
-    // } catch (Exception e) {
-    //   map.put("result", "fail");
-    //   map.put("message", e.getMessage());
-    // }
-    // return map;
   }
-
+ @Login
   @DeleteMapping("/delete")
   public Map<String, Object> delete(@RequestParam("projectId") int projectId) {
     Map<String, Object> map = new HashMap<>();
@@ -160,7 +142,7 @@ public class ProjectController {
 
     return map;
   }
-
+ @Login
   @GetMapping("/list/user")
   public List<Project> getUserProjects(@RequestParam("userId") int userId) {
     return projectService.getProjectsByUserId(userId);
