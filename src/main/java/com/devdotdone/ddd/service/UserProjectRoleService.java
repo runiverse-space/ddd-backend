@@ -34,7 +34,7 @@ public class UserProjectRoleService {
    * 프로젝트 생성자를 admin으로 등록 ( mapper에서 안하고 service에서 admin 만들기로했음)
    * project를 만들때 이쪽으로 projectId, userId를 보내줄것임
    */
-  @Transactional
+  
   public void assignUsersProjectAdmin(int projectId, int userId) {
 
     //
