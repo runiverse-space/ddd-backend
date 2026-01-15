@@ -69,9 +69,9 @@ public class UserProjectRoleService {
     }
 
     // 이미 프로젝트 참여중인지 확인하고 없으면 추가
-    UserProjectRole existUpr = userProjectRoleDao.selectUserProjectRole(projectId, userId);
+    boolean isDuplicate = userProjectRoleDao.countUserProjectRole(projectId, userId)>0;
 
-    if (existUpr != null) {
+    if (isDuplicate) {
       throw new IllegalArgumentException("이미 프로젝트 멤버입니다.");
     }
     // 최대 멤버수 확인
@@ -213,6 +213,11 @@ public class UserProjectRoleService {
 
     return userProjectRoleDao.selectUsersProject(userId);
   }
+
+  /*
+    특정 유저가 속한 프로젝트 목록 조회
+   */
+ 
 
 
   /*

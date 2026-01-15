@@ -59,6 +59,13 @@
 
   </select>
 
+  <select id="countUserProjectRole" resultType="int">
+    select count(*)
+    from userProjectRole
+    where project_id = #{projectId}
+      and user_id = #{userId}
+  </select>
+
   <!--특정 사용자의 프로젝트 역할 조회 -->
   <select id="selectUserProjectRole" parameterType="UserProjectRole" resultType="UserProjectRole">
     select uprRole

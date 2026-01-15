@@ -1,11 +1,14 @@
 package com.devdotdone.ddd.controller.userprojectrole;
 
+import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +23,6 @@ import com.devdotdone.ddd.service.UserProjectRoleService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 @RestController
 @RequestMapping("/api/userprojectrole")
@@ -28,8 +30,6 @@ public class UserProjectRoleController {
 
   @Autowired
   private UserProjectRoleService userProjectRoleService;
-
- 
 
   // 프로젝트 멤버 목록 조회
   @GetMapping("/memberlist")
@@ -42,78 +42,90 @@ public class UserProjectRoleController {
 
   }
 
-  //특정 유저의 프로젝트 목록조회
+  // 특정 유저의 프로젝트 목록조회
   @GetMapping("/projectlist")
-  public Map<String,Object> getUsersProjectRoles(@RequestParam("userId") int userId){
-    Map<String,Object> result = new HashMap<>();
-    
+  public Map<String, Object> getUsersProjectRoles(@RequestParam("userId") int userId) {
+    Map<String, Object> result = new HashMap<>();
+
     List<UserProjectRole> roles = userProjectRoleService.getProjectsListByUserId(userId);
-    result.put("result","success");
+    result.put("result", "success");
     result.put("data", roles);
-    
+
     return result;
 
   }
-  
 
   // 새로운 멤버 영입(총인원 6명인 조건 그대로)
   @PostMapping("/insertmembers")
-  public Map<String, String> addMember(@RequestBody UserProjectRole userProjectRole) {
-   
-      userProjectRoleService.assignUsersToProject(
-          userProjectRole.getProjectId(),
-          userProjectRole.getUserId(),
-          userProjectRole.getUprRole());
-  
+  public Map<String, String> addMember(@RequestBody UserProjectRole userProjectRole) throws DuplicateKeyException {
 
-    String role = userProjectRoleService.getUserProjectRole(userProjectRole.getProjectId(),
-        userProjectRole.getUserId());
-    log.info(role.toString());
     Map<String, String> map = new HashMap<>();
+
+    try {
+    userProjectRoleService.assignUsersToProject(
+        userProjectRole.getProjectId(),
+        userProjectRole.getUserId(),
+        userProjectRole.getUprRole()
+    );
+
+    String role = userProjectRoleService.getUserProjectRole(
+        userProjectRole.getProjectId(),
+        userProjectRole.getUserId()
+    );
+
     map.put("result", "success");
     map.put("role", role);
     return map;
-  }
 
+  } catch (DataIntegrityViolationException e) {
+    map.put("result", "fail");
+    map.put("message", "이미 프로젝트 멤버입니다.");
+    return map;
+
+  } catch (IllegalArgumentException | IllegalStateException e) {
+    map.put("result", "fail");
+    map.put("message", e.getMessage());
+    return map;
+  }
+  }
 
   // 팀장 권한 위임
   @PostMapping("/changeadmin")
-  public Map<String,Object> changeAdmin(@RequestBody UserProjectRole userProjectRole){
-    
-    Map<String,Object> response = new HashMap<>();
+  public Map<String, Object> changeAdmin(@RequestBody UserProjectRole userProjectRole) {
+
+    Map<String, Object> response = new HashMap<>();
 
     try {
-      int result= userProjectRoleService.updateAdmin(userProjectRole);
-      response.put("suceess",true);
-      response.put("result",result);
-    
+      int result = userProjectRoleService.updateAdmin(userProjectRole);
+      response.put("suceess", true);
+      response.put("result", result);
+
     } catch (Exception e) {
-      response.put("suceess",false);
-      response.put("result",0);
+      response.put("suceess", false);
+      response.put("result", 0);
     }
-    
+
     return response;
-      
-     
+
   }
-  
+
   // 프로젝트 멤버 수 조회
   @GetMapping("/count")
-  public Map<String,Object> countProjectMembers(@RequestParam("projectId") int projectId){
-    Map<String,Object> result= new HashMap<>()  ;
-    int total =userProjectRoleService.getCountProjectMembers(projectId);
-    log.info("프로젝트 인원 총 {}",total+" 명입니다.");
-    result.put("success",true);
+  public Map<String, Object> countProjectMembers(@RequestParam("projectId") int projectId) {
+    Map<String, Object> result = new HashMap<>();
+    int total = userProjectRoleService.getCountProjectMembers(projectId);
+    log.info("프로젝트 인원 총 {}", total + " 명입니다.");
+    result.put("success", true);
     result.put("total", total);
-    
+
     return result;
 
   }
 
   // 프로젝터에서 멤버 빼기
   @DeleteMapping("/delete")
-  public String deleteMembers(@RequestParam("projectId")int projectId,@RequestParam("userId") int userId){
-    userProjectRoleService.deleteUsersFromProject(projectId,userId );
+  public String deleteMembers(@RequestParam("projectId") int projectId, @RequestParam("userId") int userId) {
+    userProjectRoleService.deleteUsersFromProject(projectId, userId);
 
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("result", "success");
@@ -122,26 +134,23 @@ public class UserProjectRoleController {
 
   }
 
-  //팀장 조회하기
+  // 팀장 조회하기
   @GetMapping("/admin")
   public Map<String, Object> selectProjectAdmins(@RequestParam("projectId") int projectId) {
-      
-    int userId= userProjectRoleService.getProjectAdmins(projectId);
+
+    int userId = userProjectRoleService.getProjectAdmins(projectId);
     Map<String, Object> response = new HashMap<>();
-    if(userId==0){
+    if (userId == 0) {
       response.put("success", false);
       response.put("message", "admin이 없습니다.");
       response.put("userId", 0);
-    }else{
-       response.put("success", true);
+    } else {
+      response.put("success", true);
       response.put("message", "admin 조회 성공");
       response.put("userId", userId);
     }
     return response;
 
   }
-  
-
-
 
 }
