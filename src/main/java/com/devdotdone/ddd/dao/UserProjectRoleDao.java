@@ -40,4 +40,7 @@ public interface UserProjectRoleDao {
 
   // 프로젝트의 모든 유저 제거(프로젝트 삭제시 실행)
   int deleteAllUserProjectRole(int projectId);
+
+  //중복방지용
+  int countUserProjectRole(@Param("projectId") int projectId,@Param("userId") int userId);
 }
